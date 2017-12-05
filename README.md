@@ -20,7 +20,7 @@ There exist JSON responses for many of the basic CRUD requests inside the applic
 
 # Experimenting with endpoints not in `/api/v1/`
 
-You can add endpoints to `api/v1` for the purposes of experimenting by aliasing them in the `config/routes.rb` file relatively easily.  To get a resources CRUD just add that resource to API scope as you would see it above in the application endpoint
+You can add existing internal endpoints to `api/v1` for the purposes of experimenting by aliasing them in the `config/routes.rb` file relatively easily.  To get a resources CRUD just add that resource to API scope as you would see it above in the application endpoint
 
 ```Ruby
 
