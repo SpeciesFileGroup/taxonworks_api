@@ -8,6 +8,8 @@ TLDR - We have lots of non externally documented, non /API/VI nodes that could b
 
 See the issues here as to our present thinking/considerations and next steps.
 
+Issues pertaining to implementation (actual code) also exist as [TaxonWorks issues](https://github.com/SpeciesFileGroup/taxonworks/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+label%3AAPI)
+
 ## Details
 
 The `api/v1` endpoints exist as an early proof of concept, they included our tests for tokenized user access to the API.  They are not particularly useful.
