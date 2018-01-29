@@ -1,0 +1,31 @@
+#%RAML 1.0
+title: Taxonworks
+version: v1
+baseUri: /api/v1
+#securitySchemes:
+#  oauth1:
+#    type: OAuth 1.0
+#    settings:
+#       requestTokenUri: https://example.com/oauth1/request_token
+#      authorizationUri: https://example.com/oauth1/authorize
+#      tokenCredentialsUri: https://example.com/oauth1/access_token
+
+
+/ping:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {"pong":true}
+          
+        
+/:
+  get:
+    responses:
+      200:
+        body: 
+          
+          
+            
