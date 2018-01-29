@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/devarsh1997/taxonworks_api.svg?branch=master)](https://travis-ci.org/devarsh1997/taxonworks_api)
+
 # taxonworks_api
 
 Documentation for the TaxonWorks API.
