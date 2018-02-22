@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/devarsh1997/taxonworks_api.svg?branch=master)](https://travis-ci.org/devarsh1997/taxonworks_api)
+
 # taxonworks_api
 
 Documentation for the TaxonWorks API.
@@ -7,6 +9,8 @@ Documentation for the TaxonWorks API.
 TLDR - We have lots of non externally documented, non /API/VI nodes that could be aliased for experimenting. Once we do a major branch merge in the near future we will turn our focus to getting those endpoints cleaned up, and exposed in a proper fashion here.  
 
 See the issues here as to our present thinking/considerations and next steps.
+
+Issues pertaining to implementation (actual code) also exist as [TaxonWorks issues](https://github.com/SpeciesFileGroup/taxonworks/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+label%3AAPI)
 
 ## Details
 
