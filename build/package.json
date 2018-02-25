@@ -4,7 +4,7 @@
   "devDependencies": {
     "gulp": "3.9.0",
     "gulp-rename": "^1.2.2",
-    "raml2html": "^2.1.2",
+    "raml2html": "^4.0.0",
   },
   "engines": {
     "node": ">=0.10.0"
