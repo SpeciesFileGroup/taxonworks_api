@@ -1,3 +1,16 @@
 language: node_js
 node_js:
-- "node"
+  - "stable"
+branches:
+  only:
+    - master
+install:
+  - npm install
+  - npm install raml2html
+script:
+  raml2html taxonworks.raml > taxonwork.html
+notifications:
+  email:
+    recipients:
+      - diapriid@gmail.com
+    on_failure: build failed
