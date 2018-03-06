@@ -1,4 +1,4 @@
-#%RAML 0.8
+#%RAML 1.0
 title: Taxonworks
 version: v1
 baseUri: /api/v1
@@ -17,8 +17,8 @@ baseUri: /api/v1
       200:
         body:
           application/json:
-            example: |
-              {"pong":false}
+            example:
+              {"pong":true}
           
         
 /:
@@ -26,3 +26,6 @@ baseUri: /api/v1
     responses:
       200:
         body: 
+          
+          
+            
