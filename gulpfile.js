@@ -13,8 +13,8 @@ var PluginError = gutil.PluginError;
 var File = gutil.File;
 
 var CWD = path.resolve('.');
-var API_SPEC = path.resolve(CWD, 'api/api.raml');
-var API_DEST = path.resolve(CWD, 'docs/');
+var API_SPEC = path.resolve(CWD, './api/api.raml');
+var API_DEST = path.resolve(CWD, './docs/');
 var API_HTML = 'index.html';
 
 function raml2html(filename, source, https, callback) {
@@ -109,9 +109,3 @@ gulp.task('apidoc', function() {
     .pipe(gulp.dest(API_DEST));
 });
 
-//Watch for changes on raml files and build locally 
-gulp.task('watch', function() {
-  gulp.watch(API_SPEC, ['apidoc']);
-});
-
-gulp.task('default', ['watch']);
