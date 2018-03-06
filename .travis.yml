@@ -6,6 +6,7 @@ before_script:
   - npm install -g gulp-cli
 install:
   - npm install
+  - npm install raml2html
 script: gulp
 
 deploy:
