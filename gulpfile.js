@@ -21,7 +21,7 @@ function raml2html(filename, source, https, callback) {
   var cwd = process.cwd();
   var nwd = path.resolve(path.dirname(filename));
   process.chdir(nwd);
-  const config = raml2htmlLib.getConfigForTheme();
+  var config = raml2htmlLib.getConfigForTheme();
   config.https = https;
   raml2htmlLib.render(filename, config)
     .then(function (html) {
