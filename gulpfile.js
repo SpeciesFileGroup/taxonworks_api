@@ -109,3 +109,4 @@ gulp.task('apidoc', function() {
     .pipe(gulp.dest(API_DEST));
 });
 
+gulp.task('default', ['apidoc']);
