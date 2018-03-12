@@ -13,15 +13,15 @@ var PluginError = gutil.PluginError;
 var File = gutil.File;
 
 var CWD = path.resolve('.');
-var API_SPEC = path.resolve(CWD, '../api/api.raml');
-var API_DEST = path.resolve(CWD, '../docs/');
+var API_SPEC = path.resolve(CWD, './api/api.raml');
+var API_DEST = path.resolve(CWD, './docs/');
 var API_HTML = 'index.html';
 
 function raml2html(filename, source, https, callback) {
   var cwd = process.cwd();
   var nwd = path.resolve(path.dirname(filename));
   process.chdir(nwd);
-  const config = raml2htmlLib.getConfigForTheme();
+  var config = raml2htmlLib.getConfigForTheme();
   config.https = https;
   raml2htmlLib.render(filename, config)
     .then(function (html) {
@@ -109,9 +109,4 @@ gulp.task('apidoc', function() {
     .pipe(gulp.dest(API_DEST));
 });
 
-//Watch for changes on raml files and build locally 
-gulp.task('watch', function() {
-  gulp.watch(API_SPEC, ['apidoc']);
-});
-
-gulp.task('default', ['watch']);
+gulp.task('default', ['apidoc']);

@@ -1,4 +1,4 @@
-#%RAML 0.8
+#%RAML 1.0
 title: Taxonworks
 version: v1
 baseUri: /api/v1
@@ -10,15 +10,17 @@ baseUri: /api/v1
 #      authorizationUri: https://example.com/oauth1/authorize
 #      tokenCredentialsUri: https://example.com/oauth1/access_token
 
-
+documentation:
+ - title: Test
+   content: Hello world!
 /ping:
   get:
     responses:
       200:
         body:
           application/json:
-            example: |
-              {"pong":false}
+            example:
+              {"pong":true}
           
         
 /:
@@ -26,3 +28,6 @@ baseUri: /api/v1
     responses:
       200:
         body: 
+         
+          
+            
