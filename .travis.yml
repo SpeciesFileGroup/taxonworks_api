@@ -1,3 +1,30 @@
 language: node_js
 node_js:
-- "node"
+  - node
+branches:
+  only:
+    - master
+install:
+  - npm install
+  - npm install raml2html
+before_script:
+  - npm install -g gulp-cli
+script:
+  gulp
+#  raml2html taxonworks.raml > taxonwork.html
+notifications:
+  email:
+    recipients:
+      - diapriid@gmail.com
+    on_failure: build failed
+env:
+  matrix:
+    secure: cOg38mb87hqJlKPgRRDWdEV3Pi8caHgHG6zDeQCq2uYZSvyaO+PBNvsFGama+4VNF4Eh6ffSztGV7v4KxPhmz6ZN0/u1ksDFrf3XzdwsMwtsTrFrnQsRCTmWKk2pikPNsoYtZYd2FGnO+X6NsqQeUpWbsTOfjfXVu8N8pkoF01xQmhCiK6pbMTLEF7UkCrCpbyQIfF8H6Ek55wv+Y4/1WfXy+nGaUrop+1c5b1kc5PnbwlG6UMljGWEbKM21w5MTmOAf+bb5UuWa3hw8d+qR5GpVsVmkj0+xA98Q9B7Dg1EvkbHhkMRfTpafz28UnQwi7vw63RMEJZ/M4WWUG2d7jHG5pdyle35EYWoYD7w2bxdMkDjv+HcG/BG23ToI/BRRFhVpvij+wEv9PjW0iepX8drfruSDqDRjlb59TptpT3xoNM6F/yLgAJGgGhAhh4xxi6ATncPvhiZzsqdTO2LygvhmBBrLxUeaB3qR//QYvwWoczCockLIVmD8oWFgIPbHQ4/GPtZL3WiPusBqyT4qUuKOy7ev8Mb/jCLoLrOdUcqtlUN0gSdMz9JC4wLgPKxcmY5KMS9cZhMyfUCaiyWxD71rL7vW5IcOdJAQu557waW7WN/cjtvVyL9kW0svE+eRIiaHyVdlgq8pSGOe6BnEAZ5v5Rcgk+W8VZJ5raThe54=
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  keep-history: true
+  local_dir: docs
+  on:
+    branch: master
