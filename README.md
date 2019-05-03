@@ -2,11 +2,13 @@
 
 # taxonworks_api
 
-Documentation for the TaxonWorks API.
+[http://api.taxonworks.org][http://api.taxonworks.org] 
+
+Documentation for the TaxonWorks workbench API.  
 
 # Status
 
-TLDR - We have lots of non externally documented, non /API/VI nodes that could be aliased for experimenting. Once we do a major branch merge in the near future we will turn our focus to getting those endpoints cleaned up, and exposed in a proper fashion here.  
+TLDR - We have lots of non externally documented, non `/api/v1` nodes that could be aliased for experimenting. Once we do a major branch merge in the near future we will turn our focus to getting those endpoints cleaned up, and exposed in a proper fashion here.  
 
 See the issues here as to our present thinking/considerations and next steps.
 
@@ -14,7 +16,7 @@ Issues pertaining to implementation (actual code) also exist as [TaxonWorks issu
 
 ## Details
 
-The `api/v1` endpoints exist as an early proof of concept, they included our tests for tokenized user access to the API.  They are not particularly useful.
+The `/api/v1` endpoints exist as an early proof of concept, they included our tests for tokenized user access to the API.  They are not particularly useful.
 
 We ran a much more intensive experiment, the matrix_row_coder, you can see how we mocked API calls here: https://github.com/SpeciesFileGroup/matrix_row_coder/tree/master/src/request/mockRequests.
 
@@ -44,4 +46,6 @@ You can add existing internal endpoints to `api/v1` for the purposes of experime
 
 From your endpoint you can do `rake routes` to get a list of all endpoints.
 
+# Building 
 
+Documentation is built with [gulp](https://gulpjs.com/). To regenerate documentation just `gulp`.

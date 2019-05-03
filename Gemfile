@@ -2,5 +2,5 @@ source 'https://rubygems.org'
 
 gem 'travis'
 
-ruby '2.4.3'
+ruby '2.5.1'
 

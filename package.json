@@ -3,10 +3,13 @@
   "version": "0.0.1",
   "devDependencies": {
     "gulp": "3.9.0",
-    "gulp-rename": "^1.2.2",
-    "raml2html": "^5.0.0"
+    "gulp-rename": "^1.4.0",
+    "raml2html": "^7.3.0"
   },
   "engines": {
     "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "npm": "^6.9.0"
   }
 }
