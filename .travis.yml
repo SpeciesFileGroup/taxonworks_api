@@ -10,7 +10,7 @@ install:
 before_script:
   - npm install -g gulp-cli
 script:
-  gulp
+  gulp apidoc
 #  raml2html taxonworks.raml > taxonwork.html
 notifications:
   email:
