@@ -9,10 +9,19 @@ var API_DEST = path.resolve(CWD, './docs/');
 var API_HTML = 'index.html';
 
 
+const optionsTheme = {
+  'logo': path.resolve(CWD, './docs/assets/images/taxonworks_logo-full.svg'),
+  //'color-theme': 'path/to/my/color-theme.styl',
+  'language-tabs': ['json']
+}
+
+
 function raml2html(options) {
   var gutil = require('gulp-util');
   var through = require('through2');
   var raml2html = require('raml2html');
+
+  const slateConfig = raml2html.getConfigForTheme('raml2html-slate-theme', optionsTheme);
 
   var simplifyMark = function(mark) {
     if (mark) mark.buffer = mark.buffer.split('\n', mark.line + 1)[mark.line].trim();
@@ -36,7 +45,7 @@ function raml2html(options) {
       break;
     default:
       options.type = 'html';
-      options.config = options.config || raml2html.getConfigForTheme();
+      options.config = options.config || slateConfig;
   }
 
   var stream = through.obj(function(file, enc, done) {
