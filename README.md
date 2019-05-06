@@ -49,3 +49,19 @@ From your endpoint you can do `rake routes` to get a list of all endpoints.
 # Building 
 
 Documentation is built with [gulp](https://gulpjs.com/). To regenerate documentation just `gulp`.
+
+# Running api-console
+
+Allows to explore documentation but also try out the API right from the documentation page against a local rails server (localhost:3000).
+
+Install api-console with `npm install -g api-console-cli`.
+
+Regenerate docs: (Optional)
+```bash
+NODE_OPTIONS=--max_old_space_size=2048 api-console build --output ./api-console -t "RAML 1.0" -a api/api.raml
+```
+
+Start api-console server with `api-console serve api-console/ --open`
+
+**NOTE**: It might display a white screen when the browser opens the site. Refresh a few times until it shows the documentation. Remember to have a taxonworks instance running at localhost:3000 (`rails s` where you have taxonworks repo cloned).
+
