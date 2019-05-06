@@ -2,14 +2,14 @@
   "name": "build-script",
   "version": "0.0.1",
   "devDependencies": {
-    "gulp": "3.9.0",
+    "gulp": "4.0.1",
     "gulp-rename": "^1.4.0",
-    "raml2html": "^7.3.0"
+    "gulp-util": "^3.0.8",
+    "raml2html": "^7.3.0",
+    "raml2html-slate-theme": "^2.4.0",
+    "through2": "^3.0.1"
   },
   "engines": {
     "node": ">=0.10.0"
-  },
-  "dependencies": {
-    "npm": "^6.9.0"
   }
 }
