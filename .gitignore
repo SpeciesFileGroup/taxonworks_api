@@ -2,3 +2,5 @@
 .tmp
 node_modules
 api-console-cli.log
+api-console/
+api/api.raml.build

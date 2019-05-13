@@ -2,7 +2,7 @@
 
 # taxonworks_api
 
-[http://api.taxonworks.org][http://api.taxonworks.org] 
+[http://api.taxonworks.org](http://api.taxonworks.org)
 
 Documentation for the TaxonWorks workbench API.  
 
@@ -54,14 +54,20 @@ Documentation is built with [gulp](https://gulpjs.com/). To regenerate documenta
 
 Allows to explore documentation but also try out the API right from the documentation page against a local rails server (localhost:3000).
 
-Install api-console with `npm install -g api-console-cli`.
+Use `npm install` if you haven't already. Then just run `npm start -- --open` (`-- --open` is optional, it will make your browser open the URL the console is being served from).
 
-Regenerate docs: (Optional)
+Once it is ready to explore you should see something like this:
 ```bash
-NODE_OPTIONS=--max_old_space_size=2048 api-console build --output ./api-console -t "RAML 1.0" -a api/api.raml
+$ npm start --open
+
+(OUTPUT OMITTED)
+
+API console build ready.
+Thanks for using our API tools!
+
+Files in this directory are available under the following URLs
+        applications: http://127.0.0.1:8081
 ```
+Remember to have a taxonworks instance running at localhost:3000 (`rails s` where you have taxonworks repo cloned) before sending API requests though the console.
 
-Start api-console server with `api-console serve api-console/ --open`
-
-**NOTE**: It might display a white screen when the browser opens the site. Refresh a few times until it shows the documentation. Remember to have a taxonworks instance running at localhost:3000 (`rails s` where you have taxonworks repo cloned).
-
+**NOTE**: It might display a white screen when the browser opens the URL (specially true with Firefox, Chrome seems inmune to this problem). Refresh a few times until it shows the documentation.
