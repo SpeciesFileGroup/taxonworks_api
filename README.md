@@ -58,7 +58,7 @@ Use `npm install` if you haven't already. Then just run `npm start -- --open` (`
 
 Once it is ready to explore you should see something like this:
 ```bash
-$ npm start --open
+$ npm start -- --open
 
 (OUTPUT OMITTED)
 
