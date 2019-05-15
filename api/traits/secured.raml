@@ -3,11 +3,12 @@
 usage: Apply this to any method that needs to be secured
 headers:
   Authorization:
-    description: API access token. Do not with "token" query string parameter.
+    description: API access token. Do not use with "token" query string parameter.
     type: string
     example: Token eUUB4dQCCWlLGzksimEqNQ
 queryParameters:
   token:
+    displayName: User Token
     description: API access token. Do not use together with the "Authorization" header.
     type: string
     example: eUUB4dQCCWlLGzksimEqNQ

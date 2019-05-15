@@ -32,12 +32,41 @@ resourceTypes:
     description: The id of the <<resourcePathName>> to return.
     get:
 
+types:
+  TaxonNameSearchResult:
+    type: object
+    properties:
+      id: number
+      name: string
+    example: |
+      {
+        "id": 1,
+        "name": "Aus bus"
+      }
+
+  TaxonNameSearchResultSet:
+    type: TaxonNameSearchResult[]
+    maxItems: 100
+    uniqueItems: true
+    example: |
+      [
+        {
+          "id": 1,
+          "name": "Aus bus"
+        },
+        {
+          "id": 2,
+          "name": "Jivarus alienus"
+        }
+      ]
+
 traits:
   secured: !include /traits/secured.raml
   development: !include /traits/development.raml
   production: !include /traits/production.raml
   future_branch: !include /traits/future_branch.raml
   project_tokenized: !include /traits/project_tokenized.raml
+  pageable: !include /traits/pageable.raml
 
 /:
   description: Base of the API. Includes an index of open projects indexed by project_token.
@@ -97,21 +126,22 @@ traits:
   description: See Overview at http://rdoc.taxonworks.org/Otu.html
 #  securedBy: token
   type: collection
-#  /{id}:
-#    type:
-#      - member
-#  get:
-#    queryParameters:
-#      subject_global_id:
-#        type: string
-#        required: false
-#        example: gid://taxon-works/Otu/123
-#        description: A reference to subject as a Rails global ID.
-#    responses:
-#      200:
-#        body:
-#          application/json:
-#            example: |
-#              {
-#               "foo": "bar"
-#              }
+
+/taxon_names:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/TaxonName.html
+#  securedBy: token
+  type: collection
+  get:
+    is: [pageable: { default_per: 100, max_per: 1000 }]
+    queryParameters:
+      name:
+        description: Substring filter to apply on full taxon name. Matching is case insensitive.
+        type: string
+        required: false
+        example: "Aus"
+    responses:
+      200:
+        body:
+          application/json:
+            type: TaxonNameSearchResult[]
