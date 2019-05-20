@@ -1,11 +1,15 @@
 #%RAML 1.0
+---
 title: TaxonWorks
 documentation:
   - title: Introduction
     content: |
      Documentation for JSON API endpoints in TaxonWorks. The most upto date list of endpoints can be seen by running `rake routes | grep api`.
 version: v1
-baseUri: /api/v1
+baseUri: https://{tw-subdomain}.taxonworks.org/api/{version}
+baseUriParameters:
+  tw-subdomain:
+    description: The subdomain which provides access to your TW instance within taxonworks.org
 protocols: [ HTTPS ]
 securitySchemes:
   token:
@@ -33,32 +37,7 @@ resourceTypes:
     get:
 
 types:
-  TaxonNameSearchResult:
-    type: object
-    properties:
-      id: number
-      name: string
-    example: |
-      {
-        "id": 1,
-        "name": "Aus bus"
-      }
-
-  TaxonNameSearchResultSet:
-    type: TaxonNameSearchResult[]
-    maxItems: 100
-    uniqueItems: true
-    example: |
-      [
-        {
-          "id": 1,
-          "name": "Aus bus"
-        },
-        {
-          "id": 2,
-          "name": "Jivarus alienus"
-        }
-      ]
+  TaxonNameItem: !include /schemas/TaxonNameItem.raml
 
 traits:
   secured: !include /traits/secured.raml
@@ -136,12 +115,78 @@ traits:
     is: [pageable: { default_per: 100, max_per: 1000 }]
     queryParameters:
       name:
-        description: Substring filter to apply on full taxon name. Matching is case insensitive.
+        description: |
+          Filter to apply on full taxon name (`cached` property). Matching is case insensitive. See also `exact`.
         type: string
         required: false
         example: "Aus"
+      author:
+        description: |
+          Filter by authors (inside `cached_author_year` property). Matching is case insensitive. Use "&" for "and". See also `exact`.
+        type: string
+        required: false
+        example: "Smith & Johnson, 2019"
+      year:
+        description: |
+          Filter by authority year (inside `cached_author_year` property). Format is 'YYYY'.
+        type: string
+        pattern: "[0-9]{4}"
+        required: false
+        example: "2019"
+      exact:
+        description: |
+          True if filter matching must be exact, false if partial matches are allowed.
+        type: boolean
+        required: false
+        default: false
+        example: true
+      updated_since:
+        description: |
+          Names updated (modified_at property) since this datetime.
+        type: datetime
+        required: false
+        example: 2019-05-20T13:30:00
+      validity:
+        description: |
+          Filter by validity. True if only valid, false if only invalid, nil if both
+        type: string | nil
+        required: false
+        default: nil
+        example: true
+      parent_id:
+        description: |
+          Filter by all children of these parents. Filter includes supplied parents.
+        type: integer[]
+        required: false
+        example: [1, 5]
+      descendants:
+        description: |
+          When set to `true` and `parent_id` filter criterion is used, descendants of parents are included as well.
+        type: boolean
+        required: false
+        default: false
+        example: true
+      nomenclature_group:
+        description: |
+          Filter by nomenclature group.
+        type: array
+        items:
+          enum: [Higher, Family, Genus, Species]
+        required: false
+        example: [Genus, Species]
+      nomenclature_code:
+        description: |
+          Filter by nomenclature code.
+        type: array
+        items:
+          enum: [ICZN, ICBN, ICN, ICTV]
+        required: false
+        example: [ICZN, ICBN]
     responses:
       200:
         body:
           application/json:
-            type: TaxonNameSearchResult[]
+            type: TaxonNameItem[]
+            maxItems: 100
+            uniqueItems: true
+            example: !include /examples/taxon_names-result-example.json

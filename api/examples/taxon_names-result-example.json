@@ -1,0 +1,33 @@
+[
+  {
+    "id": 25225,
+    "name": "asymmetricus",
+    "parent_id": 25219,
+    "cached": "Spiraphonus asymmetricus",
+    "cached_html": "\u003ci\u003eSpiraphonus asymmetricus\u003c/i\u003e",
+    "feminine_name": null,
+    "masculine_name": null,
+    "neuter_name": null,
+    "cached_author_year": "Gorochov, 2010",
+    "etymology": null,
+    "year_of_publication": null,
+    "verbatim_author": null,
+    "rank": "species",
+    "rank_string": "NomenclaturalRank::Iczn::SpeciesGroup::Species",
+    "type": "Protonym",
+    "created_by_id": 5,
+    "updated_by_id": 24,
+    "project_id": 2,
+    "cached_valid_taxon_name_id": 25225,
+    "cached_original_combination": "Spiraphonus asymmetricus",
+    "cached_original_combination_html": "\u003ci\u003eSpiraphonus asymmetricus\u003c/i\u003e",
+    "cached_secondary_homonym": "Spiraphonus asymmetricus",
+    "cached_primary_homonym": "Spiraphonus asymmetricus",
+    "created_at": "2013-02-12T18:23:00.000Z",
+    "updated_at": "2019-03-12T22:57:30.813Z",
+    "nomenclatural_code": "iczn",
+    "verbatim_name": null,
+    "name_string": "Spiraphonus asymmetricus Gorochov, 2010",
+    "original_combination": "\u003ci\u003eSpiraphonus asymmetricus\u003c/i\u003e Gorochov, 2010"
+  }
+]
