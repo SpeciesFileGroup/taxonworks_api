@@ -2,7 +2,7 @@
   "name": "build-script",
   "version": "0.0.1",
   "scripts": {
-    "generate-modified-raml": "sed -e 's/^baseUri:\\s*/baseUri: http:\\/\\/localhost:3000/' -e 's/^protocols:\\s*\\[\\s*HTTPS\\s*\\]/protocols: \\[ HTTP \\]/' api/api.raml > api/api.raml.build",
+    "generate-modified-raml": "sed -e 's/^baseUri:[[:blank:]]*/baseUri: http:\\/\\/localhost:3000/' -e 's/^protocols:[[:blank:]]*\\[[[:blank:]]HTTPS[[:blank:]]]/protocols: \\[ HTTP \\]/' api/api.raml > api/api.raml.build",
     "build-console": "npm run generate-modified-raml && NODE_OPTIONS=--max_old_space_size=2048 npx api-console build --output ./api-console -t 'RAML 1.0' -a api/api.raml.build",
     "start": "npm run build-console && npx npx api-console serve api-console/"
   },
