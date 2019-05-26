@@ -154,7 +154,7 @@ traits:
         required: false
         default: nil
         example: true
-      parent_id:
+      parent_id[]:
         description: |
           Filter by all children of these parents. Filter includes supplied parents.
         type: integer[]
@@ -167,7 +167,7 @@ traits:
         required: false
         default: false
         example: true
-      nomenclature_group:
+      nomenclature_group[]:
         description: |
           Filter by nomenclature group.
         type: array
@@ -175,7 +175,7 @@ traits:
           enum: [Higher, Family, Genus, Species]
         required: false
         example: [Genus, Species]
-      nomenclature_code:
+      nomenclature_code[]:
         description: |
           Filter by nomenclature code.
         type: array
