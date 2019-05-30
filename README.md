@@ -48,7 +48,7 @@ From your endpoint you can do `rake routes` to get a list of all endpoints.
 
 # Building 
 
-Documentation is built with [gulp](https://gulpjs.com/). To regenerate documentation just `gulp`.
+Documentation is built with [gulp](https://gulpjs.com/). To regenerate documentation just `npx gulp apidoc`.
 
 # Running api-console
 
