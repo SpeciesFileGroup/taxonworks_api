@@ -5254,6 +5254,68 @@ under the License.
       &quot;key&quot;: &quot;original_combination&quot;
     }
   ]
+}</code></pre></div></div></div><hr><div class="set"><div class="set-description"><h2 id="type-taxonnameautocompleteitem">TaxonNameAutocompleteItem</h2><br><p><strong><em><big>Properties</big></em></strong></p><p><strong>id</strong><br>TaxonName instance identifier</p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>number</td></tr><tr><td><em>examples</em></td><td><code>11877</code></td></tr></tbody></table><p><strong>label</strong><br>Plaintext label for the taxon name comprised of both scientific name and authorship.</p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr><tr><td><em>examples</em></td><td><code>Jivarus Giglio-Tos, 1898</code></td></tr></tbody></table><p><strong>label_html</strong><br>HTML-formatted label for the taxon name comprised of both scientific name and authorship.</p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr><tr><td><em>examples</em></td><td><code><span class="klass">
+  <i><mark>Jivarus</mark></i> Giglio-Tos, 1898</span>&nbsp;
+  <span class="feedback feedback-info feedback-thin">genus</span>&nbsp;
+  <span class="feedback feedback-secondary feedback-thin">Jivarini</span>&nbsp;
+  <span class="feedback feedback-notice feedback-thin">Jivarus
+</span>
+</code></td></tr></tbody></table></div><div class="set-examples"><blockquote><h3 class="toc-ignore">TYPE DEFINITION</h3></blockquote><div class="languagebox"><pre><code>{
+  &quot;name&quot;: &quot;TaxonNameAutocompleteItem&quot;,
+  &quot;type&quot;: &quot;object&quot;,
+  &quot;properties&quot;: [
+    {
+      &quot;type&quot;: &quot;number&quot;,
+      &quot;name&quot;: &quot;id&quot;,
+      &quot;displayName&quot;: &quot;id&quot;,
+      &quot;typePropertyKind&quot;: &quot;TYPE_EXPRESSION&quot;,
+      &quot;required&quot;: true,
+      &quot;description&quot;: &quot;TaxonName instance identifier&quot;,
+      &quot;examples&quot;: [
+        {
+          &quot;value&quot;: &quot;11877&quot;,
+          &quot;strict&quot;: true,
+          &quot;name&quot;: null,
+          &quot;structuredValue&quot;: 11877
+        }
+      ],
+      &quot;key&quot;: &quot;id&quot;
+    },
+    {
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;name&quot;: &quot;label&quot;,
+      &quot;displayName&quot;: &quot;label&quot;,
+      &quot;typePropertyKind&quot;: &quot;TYPE_EXPRESSION&quot;,
+      &quot;required&quot;: true,
+      &quot;description&quot;: &quot;Plaintext label for the taxon name comprised of both scientific name and authorship.\n&quot;,
+      &quot;examples&quot;: [
+        {
+          &quot;value&quot;: &quot;Jivarus Giglio-Tos, 1898&quot;,
+          &quot;strict&quot;: true,
+          &quot;name&quot;: null,
+          &quot;structuredValue&quot;: &quot;Jivarus Giglio-Tos, 1898&quot;
+        }
+      ],
+      &quot;key&quot;: &quot;label&quot;
+    },
+    {
+      &quot;type&quot;: &quot;string&quot;,
+      &quot;name&quot;: &quot;label_html&quot;,
+      &quot;displayName&quot;: &quot;label_html&quot;,
+      &quot;typePropertyKind&quot;: &quot;TYPE_EXPRESSION&quot;,
+      &quot;required&quot;: true,
+      &quot;description&quot;: &quot;HTML-formatted label for the taxon name comprised of both scientific name and authorship.\n&quot;,
+      &quot;examples&quot;: [
+        {
+          &quot;value&quot;: &quot;&lt;span class=\&quot;klass\&quot;&gt;\n  &lt;i&gt;&lt;mark&gt;Jivarus&lt;/mark&gt;&lt;/i&gt; Giglio-Tos, 1898&lt;/span&gt;&amp;nbsp;\n  &lt;span class=\&quot;feedback feedback-info feedback-thin\&quot;&gt;genus&lt;/span&gt;&amp;nbsp;\n  &lt;span class=\&quot;feedback feedback-secondary feedback-thin\&quot;&gt;Jivarini&lt;/span&gt;&amp;nbsp;\n  &lt;span class=\&quot;feedback feedback-notice feedback-thin\&quot;&gt;Jivarus\n&lt;/span&gt;\n&quot;,
+          &quot;strict&quot;: true,
+          &quot;name&quot;: null,
+          &quot;structuredValue&quot;: &quot;&lt;span class=\&quot;klass\&quot;&gt;\n  &lt;i&gt;&lt;mark&gt;Jivarus&lt;/mark&gt;&lt;/i&gt; Giglio-Tos, 1898&lt;/span&gt;&amp;nbsp;\n  &lt;span class=\&quot;feedback feedback-info feedback-thin\&quot;&gt;genus&lt;/span&gt;&amp;nbsp;\n  &lt;span class=\&quot;feedback feedback-secondary feedback-thin\&quot;&gt;Jivarini&lt;/span&gt;&amp;nbsp;\n  &lt;span class=\&quot;feedback feedback-notice feedback-thin\&quot;&gt;Jivarus\n&lt;/span&gt;\n&quot;
+        }
+      ],
+      &quot;key&quot;: &quot;label_html&quot;
+    }
+  ]
 }</code></pre></div></div></div><hr><h1 id="/">/</h1><p>Base of the API. Includes an index of open projects indexed by project_token.</p><div class="set"><div class="set-description"><hr><h2 id="/-get">/ get</h2><p><code>GET: /</code></p><br><p><strong><em><big>Possible Responses</big></em></strong></p><p><strong>200</strong></p></div><div class="set-examples"><hr><h2 class="toc-ignore" id="/-get">/ get</h2><blockquote><h3 class="toc-ignore">CURL EXAMPLE</h3></blockquote><div class="languagebox bash"><pre><code>curl -X GET &quot;https://{host}/api/{version}/&quot;</code></pre></div><blockquote><h3 h3 class="toc-ignore">RESPONSE BODY</h3></blockquote><h4 class="toc-ignore"><i>200</i></h4><div class="languagebox json"><pre><code>{
   &quot;success&quot;: true,
   &quot;open_projects&quot;: [
@@ -5331,4 +5393,37 @@ Pagination-Next-Page: 6
     &quot;name_string&quot;: &quot;Spiraphonus asymmetricus Gorochov, 2010&quot;,
     &quot;original_combination&quot;: &quot;\u003ci\u003eSpiraphonus asymmetricus\u003c/i\u003e Gorochov, 2010&quot;
   }
-]</code></pre></div><div class="languagebox json"><details><summary>Type</summary><pre><code>array</code></pre></details></div></div></div></div><div class="dark-box"></div></div></body></html>
+]</code></pre></div><div class="languagebox json"><details><summary>Type</summary><pre><code>array</code></pre></details></div></div></div><p></p><div class="set"><div class="set-description"><hr><h2 id="/autocomplete-get">/autocomplete get</h2><p><code>GET: /taxon_names/autocomplete</code></p><p>Returns a single TaxonName instance with related data included.</p><br><p><strong><em><big>Header Parameters</big></em></strong></p><p><strong>Authorization</strong><br>API access token. Do not use with "token" query string parameter.</p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr><tr><td><em>examples</em></td><td><code>Token eUUB4dQCCWlLGzksimEqNQ</code></td></tr></tbody></table><br><p><strong><em><big>Query Parameters</big></em></strong></p><p><strong>term</strong><br>The search term by which names will be filtered.</p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr><tr><td><em>examples</em></td><td><code>Jivarus</code></td></tr></tbody></table><p><strong>type[]</strong><br>The type of TaxonName (e.g. Protonym, Combination).</p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>array</td></tr><tr><td><em>examples</em></td><td><code>[
+  "Combination",
+  "Hybrid"
+]</code></td></tr></tbody></table><p><strong>exact</strong><br>If true TaxonName.name must match the search term exactly to be returned (i.e. no fuzzy matching)</p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>boolean</td></tr><tr><td><em>examples</em></td><td><code>true</code></td></tr></tbody></table><p><strong>valid</strong><br>Filter by validity. True if only valid, false if only invalid, nil if both</p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>string | nil</td></tr><tr><td><em>examples</em></td><td><code>true</code></td></tr></tbody></table><p><strong>parent_id[]</strong><br>Filter by all children of these parents. Filter includes supplied parents.</p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>array</td></tr><tr><td><em>examples</em></td><td><code>[
+  1,
+  5
+]</code></td></tr></tbody></table><p><strong>nomenclature_group[]</strong><br>Filter by nomenclature group.</p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>array</td></tr><tr><td><em>examples</em></td><td><code>[
+  "Genus",
+  "Species"
+]</code></td></tr></tbody></table><p><strong>no_leaves</strong><br>If 'true' names with no children will be excluded.</p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>boolean</td></tr><tr><td><em>examples</em></td><td><code>true</code></td></tr></tbody></table><p><strong>token</strong><br>API access token. Do not use together with the "Authorization" header.</p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr><tr><td><em>examples</em></td><td><code>eUUB4dQCCWlLGzksimEqNQ</code></td></tr></tbody></table><p><strong>project_token</strong><br>A project (not User) token indicating the target project.</p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr><tr><td><em>examples</em></td><td><code>rIO2oWS603c5W5laQ8ornn</code></td></tr></tbody></table><br><p><strong><em><big>Possible Responses</big></em></strong></p><p><strong>200</strong></p></div><div class="set-examples"><hr><h2 class="toc-ignore" id="/autocomplete-get">/autocomplete get</h2><blockquote><h3 class="toc-ignore">CURL EXAMPLE</h3></blockquote><div class="languagebox bash"><pre><code>curl -X GET &quot;https://{host}/api/{version}/taxon_names/autocomplete?term=Jivarus&amp;type[]=[
+  &quot;Combination&quot;,
+  &quot;Hybrid&quot;
+]&amp;exact=true&amp;valid=true&amp;parent_id[]=[
+  1,
+  5
+]&amp;nomenclature_group[]=[
+  &quot;Genus&quot;,
+  &quot;Species&quot;
+]&amp;no_leaves=true&amp;token=eUUB4dQCCWlLGzksimEqNQ&amp;project_token=rIO2oWS603c5W5laQ8ornn&quot; \
+	-H &quot;Authorization: Token eUUB4dQCCWlLGzksimEqNQ&quot;</code></pre></div><blockquote><h3 class="toc-ignore">REQUEST HEADERS</h3></blockquote><div class="languagebox"><pre><code>Authorization: Token eUUB4dQCCWlLGzksimEqNQ
+</code></pre></div><blockquote><h3 h3 class="toc-ignore">RESPONSE BODY</h3></blockquote><h4 class="toc-ignore"><i>200</i></h4><div class="languagebox json"><pre><code>[
+  {
+    &quot;id&quot;: 11877,
+    &quot;label&quot;: &quot;Jivarus Giglio-Tos, 1898&quot;,
+    &quot;label_html&quot;: &quot;\u003cspan class=\&quot;klass\&quot;\u003e\u003ci\u003e\u003cmark\u003eJivarus\u003c/mark\u003e\u003c/i\u003e Giglio-Tos, 1898\u003c/span\u003e\u0026nbsp;\u003cspan class=\&quot;feedback feedback-info feedback-thin\&quot;\u003egenus\u003c/span\u003e\u0026nbsp;\u003cspan class=\&quot;feedback feedback-secondary feedback-thin\&quot;\u003eJivarini\u003c/span\u003e\u0026nbsp;\u003cspan class=\&quot;feedback feedback-notice feedback-thin\&quot;\u003eJivarus\u003c/span\u003e&quot;
+  },
+  {
+    &quot;id&quot;: 11888,
+    &quot;label&quot;: &quot;Jivarus cohni Ronderos, 1979&quot;,
+    &quot;label_html&quot;: &quot;\u003cspan class=\&quot;klass\&quot;\u003e\u003ci\u003e\u003cmark\u003eJivarus\u003c/mark\u003e cohni\u003c/i\u003e Ronderos, 1979\u003c/span\u003e\u0026nbsp;\u003cspan class=\&quot;feedback feedback-info feedback-thin\&quot;\u003especies\u003c/span\u003e\u0026nbsp;\u003cspan class=\&quot;feedback feedback-secondary feedback-thin\&quot;\u003e\u003ci\u003eJivarus\u003c/i\u003e\u003c/span\u003e\u0026nbsp;\u003cspan class=\&quot;feedback feedback-notice feedback-thin\&quot;\u003eJivarus cohni\u003c/span\u003e&quot;
+  }
+]</code></pre></div><div class="languagebox json"><details><summary>Type</summary><pre><code>array</code></pre></details></div></div></div><p></p><div class="set"><div class="set-description"><hr><h2 id="/{id}-get">/{id} get</h2><p><code>GET: /taxon_names/{id}</code></p><p>Returns TaxonName instance data.</p><br><p><strong><em><big>URI Parameters</big></em></strong></p><p><strong>id</strong><br></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr></tbody></table><br><p><strong><em><big>Header Parameters</big></em></strong></p><p><strong>Authorization</strong><br>API access token. Do not use with "token" query string parameter.</p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr><tr><td><em>examples</em></td><td><code>Token eUUB4dQCCWlLGzksimEqNQ</code></td></tr></tbody></table><br><p><strong><em><big>Query Parameters</big></em></strong></p><p><strong>token</strong><br>API access token. Do not use together with the "Authorization" header.</p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr><tr><td><em>examples</em></td><td><code>eUUB4dQCCWlLGzksimEqNQ</code></td></tr></tbody></table><p><strong>project_token</strong><br>A project (not User) token indicating the target project.</p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr><tr><td><em>examples</em></td><td><code>rIO2oWS603c5W5laQ8ornn</code></td></tr></tbody></table></div><div class="set-examples"><hr><h2 class="toc-ignore" id="/{id}-get">/{id} get</h2><blockquote><h3 class="toc-ignore">CURL EXAMPLE</h3></blockquote><div class="languagebox bash"><pre><code>curl -X GET &quot;https://{host}/api/{version}/taxon_names/{id}?token=eUUB4dQCCWlLGzksimEqNQ&amp;project_token=rIO2oWS603c5W5laQ8ornn&quot; \
+	-H &quot;Authorization: Token eUUB4dQCCWlLGzksimEqNQ&quot;</code></pre></div><blockquote><h3 class="toc-ignore">REQUEST HEADERS</h3></blockquote><div class="languagebox"><pre><code>Authorization: Token eUUB4dQCCWlLGzksimEqNQ
+</code></pre></div></div></div></div><div class="dark-box"></div></div></body></html>

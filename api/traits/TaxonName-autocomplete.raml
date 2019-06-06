@@ -1,0 +1,55 @@
+description: Returns a single TaxonName instance with related data included.
+queryParameters:
+  term:
+    description: |
+      The search term by which names will be filtered.
+    type: string
+    required: true
+    example: Jivarus
+  type[]:
+    description: |
+      The type of TaxonName (e.g. Protonym, Combination).
+    type: array
+    required: false
+    example: [Combination, Hybrid]
+  exact:
+    description: |
+      If true TaxonName.name must match the search term exactly to be returned (i.e. no fuzzy matching)
+    type: boolean
+    required: false
+    default: false
+    example: true
+  valid:
+    description: |
+      Filter by validity. True if only valid, false if only invalid, nil if both
+    type: string | nil
+    required: false
+    default: nil
+    example: true
+  parent_id[]:
+    description: |
+      Filter by all children of these parents. Filter includes supplied parents.
+    type: integer[]
+    required: false
+    example: [1, 5]
+  nomenclature_group[]:
+    description: |
+      Filter by nomenclature group.
+    type: array
+    items:
+      enum: [Higher, Family, Genus, Species]
+    required: false
+    example: [Genus, Species]
+  no_leaves:
+    description: |
+      If 'true' names with no children will be excluded.
+    type: boolean
+    required: false
+    example: true
+responses:
+  200:
+    body:
+      application/json:
+        type: TaxonNameAutocompleteItem[]
+        uniqueItems: true
+        example: !include /examples/taxon_names-autocomplete-example.json
