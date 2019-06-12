@@ -1,0 +1,22 @@
+type: object
+properties:
+  id:
+    description: TaxonName instance identifier
+    type: number
+    example: 11877
+  label:
+    description: |
+      Plaintext label for the taxon name comprised of both scientific name and authorship.
+    type: string
+    example: Jivarus Giglio-Tos, 1898
+  label_html:
+    description: |
+      HTML-formatted label for the taxon name comprised of both scientific name and authorship.
+    type: string
+    example: |
+      <span class="klass">
+        <i><mark>Jivarus</mark></i> Giglio-Tos, 1898</span>&nbsp;
+        <span class="feedback feedback-info feedback-thin">genus</span>&nbsp;
+        <span class="feedback feedback-secondary feedback-thin">Jivarini</span>&nbsp;
+        <span class="feedback feedback-notice feedback-thin">Jivarus
+      </span>

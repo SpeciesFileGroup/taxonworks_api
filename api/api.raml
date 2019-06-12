@@ -39,6 +39,7 @@ resourceTypes:
 
 types:
   TaxonNameItem: !include /schemas/TaxonNameItem.raml
+  TaxonNameAutocompleteItem: !include /schemas/TaxonNameAutocompleteItem.raml
 
 traits:
   secured: !include /traits/secured.raml
@@ -113,7 +114,10 @@ traits:
 #  securedBy: token
   type: collection
   get: !include /traits/TaxonName-search.raml
+  /autocomplete:
+    is: [secured, project_tokenized]
+    get: !include /traits/TaxonName-autocomplete.raml
   /{id}:
     is: [secured, project_tokenized]
     get:
-      description: Returns a single TaxonName instance with related data included.
+      description: Returns TaxonName instance data.
