@@ -68,6 +68,19 @@ queryParameters:
       enum: [ICZN, ICBN, ICN, ICTV]
     required: false
     example: [ICZN, ICBN]
+  taxon_name_relationship_type[]:
+    description: |
+      Filter by names having relationships of these types
+    type: array
+    required: false
+    example: [TaxonNameRelationship::Iczn::Invalidating]
+  leaves:
+    description: |
+      If 'true' filters by names having no descendents or with descendants if 'false'.
+    type: boolean | nil
+    required: false
+    default: nil
+    example: true
 responses:
   200:
     body:
