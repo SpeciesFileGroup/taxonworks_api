@@ -1,5 +1,11 @@
 is: [pageable: { default_per: 100, max_per: 1000 }]
 queryParameters:
+  project_id:
+    description: |
+      Project identifier. In the absence of a project token you must provide this parameter.
+    type: integer
+    required: false
+    example: 1
   name:
     description: |
       Filter to apply on full taxon name (`cached` property). Matching is case insensitive. See also `exact`.
