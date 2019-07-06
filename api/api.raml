@@ -5,6 +5,45 @@ documentation:
   - title: Introduction
     content: |
       Documentation for JSON API endpoints in TaxonWorks. The most upto date list of endpoints can be seen by running `rake routes | grep api`.
+  - title: Roadmap
+    content: |
+      Our approach:
+      * v1 (current)
+          * Goal is to expose existing inernal endpoints that the application is built off
+          * Endpoints are practical, in that they are nearly being used in interfaces, but not necessarily optimized
+          * Largely JSON based, and are derived from Rails conventions
+      * v2 (planned)
+          * Optimize existing routes, remove nestedness were it makes sense
+          * Increase standardization across endpoints of traits (params)
+          * Explore delayed responses/ticketing system for long running queries
+      * v3 (planned)
+          * Integrate caching other optimizations optimization
+          * Perhaps move to a fully cached solution, using GraphQL
+          * May move cache to a graph DB or other flattened indexer
+  - title: Running an api-console
+    content: |
+      This both lets you read the API documentation and experiment directly therein against a local rails server (localhost:3000).
+
+      You must have a TaxonWorks instance running at localhost:3000 (`rails s`, see [install_taxonworks](https://github.com/SpeciesFileGroup/install_taxonworks)) before sending API requests though the console.
+
+      Use `npm install` if you haven't already. Then just run `npm start -- --open` (`-- --open` is optional, it will make your browser open the URL the console is being served from).
+
+      Once it is ready to explore you should see something like this:
+      ```bash
+      $ npm start -- --open
+
+      (OUTPUT OMITTED)
+
+      API console build ready.
+      Thanks for using our API tools!
+
+      Files in this directory are available under the following URLs
+              applications: http://127.0.0.1:8081
+      ```
+      **NOTE**: It might display a white screen when the browser opens the URL (specially true with Firefox, Chrome seems inmune to this problem). Refresh a few times until it shows the documentation.
+  - title: Other endpoints
+    content: |
+      From your terminal withing the _source_ directory (not this repo) use `rake routes` to get a list of all endpoints.  Endpoints are defined as Rails routes in `/config/routes/api*`.
 version: v1
 baseUri: https://{host}/api/{version}
 baseUriParameters:
