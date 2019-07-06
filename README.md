@@ -1,10 +1,20 @@
-[![Build Status](https://travis-ci.org/devarsh1997/taxonworks_api.svg?branch=master)](https://travis-ci.org/devarsh1997/taxonworks_api)
+[![Build Status](https://travis-ci.org/species_file_group/taxonworks_api.svg?branch=master)](https://travis-ci.org/species_file_group/taxonworks_api)
 
 # taxonworks_api
 
+Documentation for the TaxonWorks workbench API.
+
 [http://api.taxonworks.org](http://api.taxonworks.org)
 
-Documentation for the TaxonWorks workbench API.  
+# Building
+
+Documentation is built with [gulp](https://gulpjs.com/).
+
+```
+npm install
+```
+
+Regenerate documentation locally with `npx gulp apidoc`.
 
 # Status
 
@@ -45,10 +55,6 @@ You can add existing internal endpoints to `api/v1` for the purposes of experime
 # Getting a list of all the endpoints
 
 From your endpoint you can do `rake routes` to get a list of all endpoints.
-
-# Building 
-
-Documentation is built with [gulp](https://gulpjs.com/). To regenerate documentation just `npx gulp apidoc`.
 
 # Running api-console
 
