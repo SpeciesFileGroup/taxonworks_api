@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/species_file_group/taxonworks_api.svg?branch=master)](https://travis-ci.org/species_file_group/taxonworks_api)
+[![Build Status](https://travis-ci.org/SpeciesFileGroup/taxonworks_api.svg?branch=master)](https://travis-ci.org/SpeciesFileGroup/taxonworks_api)
 
 # taxonworks_api
 
