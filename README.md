@@ -2,7 +2,7 @@
 
 # taxonworks_api
 
-Documentation for the [TaxonWorks](http://taxonworks.org) workbench API, served at [http://api.taxonworks.org](http://api.taxonworks.org).  Application code is [here](https://github.com/SpeciesFileGroup/taxonworks).
+Documentation for the [TaxonWorks](http://taxonworks.org) workbench API, served at [https://api.taxonworks.org](https://api.taxonworks.org).  Application code is [here](https://github.com/SpeciesFileGroup/taxonworks).
 
 ## Building
 
@@ -16,7 +16,7 @@ npm install
 npx gulp apidoc
 ```
 
-Documentation is in `/docs`.  Open `/docs/index.html` to view locally, or see [running an api console](http://api.taxonworks.org/#/running-an-api-console). 
+Documentation is in `/docs`.  Open `/docs/index.html` to view locally, or see [running an api console](https://api.taxonworks.org/#/running-an-api-console). 
 
 ## Contributing
 
