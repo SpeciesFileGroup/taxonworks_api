@@ -2,11 +2,13 @@
 
 # taxonworks_api
 
-Documentation for the TaxonWorks workbench API, served at [http://api.taxonworks.org](http://api.taxonworks.org).
+Documentation for the [TaxonWorks](http://taxonworks.org) workbench API, served at [http://api.taxonworks.org](http://api.taxonworks.org).  Application code is [here](https://github.com/SpeciesFileGroup/taxonworks).
 
 ## Building
 
 Documentation uses RAML, it is built with [gulp](https://gulpjs.com/):
+
+Clone the repository, then: 
 
 ```
 npm install
@@ -14,13 +16,15 @@ npm install
 npx gulp apidoc
 ```
 
-Documentation is in `/docs`.
+Documentation is in `/docs`.  Open `/docs/index.html` to view locally.
 
 ## Contributing
 
 See [CONTRIBUTING.md](/CONTRIBUTING.md)
 
-Issues pertaining to implementation (actual code) also exist as [TaxonWorks issues](https://github.com/SpeciesFileGroup/taxonworks/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+label%3AAPI)
+## License
+
+[https://opensource.org/licenses/NCSA](/LICENSE.md).
 
 -- TODO: remove to RAML
 # Experimenting with endpoints not in `/api/v1/`
