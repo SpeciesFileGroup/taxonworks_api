@@ -26,6 +26,11 @@ See [CONTRIBUTING.md](/CONTRIBUTING.md)
 
 [https://opensource.org/licenses/NCSA](/LICENSE.md).
 
+
+## Code of conduct
+
+Please see [CODE_OF_CONDUCT.md](/CODE_OF_CONDUCT.md). 
+
 -- TODO: remove to RAML
 # Experimenting with endpoints not in `/api/v1/`
 
