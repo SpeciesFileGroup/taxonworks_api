@@ -1,13 +1,20 @@
 [![Build Status](https://travis-ci.org/devarsh1997/taxonworks_api.svg?branch=master)](https://travis-ci.org/devarsh1997/taxonworks_api)
 
-_TODO: move all descriptive text except the build information to the API doc itself_
-
-
 # taxonworks_api
+
+Documentation for the TaxonWorks workbench API.
 
 [http://api.taxonworks.org](http://api.taxonworks.org)
 
-Documentation for the TaxonWorks workbench API.  
+# Building
+
+Documentation is built with [gulp](https://gulpjs.com/).
+
+```
+npm install
+```
+
+Regenerate documentation locally with `npx gulp apidoc`.
 
 # Roadmap
 
