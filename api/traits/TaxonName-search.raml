@@ -18,6 +18,30 @@ queryParameters:
     type: string
     required: false
     example: "Smith & Johnson, 2019"
+  authors:
+    description: |
+      When `true` then only return taxon names that have an author string present.
+    type: boolean
+    required: false
+    example: [true, false, TRUE, FALSE, True, False]
+  citations:
+    description: |
+      When `true` then only return taxon names that have citations attached to them.
+    type: boolean
+    required: false
+    example: [true, false, TRUE, FALSE, True, False]
+  otus:
+    description: |
+      When `true` then only return taxon names that are linked to one or more Otus.
+    type: boolean
+    required: false
+    example: [true, false, TRUE, FALSE, True, False]
+  type_metadata:
+    description: |
+      When `true` then only return taxon names that are linked to a type specimen (collection object).
+    type: boolean
+    required: false
+    example: [true, false, TRUE, FALSE, True, False]
   year:
     description: |
       Filter by authority year (inside `cached_author_year` property). Format is 'YYYY'.
@@ -45,15 +69,15 @@ queryParameters:
     required: false
     default: nil
     example: true
-  parent_id[]:
+  taxon_name_id[]:
     description: |
-      Filter by all children of these parents. Filter includes supplied parents.
+      Return only taxon names with these ids. To also return children see `descendants`.
     type: integer[]
     required: false
     example: [1, 5]
   descendants:
     description: |
-      When set to `true` and `parent_id` filter criterion is used, descendants of parents are included as well.
+      When set to `true` and one or more `taxon_name_id` values are provided then additionally return the children of all taxon_name_ids.  Has no effect if `taxon_name_id` is not provided.
     type: boolean
     required: false
     default: false
@@ -87,6 +111,12 @@ queryParameters:
     required: false
     default: nil
     example: true
+  taxon_name_type[]:
+    description: |
+      Return only taxon names of the provided class. Case sensitive. Only `Protonym`, `Combination`, and `Hybrid` are supported.
+    type: string
+    required: false
+    example: [Protonym, Combination, Hybrid]
 responses:
   200:
     body:
