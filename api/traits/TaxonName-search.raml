@@ -77,7 +77,7 @@ queryParameters:
     example: [1, 5]
   descendants:
     description: |
-      When set to `true` and one or more `taxon_name_id` values are provided then additionally return the children of all taxon_name_ids.  Has no effect if `taxon_name_id` is not provided.
+      Filter by parenthood. When set to true and one or more taxon_name_id values are provided then the request matches taxa which are children of at least one of the taxa specified by the taxon_name_ids. Has no effect if taxon_name_id is not provided. 
     type: boolean
     required: false
     default: false
