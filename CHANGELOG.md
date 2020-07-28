@@ -13,4 +13,9 @@ This project <em>does not yet</em> adheres to [Semantic Versioning](https://semv
 - CHANGELOG.md
 
 ### Changed
+- update to Ruby 2.7.1
+- update bundle
+- `bundle update`
 
+### Removed
+- taxonworks.raml (old file, unused)

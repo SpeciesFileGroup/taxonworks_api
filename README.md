@@ -18,6 +18,10 @@ npx gulp apidoc
 
 Documentation is in `/docs`.  Open `/docs/index.html` to view locally, or see [running an api console](https://api.taxonworks.org/#/running-an-api-console). 
 
+## Changelog 
+
+See [CHANGELOG.md](/CHANGELONG.md).  Note this changelog documents changes in the documentation, not the underlying code.
+
 ## Contributing
 
 See [CONTRIBUTING.md](/CONTRIBUTING.md).
