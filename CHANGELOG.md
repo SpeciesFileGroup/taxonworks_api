@@ -11,6 +11,7 @@ This project <em>does not yet</em> adheres to [Semantic Versioning](https://semv
 
 ### Added
 - CHANGELOG.md
+- stubbed `/downloads/`
 
 ### Changed
 - update to Ruby 2.7.1

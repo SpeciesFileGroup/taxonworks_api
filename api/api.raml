@@ -153,10 +153,25 @@ traits:
 #  securedBy: token
   type: collection
 
+/downloads:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Download.html
+  type: collection
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns Download metadata instance
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 1
+
 /taxon_names:
   is: [secured, project_tokenized]
   description: See Overview at http://rdoc.taxonworks.org/TaxonName.html
-#  securedBy: token
   type: collection
   get: !include /traits/TaxonName-search.raml
   /autocomplete:
