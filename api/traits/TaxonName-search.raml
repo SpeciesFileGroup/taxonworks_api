@@ -29,19 +29,22 @@ queryParameters:
       When `true` then only return taxon names that have citations attached to them.
     type: boolean
     required: false
-    example: [true, false, TRUE, FALSE, True, False]
+    enum:  [true, false, TRUE, FALSE, True, False]
+    example: false
   otus:
     description: |
       When `true` then only return taxon names that are linked to one or more Otus.
     type: boolean
+    enum: [true, false, TRUE, FALSE, True, False]
     required: false
-    example: [true, false, TRUE, FALSE, True, False]
+    example: true
   type_metadata:
     description: |
-      When `true` then only return taxon names that are linked to a type specimen (collection object).
-    type: boolean
+      Boolean. When `true` then only return taxon names that are linked to a type specimen (collection object).
+    type: string
     required: false
-    example: [true, false, TRUE, FALSE, True, False]
+    enum: [true, false, TRUE, FALSE, True, False]
+    example: TRUE
   year:
     description: |
       Filter by authority year (inside `cached_author_year` property). Format is 'YYYY'.
@@ -77,7 +80,7 @@ queryParameters:
     example: [1, 5]
   descendants:
     description: |
-      Filter by parenthood. When set to true and one or more taxon_name_id values are provided then the request matches taxa which are children of at least one of the taxa specified by the taxon_name_ids. Has no effect if taxon_name_id is not provided. 
+      Filter by parenthood. When set to true and one or more taxon_name_id values are provided then the request matches taxa which are children of at least one of the taxa specified by the taxon_name_ids. Has no effect if taxon_name_id is not provided.
     type: boolean
     required: false
     default: false
@@ -85,25 +88,23 @@ queryParameters:
   nomenclature_group[]:
     description: |
       Filter by nomenclature group.
-    type: array
-    items:
-      enum: [Higher, Family, Genus, Species]
+    type: string
+    enum: [Higher, Family, Genus, Species]
     required: false
-    example: [Genus, Species]
+    example: Genus
   nomenclature_code[]:
     description: |
       Filter by nomenclature code.
-    type: array
-    items:
-      enum: [ICZN, ICBN, ICN, ICTV]
+    type: string
+    enum: [ICZN, ICBN, ICN, ICTV]
     required: false
-    example: [ICZN, ICBN]
+    example: ICZN
   taxon_name_relationship_type[]:
     description: |
       Filter by names having relationships of these types
     type: array
     required: false
-    example: [TaxonNameRelationship::Iczn::Invalidating]
+    example: TaxonNameRelationship::Iczn::Invalidating
   leaves:
     description: |
       If 'true' filters by names having no descendents or with descendants if 'false'.
@@ -116,7 +117,7 @@ queryParameters:
       Return only taxon names of the provided class. Case sensitive. Only `Protonym`, `Combination`, and `Hybrid` are supported.
     type: string
     required: false
-    example: [Protonym, Combination, Hybrid]
+    example: Protonym
 responses:
   200:
     body:
