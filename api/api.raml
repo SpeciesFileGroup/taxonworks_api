@@ -15,12 +15,12 @@ documentation:
     content: |
       Our approach:
       * **v1** (current)
-          * Goal is to expose existing inernal endpoints that the application is built off
+          * Goal is to expose existing internal endpoints that the application is built upon
           * Endpoints are practical, in that they are nearly being used in interfaces, but not necessarily optimized
           * Largely JSON based, and are derived from Rails conventions
       * **v2** (planned)
-          * Optimize existing routes, remove nestedness were it makes sense
-          * Increase standardization across endpoints of traits (params)
+          * Optimize existing routes, remove nestedness where it makes sense
+          * Increase standardization of traits (params) across endpoints
           * Explore delayed responses/ticketing system for long running queries
       * **v3** (planned)
           * Integrate caching other optimizations optimization
@@ -54,12 +54,12 @@ version: v1
 baseUri: https://{host}/api/{version}
 baseUriParameters:
   host:
-    description: The server host optionally with port at with the API is located
+    description: The server host optionally with port at which the API is located
     example: linnaeus.taxonworks.org
 protocols: [ HTTPS ]
 securitySchemes:
   token:
-    type: Pass Through # Not supported by api-console unfortunately but should be like traits/secured.raml
+    type: Pass Through # Not supported by api-console unfortunately, but should be like traits/secured.raml
     description: |
       Token based per-use authentication.
     describedBy:
