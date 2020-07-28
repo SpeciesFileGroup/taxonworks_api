@@ -15,8 +15,11 @@ This project <em>does not yet</em> adheres to [Semantic Versioning](https://semv
 
 ### Changed
 - update to Ruby 2.7.1
+- update raml2html and corresponding slate packages
 - update bundle
 - `bundle update`
+- fix `enum:` pattern
+- explore Boolean vs. String 
 
 ### Removed
 - taxonworks.raml (old file, unused)
