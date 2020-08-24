@@ -1,10 +1,8 @@
-9,14c9,10
+54c54
 < baseUri: https://{host}/api/{version}
-< baseUriParameters:
-<   host:
-<     description: The server host optionally with port at with the API is located
-<     example: linnaeus.taxonworks.org
-< protocols: [ HTTPS ]
 ---
 > baseUri: http://localhost:3000/api/{version}
+59c59
+< protocols: [ HTTPS ]
+---
 > protocols: [ HTTP ]
