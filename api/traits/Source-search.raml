@@ -1,0 +1,22 @@
+is: [pageable: { default_per: 100, max_per: 1000 }]
+queryParameters:
+  source_id:
+    description: |
+      Source identifier for a single source.
+    type: integer
+    required: false
+  author:
+    description: |
+      Filter by author (inside author property). Matching is case insensitive. Use " " for "and". See also `exact`.
+    type: string
+    required: false
+    example: "Rehn Hebard"
+
+responses:
+  200:
+    body:
+      application/json:
+        type: Source[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/sources-result-example.json

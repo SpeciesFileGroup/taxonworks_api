@@ -49,7 +49,7 @@ documentation:
       **NOTE**: It might display a white screen when the browser opens the URL (specially true with Firefox, Chrome seems inmune to this problem). Refresh a few times until it shows the documentation.
   - title: Other endpoints
     content: |
-      From your terminal withing the _source_ directory (not this repo) use `rake routes` to get a list of all endpoints.  Endpoints are defined as Rails routes in `/config/routes/api*`.
+      From your terminal within the _source_ directory (not this repo) use `rake routes` to get a list of all endpoints.  Endpoints are defined as Rails routes in `/config/routes/api*`.
 version: v1
 baseUri: https://{host}/api/{version}
 baseUriParameters:
@@ -92,6 +92,7 @@ traits:
   production: !include /traits/production.raml
   future_branch: !include /traits/future_branch.raml
   project_tokenized: !include /traits/project_tokenized.raml
+  user_tokenized: !include /traits/user_tokenized.raml
   pageable: !include /traits/pageable.raml
 
 /:
@@ -188,3 +189,15 @@ traits:
           type: integer
           required: false
           example: 1
+
+/sources:
+  is: [secured, user_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Sources.html
+  type: collection
+  get:  !include /traits/Source-search.raml
+  /{id}:
+    is: [secured, user_tokenized]
+    get:
+      description: Returns Source instance data
+
+
