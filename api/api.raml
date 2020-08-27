@@ -191,13 +191,21 @@ traits:
           example: 1
 
 /sources:
-  is: [secured, user_tokenized]
+  is: [secured, project_tokenized]
   description: See Overview at http://rdoc.taxonworks.org/Sources.html
   type: collection
   get:  !include /traits/Source-search.raml
   /{id}:
-    is: [secured, user_tokenized]
+    is: [secured, project_tokenized]
     get:
       description: Returns Source instance data
 
-
+/people:
+  is: [secured, user_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/People.html
+  type: collection
+  get:  !include /traits/People-search.raml
+  /last_name_starts_with:
+    is: [secured, user_tokenized]
+    get:
+      description: returns array of people with matching last names

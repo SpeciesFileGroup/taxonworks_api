@@ -5,12 +5,12 @@ queryParameters:
       Source identifier for a single source.
     type: integer
     required: false
-  author:
+  last_name_starts_with:
     description: |
-      Filter by author (inside author property). Matching is case insensitive. Use " " for "and". See also `exact`.
+      Filter by person . Matching is case insensitive. Use " " for "and". See also `exact`.
     type: string
     required: false
-    example: "Rehn Hebard"
+    example: "Murp"
   project_id:
     description: |
       The project for the source search
@@ -24,4 +24,4 @@ responses:
         type: Source[]
         maxItems: 100
         uniqueItems: true
-        example: !include /examples/sources-result-example.json
+        example: !include /examples/people-result-example.json
