@@ -205,7 +205,7 @@ traits:
   description: See Overview at http://rdoc.taxonworks.org/People.html
   type: collection
   get:  !include /traits/People-search.raml
-  /last_name_starts_with:
+  /?last_name_starts_with:
     is: [secured, user_tokenized]
     get:
       description: returns array of people with matching last names
