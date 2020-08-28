@@ -1,21 +1,59 @@
 is: [pageable: { default_per: 100, max_per: 1000 }]
 queryParameters:
-  source_id:
-    description: |
-      Source identifier for a single source.
-    type: integer
-    required: false
   author:
     description: |
       Filter by author (inside author property). Matching is case insensitive. Use " " for "and". See also `exact`.
     type: string
     required: false
     example: "Rehn Hebard"
+  author_ids:
+    description: |
+      Filter by author IDs
+    type: integer
+    required: false
+    example:  4365
+  topic_ids:
+    description: |
+      Get source metadata associated with these topic IDs
+    type: integer
+    required: false
+    example: 439
+  citation_object_type:
+    description: |
+      Get source metadata associated with these types (verbatim, human, Bibtex)
+    type: string
+    required: false
+    example: "Source::verbatim"
+  citations:
+    description: |
+      Get source metadata associated with these citation IDs
+    type: integer
+    required: false
+    example: 439
+  documents:
+    description: |
+      get sources matching documents
+    type: string
+    required: false
+  exact_author:
+    description: |
+      Filter by exactly this author string(inside author property). Matching is case insensitive.
+    type: string
+    required: false
+    example: "Rehn, J"
   project_id:
     description: |
       The project for the source search
     type: integer
     required: true
+    example: 2
+  in_project:
+    description: |
+      Search only this project for the source metadata
+    type: string boolean
+    required: false
+    example: false
+
 
 responses:
   200:
