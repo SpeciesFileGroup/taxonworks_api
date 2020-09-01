@@ -198,7 +198,7 @@ traits:
   /{id}:
     is: [secured, project_tokenized]
     get:
-      description: Returns Source instance data
+      description: Returns array of Sources metadata
 
 /people:
   is: [secured, user_tokenized]
@@ -208,4 +208,4 @@ traits:
   /?last_name_starts_with:
     is: [secured, user_tokenized]
     get:
-      description: returns array of people with matching last names
+      description: returns array of people matching request parameters

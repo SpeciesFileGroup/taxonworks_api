@@ -12,12 +12,6 @@ queryParameters:
     type: integer
     required: false
     example:  4365
-  topic_ids:
-    description: |
-      Get source metadata associated with these topic IDs
-    type: integer
-    required: false
-    example: 439
   citation_object_type:
     description: |
       Get source metadata associated with these types (verbatim, human, Bibtex)
@@ -33,27 +27,93 @@ queryParameters:
   documents:
     description: |
       get sources matching documents
-    type: string
+    type: string boolean
     required: false
+    example:  false
   exact_author:
     description: |
-      Filter by exactly this author string(inside author property). Matching is case insensitive.
+      Metadata for only the exact author string provided (inside author property). Matching is case insensitive.
     type: string
     required: false
-    example: "Rehn, J"
-  project_id:
+    example: false
+  exact_title:
     description: |
-      The project for the source search
-    type: integer
-    required: true
-    example: 2
+      Metadata selected for only exact title match
+    type: string boolean
+    required: false
+    example: false
   in_project:
     description: |
       Search only this project for the source metadata
     type: string boolean
     required: false
     example: false
-
+  nomenclature:
+    description: |
+      include nomenclature metadata
+    type: string boolean
+    required: false
+    example: false
+  notes:
+    description: |
+      include notes metadata
+    type: string boolean
+    required: false
+    example: false
+  project_id:
+    description: |
+      The project for the source search
+    type: integer
+    required: true
+    example: 2
+  recent:
+    description: |
+      include metadata for recently accessed sources
+    type: string boolean
+    required: false
+    example: false
+  roles:
+    description: |
+      include metadata for roles
+    type: string boolean
+    required: false
+    example: false
+  source_type:
+    description: |
+      type of source, e.g., BibTex, verbatim, human
+    type: string
+    required: false
+    example: "Source::human"
+  title:
+    description: |
+      title of the source
+    type: string
+    required: false
+    example: "Studies in American Tettigoniidae"
+  topic_ids:
+    description: |
+      Get source metadata associated with these topic IDs
+    type: integer
+    required: false
+    example: 439
+  with_doi:
+    description: |
+      include metadata for sources having Digital Object Identifier
+    type: string boolean
+    required: false
+    example: false
+  year_end:
+    description: |
+      end year of the source date range
+    type: integer
+    required: false
+    example: 2006
+  year_start:
+    description: |
+      start year of the source date range
+    type: integer
+    required: false
+    example: 2002
 
 responses:
   200:
