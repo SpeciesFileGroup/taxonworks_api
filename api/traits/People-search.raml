@@ -5,12 +5,30 @@ queryParameters:
       Source identifier for a single source.
     type: integer
     required: false
+  first_name:
+    description: |
+      Filter by person first name or fragment. Matching is case insensitive. Use " " for "and". See also `exact`.
+    type: string
+    required: false
+    example: "Megan"
+  last_name:
+    description: |
+      Filter by person last name or fragment. Matching is case insensitive. Use " " for "and". See also `exact`.
+    type: string
+    required: false
+    example: "Murphey"
   last_name_starts_with:
     description: |
-      Filter by person . Matching is case insensitive. Use " " for "and". See also `exact`.
+      Filter by person last name fragment (from beginning). Matching is case insensitive. Use " " for "and". See also `exact`.
     type: string
     required: false
     example: "Murp"
+  limit_to_roles:
+    description: |
+      Filter by person role(s), e.g., SourceAuthor, SourceEditor, SourceSource, TaxonNameAuthor. Matching is case insensitive. Use " " for "and". See also `exact`.
+    type: string
+    required: false
+    example: "SourceAuthor"
   project_id:
     description: |
       The project for the source search
