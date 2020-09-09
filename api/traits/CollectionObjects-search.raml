@@ -1,0 +1,123 @@
+is: [pageable: { default_per: 100, max_per: 1000 }]
+queryParameters:
+  collecting_event_ids:
+    description: |
+      Source identifier for a single source.
+    type: integer
+    required: false
+  recent:
+    description: |
+      Include metadata for recent searches
+    type: string boolean
+    required: false
+    example: "false"
+  otu_ids:
+    description: |
+      Filter by OTU IDs
+    type: integer
+    required: false
+    example: "Murphey"
+  is_type:
+    description: |
+      Include metadata for ptimary types
+    type: string boolean
+    required: false
+    example: "false"
+  otu_descendants:
+    description: |
+      Include metadata for OTU decendants
+    type: string boolean
+    required: false
+    example: "false"
+  ancestor_id:
+    description: |
+      Include OTU ancestor in search
+    type: integer
+    required: false
+    example: 2593
+  project_id:
+    description: |
+      The project for the source search
+    type: integer
+    required: true
+  current_determinations:
+    description: |
+      Include metadata for current determinations
+    type: string boolean
+    required: false
+    example: "false"
+  validity:
+    description: |
+      Include metadata for valid (?)
+    type: string boolean
+    required: false
+    example: "false"
+  on_loan:
+    description: |
+      Include metadata for onjects on loan
+    type: string boolean
+    required: false
+    example: "false"
+  loaned:
+    description: |
+      Include metadata for loaned (borrowed) objects
+    type: string boolean
+    required: false
+    example: "false"
+  never_loaned:
+    description: |
+      Include metadata for objects
+    type: string boolean
+    required: false
+    example: "false"
+  biocuration_class_ids:
+    description: |
+      Include metadata for biocuration classes by id
+    type: string boolean
+    required: false
+    example: "false"
+  biological_relationship_ids:
+    description: |
+      Include metadata biological relationships by id
+    type: string boolean
+    required: false
+    example: "false"
+  depicted:
+    description: |
+      Include metadata for depicted objects
+    type: string boolean
+    required: false
+    example: "false"
+  dwc_indexed:
+    description: |
+      Include metadata for recent searches
+    type: string boolean
+    required: false
+    example: "false"
+  type_specimen_taxon_name_id:
+    description: |
+      Include metadata for specific taxa by id
+    type: integer
+    required: false
+    example: "false"
+  sled_image_id:
+    description: |
+      Include metadata for SLED images by id
+    type: integer
+    required: false
+    example: "false"
+  repository_id:
+    description: |
+      Include metadata for repository by id
+    type: integer
+    required: false
+    example: "false"
+
+responses:
+  200:
+    body:
+      application/json:
+        type: Source[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/people-result-example.json
