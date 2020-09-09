@@ -5828,4 +5828,249 @@ Pagination-Next-Page: 6
 ]
 </code></pre></div><div class="languagebox json"><details><summary>Type</summary><pre><code>array</code></pre></details></div></div></div><p></p><div class="set"><div class="set-description"><hr><h2 id="/?last_name_starts_with-get">/?last_name_starts_with get</h2><p><code>GET: /people/?last_name_starts_with</code></p><p>returns array of people matching request parameters</p><br><p><strong><em><big>Header Parameters</big></em></strong></p><p><strong>Authorization</strong><br></p><p>API access token. Do not use with &quot;token&quot; query string parameter.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>string</td></tr><tr><td><em>examples</em></td><td><code>Token eUUB4dQCCWlLGzksimEqNQ</code></td></tr></tbody></table><br><p><strong><em><big>Query Parameters</big></em></strong></p><p><strong>token</strong><br></p><p>API access token. Do not use together with the &quot;Authorization&quot; header.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>string</td></tr><tr><td><em>examples</em></td><td><code>eUUB4dQCCWlLGzksimEqNQ</code></td></tr></tbody></table></div><div class="set-examples"><hr><h2 class="toc-ignore" id="/?last_name_starts_with-get">/?last_name_starts_with get</h2><blockquote><h3 class="toc-ignore">CURL EXAMPLE</h3></blockquote><div class="languagebox bash"><pre><code>curl -X GET &quot;https://{host}/api/{version}/people/?last_name_starts_with?token=eUUB4dQCCWlLGzksimEqNQ&quot; \
 	-H &quot;Authorization: Token eUUB4dQCCWlLGzksimEqNQ&quot;</code></pre></div><blockquote><h3 class="toc-ignore">REQUEST HEADERS</h3></blockquote><div class="languagebox"><pre><code>Authorization: Token eUUB4dQCCWlLGzksimEqNQ
-</code></pre></div></div></div></div><div class="dark-box"></div></div></body></html>
+</code></pre></div></div></div><h1 id="/collection_objects">/collection_objects</h1><p></p><p>See Overview at <a href="http://rdoc.taxonworks.org/CollectionOnjects.html">http://rdoc.taxonworks.org/CollectionOnjects.html</a></p><p></p><div class="set"><div class="set-description"><hr><h2 id="/collection_objects-get">/collection_objects get</h2><p><code>GET: /collection_objects</code></p><p>Get all collection_objects, optionally filtered</p><br><p><strong><em><big>Header Parameters</big></em></strong></p><p><strong>Authorization</strong><br></p><p>API access token. Do not use with &quot;token&quot; query string parameter.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>string</td></tr><tr><td><em>examples</em></td><td><code>Token eUUB4dQCCWlLGzksimEqNQ</code></td></tr></tbody></table><br><p><strong><em><big>Query Parameters</big></em></strong></p><p><strong>collecting_event_ids</strong><br></p><p>Source identifier for a single source.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>integer</td></tr></tbody></table><p><strong>recent</strong><br></p><p>Include metadata for recent searches</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>string boolean</td></tr><tr><td><em>examples</em></td><td><code>false</code></td></tr></tbody></table><p><strong>otu_ids</strong><br></p><p>Filter by OTU IDs</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>integer</td></tr><tr><td><em>examples</em></td><td><code>Murphey</code></td></tr></tbody></table><p><strong>is_type</strong><br></p><p>Include metadata for ptimary types</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>string boolean</td></tr><tr><td><em>examples</em></td><td><code>false</code></td></tr></tbody></table><p><strong>otu_descendants</strong><br></p><p>Include metadata for OTU decendants</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>string boolean</td></tr><tr><td><em>examples</em></td><td><code>false</code></td></tr></tbody></table><p><strong>ancestor_id</strong><br></p><p>Include OTU ancestor in search</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>integer</td></tr><tr><td><em>examples</em></td><td><code>2593</code></td></tr></tbody></table><p><strong>project_id</strong><br></p><p>The project for the source search</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>integer</td></tr></tbody></table><p><strong>current_determinations</strong><br></p><p>Include metadata for current determinations</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>string boolean</td></tr><tr><td><em>examples</em></td><td><code>false</code></td></tr></tbody></table><p><strong>validity</strong><br></p><p>Include metadata for valid (?)</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>string boolean</td></tr><tr><td><em>examples</em></td><td><code>false</code></td></tr></tbody></table><p><strong>on_loan</strong><br></p><p>Include metadata for onjects on loan</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>string boolean</td></tr><tr><td><em>examples</em></td><td><code>false</code></td></tr></tbody></table><p><strong>loaned</strong><br></p><p>Include metadata for loaned (borrowed) objects</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>string boolean</td></tr><tr><td><em>examples</em></td><td><code>false</code></td></tr></tbody></table><p><strong>never_loaned</strong><br></p><p>Include metadata for objects</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>string boolean</td></tr><tr><td><em>examples</em></td><td><code>false</code></td></tr></tbody></table><p><strong>biocuration_class_ids</strong><br></p><p>Include metadata for biocuration classes by id</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>string boolean</td></tr><tr><td><em>examples</em></td><td><code>false</code></td></tr></tbody></table><p><strong>biological_relationship_ids</strong><br></p><p>Include metadata biological relationships by id</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>string boolean</td></tr><tr><td><em>examples</em></td><td><code>false</code></td></tr></tbody></table><p><strong>depicted</strong><br></p><p>Include metadata for depicted objects</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>string boolean</td></tr><tr><td><em>examples</em></td><td><code>false</code></td></tr></tbody></table><p><strong>dwc_indexed</strong><br></p><p>Include metadata for recent searches</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>string boolean</td></tr><tr><td><em>examples</em></td><td><code>false</code></td></tr></tbody></table><p><strong>type_specimen_taxon_name_id</strong><br></p><p>Include metadata for specific taxa by id</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>integer</td></tr><tr><td><em>examples</em></td><td><code>false</code></td></tr></tbody></table><p><strong>sled_image_id</strong><br></p><p>Include metadata for SLED images by id</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>integer</td></tr><tr><td><em>examples</em></td><td><code>false</code></td></tr></tbody></table><p><strong>repository_id</strong><br></p><p>Include metadata for repository by id</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>integer</td></tr><tr><td><em>examples</em></td><td><code>false</code></td></tr></tbody></table><p><strong>page</strong><br></p><p>The page of collection_objects result set to retrieve.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>integer</td></tr><tr><td><em>examples</em></td><td><code>5</code></td></tr></tbody></table><p><strong>per</strong><br></p><p>The number of collection_objects per page.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>integer</td></tr><tr><td><em>examples</em></td><td><code>10</code></td></tr></tbody></table><p><strong>token</strong><br></p><p>API access token. Do not use together with the &quot;Authorization&quot; header.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>false</td></tr><tr><td><em>type</em></td><td>string</td></tr><tr><td><em>examples</em></td><td><code>eUUB4dQCCWlLGzksimEqNQ</code></td></tr></tbody></table><br><p><strong><em><big>Response Headers</big></em></strong></p><p><strong>Pagination-Total</strong><br></p><p>Total number of collection_objects in result set.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>integer</td></tr><tr><td><em>examples</em></td><td><code>30034</code></td></tr></tbody></table><p><strong>Pagination-Total-Pages</strong><br></p><p>Total number of pages for result set.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>integer</td></tr><tr><td><em>examples</em></td><td><code>300</code></td></tr></tbody></table><p><strong>Pagination-Page</strong><br></p><p>Page number of result set.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>integer</td></tr><tr><td><em>examples</em></td><td><code>5</code></td></tr></tbody></table><p><strong>Pagination-Per-Page</strong><br></p><p>Number of collection_objects per Page.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>integer</td></tr><tr><td><em>examples</em></td><td><code>100</code></td></tr></tbody></table><p><strong>Pagination-Previous-Page</strong><br></p><p>Previous page number.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>integer</td></tr><tr><td><em>examples</em></td><td><code>4</code></td></tr></tbody></table><p><strong>Pagination-Next-Page</strong><br></p><p>Next page number.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>integer</td></tr><tr><td><em>examples</em></td><td><code>6</code></td></tr></tbody></table><br><p><strong><em><big>Possible Responses</big></em></strong></p><p><strong>200</strong></p></div><div class="set-examples"><hr><h2 class="toc-ignore" id="/collection_objects-get">/collection_objects get</h2><blockquote><h3 class="toc-ignore">CURL EXAMPLE</h3></blockquote><div class="languagebox bash"><pre><code>curl -X GET &quot;https://{host}/api/{version}/collection_objects?recent=false&amp;otu_ids=Murphey&amp;is_type=false&amp;otu_descendants=false&amp;ancestor_id=2593&amp;current_determinations=false&amp;validity=false&amp;on_loan=false&amp;loaned=false&amp;never_loaned=false&amp;biocuration_class_ids=false&amp;biological_relationship_ids=false&amp;depicted=false&amp;dwc_indexed=false&amp;type_specimen_taxon_name_id=false&amp;sled_image_id=false&amp;repository_id=false&amp;page=5&amp;per=10&amp;token=eUUB4dQCCWlLGzksimEqNQ&quot; \
+	-H &quot;Authorization: Token eUUB4dQCCWlLGzksimEqNQ&quot;</code></pre></div><blockquote><h3 class="toc-ignore">REQUEST HEADERS</h3></blockquote><div class="languagebox"><pre><code>Authorization: Token eUUB4dQCCWlLGzksimEqNQ
+</code></pre></div><blockquote><h3 class="toc-ignore">RESPONSE HEADERS</h3></blockquote><div class="languagebox"><pre><code>Pagination-Total: 30034
+Pagination-Total-Pages: 300
+Pagination-Page: 5
+Pagination-Per-Page: 100
+Pagination-Previous-Page: 4
+Pagination-Next-Page: 6
+</code></pre></div><blockquote><h3 h3 class="toc-ignore">RESPONSE BODY</h3></blockquote><h4 class="toc-ignore"><i>200</i></h4><div class="languagebox json"><pre><code>[
+  {
+    &quot;id&quot;: 65,
+    &quot;type&quot;: &quot;Person::Vetted&quot;,
+    &quot;last_name&quot;: &quot;Murphy&quot;,
+    &quot;first_name&quot;: &quot;D.H.&quot;,
+    &quot;suffix&quot;: null,
+    &quot;prefix&quot;: null,
+    &quot;cached&quot;: &quot;Murphy, D.H.&quot;,
+    &quot;year_born&quot;: null,
+    &quot;year_died&quot;: null,
+    &quot;year_active_start&quot;: 1973,
+    &quot;year_active_end&quot;: 1973,
+    &quot;created_by_id&quot;: 5,
+    &quot;updated_by_id&quot;: 1,
+    &quot;created_at&quot;: &quot;2013-02-12T18:22:00.000Z&quot;,
+    &quot;updated_at&quot;: &quot;2019-11-11T20:02:56.194Z&quot;,
+    &quot;label_html&quot;: &quot;Murphy, D.H. &lt;span class=\&quot;feedback feedback-secondary feedback-thin\&quot;&gt;lived: ?-? active ~ 1973-?&lt;/span&gt; &lt;span class=\&quot;feedback feedback-thin feedback-primary\&quot;&gt;2 uses&lt;/span&gt; &lt;span class=\&quot;feedback feedback-thin feedback-secondary\&quot;&gt;Author&lt;/span&gt; &lt;span class=\&quot;feedback feedback-thin feedback-success\&quot;&gt;In&amp;nbsp;Project&lt;/span&gt;&quot;,
+    &quot;object_tag&quot;: &quot;Murphy, D.H.&quot;,
+    &quot;object_label&quot;: null,
+    &quot;global_id&quot;: &quot;gid://taxon-works/Person::Vetted/65&quot;,
+    &quot;base_class&quot;: &quot;Person&quot;,
+    &quot;url_for&quot;: &quot;http://localhost:3000/api/v1/people&quot;,
+    &quot;object_url&quot;: &quot;/people/65&quot;,
+    &quot;roles&quot;: [
+      {
+        &quot;id&quot;: 16701,
+        &quot;person_id&quot;: 65,
+        &quot;role_object_id&quot;: 11202,
+        &quot;role_object_type&quot;: &quot;Source&quot;,
+        &quot;position&quot;: 1,
+        &quot;created_by_id&quot;: 5,
+        &quot;updated_by_id&quot;: 24,
+        &quot;created_at&quot;: &quot;2013-02-12T18:23:00.000Z&quot;,
+        &quot;updated_at&quot;: &quot;2013-01-21T14:27:00.000Z&quot;,
+        &quot;role_object_tag&quot;: &quot;Author of Murphy, D.H. (1973) A mangrove inhabiting cricket from peninsular Malaysia. &lt;i&gt;Malayan Nature Journal&lt;/i&gt; 26, 171.&quot;,
+        &quot;global_id&quot;: &quot;gid://taxon-works/SourceAuthor/16701&quot;,
+        &quot;type&quot;: &quot;Role&quot;,
+        &quot;url&quot;: &quot;http://localhost:3000/api/v1/people&quot;
+      },
+      {
+        &quot;id&quot;: 53123,
+        &quot;person_id&quot;: 65,
+        &quot;role_object_id&quot;: 37255,
+        &quot;role_object_type&quot;: &quot;Source&quot;,
+        &quot;position&quot;: 1,
+        &quot;created_by_id&quot;: 24,
+        &quot;updated_by_id&quot;: 24,
+        &quot;created_at&quot;: &quot;2014-11-20T08:13:00.000Z&quot;,
+        &quot;updated_at&quot;: &quot;2014-11-20T08:13:00.000Z&quot;,
+        &quot;role_object_tag&quot;: &quot;Author of Murphy, D.H. (1973) Guide to Genera of Malayan Blattodea, Gryllacridoidea and Tettigonioidea Department of Zoology, University of Singapore, 33 pp. pp.&quot;,
+        &quot;global_id&quot;: &quot;gid://taxon-works/SourceAuthor/53123&quot;,
+        &quot;type&quot;: &quot;Role&quot;,
+        &quot;url&quot;: &quot;http://localhost:3000/api/v1/people&quot;
+      }
+    ]
+  },
+  {
+    &quot;id&quot;: 6731,
+    &quot;type&quot;: &quot;Person::Vetted&quot;,
+    &quot;last_name&quot;: &quot;Murphy&quot;,
+    &quot;first_name&quot;: &quot;S.T.&quot;,
+    &quot;suffix&quot;: null,
+    &quot;prefix&quot;: null,
+    &quot;cached&quot;: &quot;Murphy, S.T.&quot;,
+    &quot;year_born&quot;: null,
+    &quot;year_died&quot;: null,
+    &quot;year_active_start&quot;: 1999,
+    &quot;year_active_end&quot;: 1999,
+    &quot;created_by_id&quot;: 5,
+    &quot;updated_by_id&quot;: 1,
+    &quot;created_at&quot;: &quot;2013-03-28T17:06:00.000Z&quot;,
+    &quot;updated_at&quot;: &quot;2019-11-11T20:07:54.266Z&quot;,
+    &quot;label_html&quot;: &quot;Murphy, S.T. &lt;span class=\&quot;feedback feedback-secondary feedback-thin\&quot;&gt;lived: ?-? active ~ 1999-?&lt;/span&gt; &lt;span class=\&quot;feedback feedback-thin feedback-primary\&quot;&gt;1 uses&lt;/span&gt; &lt;span class=\&quot;feedback feedback-thin feedback-secondary\&quot;&gt;Author&lt;/span&gt; &lt;span class=\&quot;feedback feedback-thin feedback-success\&quot;&gt;In&amp;nbsp;Project&lt;/span&gt;&quot;,
+    &quot;object_tag&quot;: &quot;Murphy, S.T.&quot;,
+    &quot;object_label&quot;: null,
+    &quot;global_id&quot;: &quot;gid://taxon-works/Person::Vetted/6731&quot;,
+    &quot;base_class&quot;: &quot;Person&quot;,
+    &quot;url_for&quot;: &quot;http://localhost:3000/api/v1/people&quot;,
+    &quot;object_url&quot;: &quot;/people/6731&quot;,
+    &quot;roles&quot;: [
+      {
+        &quot;id&quot;: 21818,
+        &quot;person_id&quot;: 6731,
+        &quot;role_object_id&quot;: 14569,
+        &quot;role_object_type&quot;: &quot;Source&quot;,
+        &quot;position&quot;: 3,
+        &quot;created_by_id&quot;: 5,
+        &quot;updated_by_id&quot;: 10,
+        &quot;created_at&quot;: &quot;2013-03-28T17:06:00.000Z&quot;,
+        &quot;updated_at&quot;: &quot;2008-05-01T16:59:00.000Z&quot;,
+        &quot;role_object_tag&quot;: &quot;Author of Watson, G.W., Voegtlin, D.J., Murphy, S.T. &amp;amp; Foottit, R.G. (1999) Biogeography of the Cinara cupressi complex (Hemiptera: Aphididae) on Cupressaceae, with description of a pest species introduced into Africa. &lt;i&gt;Bulletin of Entomological Research&lt;/i&gt; 89, 271–283.&quot;,
+        &quot;global_id&quot;: &quot;gid://taxon-works/SourceAuthor/21818&quot;,
+        &quot;type&quot;: &quot;Role&quot;,
+        &quot;url&quot;: &quot;http://localhost:3000/api/v1/people&quot;
+      }
+    ]
+  },
+  {
+    &quot;id&quot;: 7087,
+    &quot;type&quot;: &quot;Person::Vetted&quot;,
+    &quot;last_name&quot;: &quot;Murphy&quot;,
+    &quot;first_name&quot;: &quot;Troy G.&quot;,
+    &quot;suffix&quot;: null,
+    &quot;prefix&quot;: null,
+    &quot;cached&quot;: &quot;Murphy, Troy G.&quot;,
+    &quot;year_born&quot;: null,
+    &quot;year_died&quot;: null,
+    &quot;year_active_start&quot;: 1999,
+    &quot;year_active_end&quot;: 1999,
+    &quot;created_by_id&quot;: 5,
+    &quot;updated_by_id&quot;: 1,
+    &quot;created_at&quot;: &quot;2013-03-28T17:06:00.000Z&quot;,
+    &quot;updated_at&quot;: &quot;2019-11-11T20:06:32.356Z&quot;,
+    &quot;label_html&quot;: &quot;Murphy, Troy G. &lt;span class=\&quot;feedback feedback-secondary feedback-thin\&quot;&gt;lived: ?-? active ~ 1999-?&lt;/span&gt; &lt;span class=\&quot;feedback feedback-thin feedback-primary\&quot;&gt;1 uses&lt;/span&gt; &lt;span class=\&quot;feedback feedback-thin feedback-secondary\&quot;&gt;Author&lt;/span&gt; &lt;span class=\&quot;feedback feedback-thin feedback-success\&quot;&gt;In&amp;nbsp;Project&lt;/span&gt;&quot;,
+    &quot;object_tag&quot;: &quot;Murphy, Troy G.&quot;,
+    &quot;object_label&quot;: null,
+    &quot;global_id&quot;: &quot;gid://taxon-works/Person::Vetted/7087&quot;,
+    &quot;base_class&quot;: &quot;Person&quot;,
+    &quot;url_for&quot;: &quot;http://localhost:3000/api/v1/people&quot;,
+    &quot;object_url&quot;: &quot;/people/7087&quot;,
+    &quot;roles&quot;: [
+      {
+        &quot;id&quot;: 20416,
+        &quot;person_id&quot;: 7087,
+        &quot;role_object_id&quot;: 13675,
+        &quot;role_object_type&quot;: &quot;Source&quot;,
+        &quot;position&quot;: 4,
+        &quot;created_by_id&quot;: 5,
+        &quot;updated_by_id&quot;: 404,
+        &quot;created_at&quot;: &quot;2013-03-28T17:06:00.000Z&quot;,
+        &quot;updated_at&quot;: &quot;2009-10-01T17:42:00.000Z&quot;,
+        &quot;role_object_tag&quot;: &quot;Author of Moran, N.A., Kaplan, M.E., Gelsey, M.J., Murphy, T.G. &amp;amp; Scholes, E.A. (1999) Phylogenetics and evolution of the aphid genus Uroleucon based on mitochondrial and nuclear DNA sequences. &lt;i&gt;Systematic Entomology&lt;/i&gt; 24, 85–93.&quot;,
+        &quot;global_id&quot;: &quot;gid://taxon-works/SourceAuthor/20416&quot;,
+        &quot;type&quot;: &quot;Role&quot;,
+        &quot;url&quot;: &quot;http://localhost:3000/api/v1/people&quot;
+      }
+    ]
+  },
+  {
+    &quot;id&quot;: 21015,
+    &quot;type&quot;: &quot;Person::Vetted&quot;,
+    &quot;last_name&quot;: &quot;Murphy&quot;,
+    &quot;first_name&quot;: &quot;Megan A.&quot;,
+    &quot;suffix&quot;: null,
+    &quot;prefix&quot;: null,
+    &quot;cached&quot;: &quot;Murphy, Megan A.&quot;,
+    &quot;year_born&quot;: null,
+    &quot;year_died&quot;: null,
+    &quot;year_active_start&quot;: 2016,
+    &quot;year_active_end&quot;: 2017,
+    &quot;created_by_id&quot;: 24,
+    &quot;updated_by_id&quot;: 1,
+    &quot;created_at&quot;: &quot;2016-10-25T13:15:00.000Z&quot;,
+    &quot;updated_at&quot;: &quot;2019-11-11T20:47:05.838Z&quot;,
+    &quot;label_html&quot;: &quot;Murphy, Megan A. &lt;span class=\&quot;feedback feedback-secondary feedback-thin\&quot;&gt;lived: ?-? active ~ 2016-2017&lt;/span&gt; &lt;span class=\&quot;feedback feedback-thin feedback-primary\&quot;&gt;2 uses&lt;/span&gt; &lt;span class=\&quot;feedback feedback-thin feedback-secondary\&quot;&gt;Author&lt;/span&gt; &lt;span class=\&quot;feedback feedback-thin feedback-success\&quot;&gt;In&amp;nbsp;Project&lt;/span&gt;&quot;,
+    &quot;object_tag&quot;: &quot;Murphy, Megan A.&quot;,
+    &quot;object_label&quot;: null,
+    &quot;global_id&quot;: &quot;gid://taxon-works/Person::Vetted/21015&quot;,
+    &quot;base_class&quot;: &quot;Person&quot;,
+    &quot;url_for&quot;: &quot;http://localhost:3000/api/v1/people&quot;,
+    &quot;object_url&quot;: &quot;/people/21015&quot;,
+    &quot;roles&quot;: [
+      {
+        &quot;id&quot;: 59504,
+        &quot;person_id&quot;: 21015,
+        &quot;role_object_id&quot;: 40697,
+        &quot;role_object_type&quot;: &quot;Source&quot;,
+        &quot;position&quot;: 1,
+        &quot;created_by_id&quot;: 24,
+        &quot;updated_by_id&quot;: 24,
+        &quot;created_at&quot;: &quot;2016-10-25T13:17:00.000Z&quot;,
+        &quot;updated_at&quot;: &quot;2016-10-25T13:17:00.000Z&quot;,
+        &quot;role_object_tag&quot;: &quot;Author of Murphy, M.A., Thompson, N.L. &amp;amp; Schul, J. (2016) Keeping up with the neighbor: a novel mechanism of call synchrony in Neoconocephalus ensiger katydids. &lt;i&gt;Journal of Comparative Physiology A Sensory Neural and Behavioral Physiology&lt;/i&gt; 202, 225–234.&quot;,
+        &quot;global_id&quot;: &quot;gid://taxon-works/SourceAuthor/59504&quot;,
+        &quot;type&quot;: &quot;Role&quot;,
+        &quot;url&quot;: &quot;http://localhost:3000/api/v1/people&quot;
+      },
+      {
+        &quot;id&quot;: 61480,
+        &quot;person_id&quot;: 21015,
+        &quot;role_object_id&quot;: 41729,
+        &quot;role_object_type&quot;: &quot;Source&quot;,
+        &quot;position&quot;: 1,
+        &quot;created_by_id&quot;: 24,
+        &quot;updated_by_id&quot;: 24,
+        &quot;created_at&quot;: &quot;2017-06-05T12:04:00.000Z&quot;,
+        &quot;updated_at&quot;: &quot;2017-06-05T12:04:00.000Z&quot;,
+        &quot;role_object_tag&quot;: &quot;Author of Murphy, M.A. &amp;amp; Schul, J. (2017) Does leadership indicate male quality in Neoconocephalus katydids? &lt;i&gt;Behavioral Ecology and Sociobiology&lt;/i&gt; 71.&quot;,
+        &quot;global_id&quot;: &quot;gid://taxon-works/SourceAuthor/61480&quot;,
+        &quot;type&quot;: &quot;Role&quot;,
+        &quot;url&quot;: &quot;http://localhost:3000/api/v1/people&quot;
+      }
+    ]
+  },
+  {
+    &quot;id&quot;: 24121,
+    &quot;type&quot;: &quot;Person::Vetted&quot;,
+    &quot;last_name&quot;: &quot;Murphey&quot;,
+    &quot;first_name&quot;: &quot;Katherine J.&quot;,
+    &quot;suffix&quot;: null,
+    &quot;prefix&quot;: null,
+    &quot;cached&quot;: &quot;Murphey, Katherine J.&quot;,
+    &quot;year_born&quot;: null,
+    &quot;year_died&quot;: null,
+    &quot;year_active_start&quot;: 2019,
+    &quot;year_active_end&quot;: 2019,
+    &quot;created_by_id&quot;: 24,
+    &quot;updated_by_id&quot;: 1,
+    &quot;created_at&quot;: &quot;2019-10-03T09:02:00.000Z&quot;,
+    &quot;updated_at&quot;: &quot;2019-11-11T20:54:53.409Z&quot;,
+    &quot;label_html&quot;: &quot;Murphey, Katherine J. &lt;span class=\&quot;feedback feedback-secondary feedback-thin\&quot;&gt;lived: ?-? active ~ 2019-?&lt;/span&gt; &lt;span class=\&quot;feedback feedback-thin feedback-primary\&quot;&gt;1 uses&lt;/span&gt; &lt;span class=\&quot;feedback feedback-thin feedback-secondary\&quot;&gt;Author&lt;/span&gt; &lt;span class=\&quot;feedback feedback-thin feedback-success\&quot;&gt;In&amp;nbsp;Project&lt;/span&gt;&quot;,
+    &quot;object_tag&quot;: &quot;Murphey, Katherine J.&quot;,
+    &quot;object_label&quot;: null,
+    &quot;global_id&quot;: &quot;gid://taxon-works/Person::Vetted/24121&quot;,
+    &quot;base_class&quot;: &quot;Person&quot;,
+    &quot;url_for&quot;: &quot;http://localhost:3000/api/v1/people&quot;,
+    &quot;object_url&quot;: &quot;/people/24121&quot;,
+    &quot;roles&quot;: [
+      {
+        &quot;id&quot;: 69231,
+        &quot;person_id&quot;: 24121,
+        &quot;role_object_id&quot;: 45318,
+        &quot;role_object_type&quot;: &quot;Source&quot;,
+        &quot;position&quot;: 2,
+        &quot;created_by_id&quot;: 24,
+        &quot;updated_by_id&quot;: 24,
+        &quot;created_at&quot;: &quot;2019-10-03T09:05:00.000Z&quot;,
+        &quot;updated_at&quot;: &quot;2019-10-03T09:05:00.000Z&quot;,
+        &quot;role_object_tag&quot;: &quot;Author of Beckers, O.M., Murphey, K.J., Pease, J.R. &amp;amp; Norman, N. (2019) Parallel plasticity of mating songs and preferences in the field cricket Gryllus rubens. &lt;i&gt;Ethology&lt;/i&gt; 125, 476–484.&quot;,
+        &quot;global_id&quot;: &quot;gid://taxon-works/SourceAuthor/69231&quot;,
+        &quot;type&quot;: &quot;Role&quot;,
+        &quot;url&quot;: &quot;http://localhost:3000/api/v1/people&quot;
+      }
+    ]
+  }
+]
+</code></pre></div><div class="languagebox json"><details><summary>Type</summary><pre><code>array</code></pre></details></div></div></div></div><div class="dark-box"></div></div></body></html>

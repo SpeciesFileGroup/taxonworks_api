@@ -209,3 +209,9 @@ traits:
     is: [secured, user_tokenized]
     get:
       description: returns array of people matching request parameters
+
+/collection_objects:
+  is: [secured, user_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/CollectionOnjects.html
+  type: collection
+  get:  !include /traits/CollectionObjects-search.raml
