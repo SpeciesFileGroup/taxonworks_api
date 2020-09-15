@@ -215,3 +215,7 @@ traits:
   description: See Overview at http://rdoc.taxonworks.org/CollectionOnjects.html
   type: collection
   get:  !include /traits/CollectionObjects-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns collection objects metadata for this ID

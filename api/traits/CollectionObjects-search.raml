@@ -5,6 +5,7 @@ queryParameters:
       Source identifier for a single source.
     type: integer
     required: false
+    example:  47
   recent:
     description: |
       Include metadata for recent searches
@@ -16,7 +17,7 @@ queryParameters:
       Filter by OTU IDs
     type: integer
     required: false
-    example: "Murphey"
+    example: 1793
   is_type:
     description: |
       Include metadata for ptimary types
@@ -99,19 +100,19 @@ queryParameters:
       Include metadata for specific taxa by id
     type: integer
     required: false
-    example: "false"
+    example: 1947
   sled_image_id:
     description: |
       Include metadata for SLED images by id
     type: integer
     required: false
-    example: "false"
+    example: 1266
   repository_id:
     description: |
       Include metadata for repository by id
     type: integer
     required: false
-    example: "false"
+    example: 129
 
 responses:
   200:
@@ -120,4 +121,4 @@ responses:
         type: Source[]
         maxItems: 100
         uniqueItems: true
-        example: !include /examples/people-result-example.json
+        example: !include /examples/collection_objects-result-example.json
