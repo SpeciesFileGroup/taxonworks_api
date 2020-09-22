@@ -212,10 +212,20 @@ traits:
 
 /collection_objects:
   is: [secured, user_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/CollectionOnjects.html
+  description: See Overview at http://rdoc.taxonworks.org/CollectionObjects.html
   type: collection
   get:  !include /traits/CollectionObjects-search.raml
   /{id}:
     is: [secured, project_tokenized]
     get:
       description: Returns collection objects metadata for this ID
+
+/identifers:
+  is: [secured, user_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Identifiers.html
+  type: collection
+  get:  !include /traits/Identifiers-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+      get:
+        description: Returns Identifiers metadata for this ID - caution, project-agnostic identifiers not returned.

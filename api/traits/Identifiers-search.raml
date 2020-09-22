@@ -1,0 +1,53 @@
+is: [pageable: { default_per: 100, max_per: 1000 }]
+queryParameters:
+  identifier_object_id:
+    description: |
+      Metadata for an ID of an object.
+    type: integer
+    required: false
+    example:  47
+  identifier_object_ids:
+    description: |
+      Metadata for an array of IDs of objects.
+    type: integer
+    required: false
+    example:  47
+  identifier_object_type:
+    description: |
+      Metadata for an object type.
+    type: string
+    required: false
+    example:  "CollectionObject"
+  identifier_object_types:
+    description: |
+      Metadata for an array of object types.
+    type: string
+    required: false
+    example:  "CollectionObject"
+  identifer:
+    description: |
+      Include metadata for recent searches
+    type: string
+    required: false
+    example: "1540-7063"
+  type:
+    description: |
+      Include metadata for a specific type
+    type: string
+    required: false
+    example: "Identifier::Local::CatalogNumber"
+#  object_global_id:
+#    description: |
+#      Filter by object global ID
+#    type: integer
+#    required: false
+#    example: 1793
+
+responses:
+  200:
+    body:
+      application/json:
+        type: Identifier[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/identifiers-result-example.json
