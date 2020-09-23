@@ -8,22 +8,24 @@ queryParameters:
     example:  47
   identifier_object_ids[]:
     description: |
-      Metadata for an array of IDs of objects.
+      Metadata for an array of IDs of objects
+      identifier_object_ids[]=47&identifier_object_ids[]=2232.
     type: integer
     required: false
-    example:  "identifier_object_ids[]=47&identifier_object_ids[]=2322"
+    example:  2322
   identifier_object_type:
     description: |
       Metadata for an object type.
     type: string
     required: false
     example:  "CollectionObject"
-  identifier_object_types:
+  identifier_object_types[]:
     description: |
       Metadata for an array of object types.
+      ?identifier_object_types[]=CollectionObject&identifier_object_types[]=Serial
     type: string
     required: false
-    example:  "identifier_object_types[]=CollectionObject&identifier_object_types[]=serial"
+    example:  "Serial"
   identifer:
     description: |
       Include metadata for recent searches
