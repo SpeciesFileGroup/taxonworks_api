@@ -222,10 +222,21 @@ traits:
 
 /identifers:
   is: [secured, user_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/Identifiers.html
+  description: See Overview at http://rdoc.taxonworks.org/Identifier.html
   type: collection
   get:  !include /traits/Identifiers-search.raml
   /{id}:
     is: [secured, project_tokenized]
       get:
         description: Returns Identifiers metadata for this ID - caution, project-agnostic identifiers not returned.
+
+/collecting_events:
+  is: [secured, user_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/CollectingEvent.html
+  type: collection
+  get:  !include /traits/CollectingEvents-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+      get:
+        description: Returns Identifiers metadata for this ID - caution, project-agnostic identifiers not returned.
+

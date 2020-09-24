@@ -1,6 +1,6 @@
 is: [pageable: { default_per: 100, max_per: 1000 }]
 queryParameters:
-  collecting_event_ids:
+  collecting_event_ids[]:
     description: |
       List of IDs for associated collecting events.
     type: integer
@@ -12,7 +12,7 @@ queryParameters:
     type: string boolean
     required: false
     example: "false"
-  otu_ids:
+  otu_ids[]:
     description: |
       Filter by OTU IDs
     type: integer
@@ -20,7 +20,7 @@ queryParameters:
     example: 1793
   is_type:
     description: |
-      Include metadata for ptimary types
+      Include metadata for primary types
     type: string boolean
     required: false
     example: "false"
@@ -77,7 +77,7 @@ queryParameters:
     type: string boolean
     required: false
     example: "false"
-  biological_relationship_ids:
+  biological_relationship_ids[]:
     description: |
       Include metadata biological relationships by id
     type: string boolean
@@ -118,7 +118,7 @@ responses:
   200:
     body:
       application/json:
-        type: Source[]
+        type: CollectionObject[]
         maxItems: 100
         uniqueItems: true
         example: !include /examples/collection_objects-result-example.json

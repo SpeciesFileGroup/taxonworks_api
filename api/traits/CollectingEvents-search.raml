@@ -1,0 +1,59 @@
+is: [pageable: { default_per: 100, max_per: 1000 }]
+queryParameters:
+  keyword_ids[]:
+    description: |
+      List of keyword IDs for associated collecting events.
+    type: integer
+    required: false
+    example:  47
+  recent:
+    md5_verbatim_labels: |
+      Include metadata for verbatim labels
+    type: string boolean
+    required: false
+    example: "false"
+  in_labels:
+    description: |
+      Wildcard wrapped match against any label
+    type: string
+    required: false
+    example: "?"
+  in_verbatim_locality:
+    description: |
+      Wildcard wrapped match against verbatim locality (via ATTRIBUTES)
+    type: string
+    required: false
+    example: "?"
+  spatial_geographic_areas:
+    description: |
+      Reference geographic areas in a spatial query
+    type: string boolean
+    required: false
+    example: "false"
+  geographic_area_ids[]:
+    description: |
+      List of geographic area IDs for search
+    type: integer
+    required: false
+    example: 2593
+  collecting_events_wildcards[]:
+    description: |
+      ATTRIBUTES that should be wildcarded
+    type: string array
+    required: false
+    example:  "?"
+  otu_ids[]:
+    description: |
+      List of OTU IDs
+    type: integer array
+    required: false
+    example: 3809
+
+responses:
+  200:
+    body:
+      application/json:
+        type: CollectingEvent[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/collecting_events-result-example.json
