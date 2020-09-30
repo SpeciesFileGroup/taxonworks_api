@@ -240,3 +240,19 @@ traits:
       get:
         description: Returns Identifiers metadata for this ID - caution, project-agnostic identifiers not returned.
 
+/biological_associations:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/BiologicalAssociations.html
+  type: collection
+  get: !include /traits/BiologicalAssociations-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns BiologicalAssociations instance data.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 2

@@ -1,0 +1,57 @@
+is: [pageable: { default_per: 100, max_per: 1000 }]
+queryParameters:
+  biological_relationship_id:
+    description: |
+      Identifier for the relationship.
+    type: integer
+    required: false
+  biological_association_subject_id:
+    description: |
+      Identifier for the subject.
+    type: integer
+    required: false
+    example: 4564
+  biological_association_object_id:
+    description: |
+      Identifier for the object.
+    type: integer
+    required: false
+    example: 78945
+  biological_association_subject_type:
+    description: |
+      Need example
+    type: string
+    required: false
+    example: "Need example"
+  biological_association_object_type:
+    description: |
+      Need example
+    type: string
+    required: false
+    example: "Need example"
+  subject_global_id:
+    description: |
+      Identifier for the subject.
+    type: integer
+    required: false
+    example: 4564
+  object_global_id:
+    description: |
+      Identifier for the object.
+    type: integer
+    required: false
+    example: 78945
+  origin_citation_attributes:
+    description: |
+      [:id. :_destroy, :source_id, :pages]
+    type: integer
+    required: true
+
+responses:
+  200:
+    body:
+      application/json:
+        type: Person[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/biological_associations-result-example.json
