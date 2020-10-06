@@ -1,0 +1,35 @@
+is: [pageable: { default_per: 100, max_per: 1000 }]
+queryParameters:
+  source_id:
+    description: |
+      Identifier for the citation's source.
+    type: integer
+    required: false
+    example: 834
+  citation_object_type:
+    description: |
+      object type for the citation, such as TaxonDetermination, TaxonName, etc.
+    type: string
+    required: false
+    example: "TypeMaterial"
+  citation_object_id:
+    description: |
+      Identifier for the citation object.
+    type: integer
+    required: false
+    example: 657
+  is_original:
+    description: |
+      Is the citation of the original description.
+    type: string boolean
+    required: false
+    example: "true"
+
+responses:
+  200:
+    body:
+      application/json:
+        type: Person[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/citations-result-example.json

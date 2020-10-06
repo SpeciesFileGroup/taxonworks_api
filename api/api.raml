@@ -256,3 +256,20 @@ traits:
           type: integer
           required: false
           example: 2
+
+/citations:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Citations.html
+  type: collection
+  get: !include /traits/Citations-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns Citations instance data.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 4
