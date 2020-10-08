@@ -273,3 +273,20 @@ traits:
           type: integer
           required: false
           example: 4
+
+/asserted_distributions:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/AssertedDistribution.html
+  type: collection
+  get: !include /traits/AssertedDistributions-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns AssertedDistribution instance data.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 4
