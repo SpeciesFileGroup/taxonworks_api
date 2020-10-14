@@ -6,60 +6,80 @@ queryParameters:
     type: string
     required: false
     example: "Rehn Hebard"
-  author_ids:
+  author_ids[]:
     description: |
       Filter by author IDs
     type: integer
     required: false
-    example:  4365
-  citation_object_type:
+#    example:  4365
+  citation_object_type[]:
     description: |
-      Get source metadata associated with these types (verbatim, human, Bibtex)
+      Get source metadata associated with these types (Source::verbatim, Source::human, Source::Bibtex)
     type: string
     required: false
-    example: "Source::verbatim"
+#    example: "Source::verbatim"
   citations:
     description: |
       Get source metadata associated with these citation IDs
     type: integer
     required: false
-    example: 439
+#    example: 439
   documents:
     description: |
       get sources matching documents
     type: string boolean
     required: false
-    example:  false
+#    example:  false
   exact_author:
     description: |
       Metadata for only the exact author string provided (inside author property). Matching is case insensitive.
     type: string
     required: false
-    example: false
+#    example: false
   exact_title:
     description: |
       Metadata selected for only exact title match
     type: string boolean
     required: false
-    example: false
+#    example: false
+  identifier:
+    description: |
+      Identifier associated with source
+    type: string
+    required: false
+  identifier_end:
+    description: |
+      Last part of identifier associated with source
+    type: string
+    required: false
+  identifier_start:
+    description: |
+      First part of identifier associated with source
+    type: string
+    required: false
+  identifier_exact:
+    description: |
+      Exact identifier associated with source
+    type: string
+    required: false
   in_project:
     description: |
       Search only this project for the source metadata
     type: string boolean
     required: false
-    example: false
+    example: true
   nomenclature:
     description: |
       include nomenclature metadata
     type: string boolean
     required: false
-    example: false
+#    example: false
   notes:
     description: |
       include notes metadata
     type: string boolean
     required: false
-    example: false
+#    example: false
   project_id:
     description: |
       The project for the source search
@@ -71,7 +91,7 @@ queryParameters:
       include metadata for recently accessed sources
     type: string boolean
     required: false
-    example: false
+#    example: false
   roles:
     description: |
       include metadata for roles
@@ -80,40 +100,55 @@ queryParameters:
     example: false
   source_type:
     description: |
-      type of source, e.g., BibTex, verbatim, human
+      type of source, e.g., Source::BibTex, Source::verbatim, Source::human
     type: string
     required: false
-    example: "Source::human"
+#    example: "Source::human"
   title:
     description: |
-      title of the source
+      title of the source, e.g., "Studies in American Tettigoniidae"
     type: string
     required: false
-    example: "Studies in American Tettigoniidae"
-  topic_ids:
+#    example: "Studies in American Tettigoniidae"
+  keyword_ids[]:
+    description: |
+      Get source metadata associated with these keyword IDs
+    type: integer
+    required: false
+  topic_ids[]:
     description: |
       Get source metadata associated with these topic IDs
     type: integer
     required: false
-    example: 439
+#    example: 439
   with_doi:
     description: |
       include metadata for sources having Digital Object Identifier
     type: string boolean
     required: false
-    example: false
+#    example: false
+  user_date_end:
+    description:
+      Limit search to user dates prior
+    type: string
+    required: false
+  user_date_start:
+    description:
+      Limit search to user dates later
+    type: string
+    required: false
   year_end:
     description: |
       end year of the source date range
     type: integer
     required: false
-    example: 2006
+#    example: 2006
   year_start:
     description: |
       start year of the source date range
     type: integer
     required: false
-    example: 2002
+#    example: 2002
 
 responses:
   200:
