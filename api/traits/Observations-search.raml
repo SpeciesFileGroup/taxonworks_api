@@ -1,23 +1,17 @@
 is: [pageable: { default_per: 100, max_per: 1000 }]
 queryParameters:
-  recent:
-    description: |
-      Include recent searchs?.
-    type: string boolean
-    required: false
-    example: "false"
   descriptor_id:
     description: |
       Identifier for the descriptor.
     type: integer
     required: false
-    example: 4564
+    example: 3
   otu_id:
     description: |
       Identifier for the otu for which the observation is made.
     type: integer
     required: false
-    example: 78945
+    example: 130037
 collection_object_id:
     description: |
       Identifier for the collection object for which the observation is made.
