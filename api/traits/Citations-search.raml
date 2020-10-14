@@ -5,25 +5,25 @@ queryParameters:
       Identifier for the citation's source.
     type: integer
     required: false
-    example: 834
+    example: 1
   citation_object_type:
     description: |
       object type for the citation, such as TaxonDetermination, TaxonName, etc.
     type: string
     required: false
-    example: "TypeMaterial"
+    example: "TaxonName"
   citation_object_id:
     description: |
       Identifier for the citation object.
     type: integer
     required: false
-    example: 657
+    example: 42463
   is_original:
     description: |
       Is the citation of the original description.
     type: string boolean
     required: false
-    example: "true"
+    example: "false"
 
 responses:
   200:
