@@ -5,47 +5,58 @@ queryParameters:
       Identifier for the relationship.
     type: integer
     required: false
-  biological_association_subject_id:
-    description: |
-      Identifier for the subject.
-    type: integer
-    required: false
-    example: 4564
-  biological_association_object_id:
-    description: |
-      Identifier for the object.
-    type: integer
-    required: false
-    example: 78945
+    example:  1
+#  biological_association_subject_id:
+#    description: |
+#      Identifier for the subject.
+#    type: integer
+#    required: false
+#    example: 23068
+#  biological_association_object_id:
+#    description: |
+#      Identifier for the object.
+#    type: integer
+#    required: false
+#    example: 130025
   biological_association_subject_type:
     description: |
       Subject part of the association triple
     type: string
     required: false
-    example: "predator"
+    example: "Otu"
   biological_association_object_type:
     description: |
       Object part of the association triple
     type: string
     required: false
-    example: "prey"
+    example: "Otu"
   subject_global_id:
     description: |
       Identifier for the subject.
-    type: integer
+    type: string
     required: false
-    example: 4564
+    example: "gid://taxon-works/Otu/23068"
   object_global_id:
     description: |
       Identifier for the object.
-    type: integer
+    type: string
     required: false
-    example: 78945
-  origin_citation_attributes:
+    example: "gid://taxon-works/Otu/130025"
+  any_global_id:
     description: |
-      [:id. :_destroy, :source_id, :pages]
-    type: integer
-    required: true
+      Any global identifier for the relationship.
+    type: string
+    required: false
+#  origin_citation_attributes:
+#    description: |
+#      [:id, :_destroy, :source_id, :pages]
+#    type: string
+#    required: false
+#  citations_attributes:
+#    description: |
+#      [:id, :is_original, :_destroy, :source_id, :pages, :citation_object_id,, :citation_object_type]
+#    type: string
+#    required: false
 
 responses:
   200:
