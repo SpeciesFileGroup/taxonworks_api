@@ -5,7 +5,7 @@ queryParameters:
       List of keyword IDs for associated collecting events.
     type: integer
     required: false
-    example:  47
+#    example:  47
   recent:
     md5_verbatim_labels: |
       Include metadata for verbatim labels
@@ -17,7 +17,7 @@ queryParameters:
       Wildcard wrapped match against any label
     type: string
     required: false
-    example: "?"
+#    example: "?"
   in_verbatim_locality:
     description: |
       Wildcard wrapped match against verbatim locality (via ATTRIBUTES)
@@ -29,25 +29,25 @@ queryParameters:
       Reference geographic areas in a spatial query
     type: string boolean
     required: false
-    example: "false"
+#    example: "false"
   geographic_area_ids[]:
     description: |
       List of geographic area IDs for search
     type: integer
     required: false
-    example: 2593
+#    example: 2593
   collecting_events_wildcards[]:
     description: |
       ATTRIBUTES that should be wildcarded
     type: string array
     required: false
-    example:  "?"
+#    example:  "?"
   otu_ids[]:
     description: |
       List of OTU IDs
     type: integer array
     required: false
-    example: 3809
+#    example: 3809
 
 responses:
   200:
