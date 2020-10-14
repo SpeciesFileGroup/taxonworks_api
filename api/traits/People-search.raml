@@ -10,13 +10,13 @@ queryParameters:
       Filter by person first name or fragment. Matching is case insensitive. Use " " for "and". See also `exact`.
     type: string
     required: false
-    example: "Megan"
+#    example: "Megan"
   last_name:
     description: |
       Filter by person last name or fragment. Matching is case insensitive. Use " " for "and". See also `exact`.
     type: string
     required: false
-    example: "Murphey"
+#    example: "Murphey"
   last_name_starts_with:
     description: |
       Filter by person last name fragment (from beginning). Matching is case insensitive. Use " " for "and". See also `exact`.
@@ -34,6 +34,7 @@ queryParameters:
       The project for the source search
     type: integer
     required: true
+    example:  2
 
 responses:
   200:
