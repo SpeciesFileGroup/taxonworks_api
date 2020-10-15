@@ -5,10 +5,15 @@ queryParameters:
       ID for a single OTU.
     type: integer
     required: false
+  name:
+    description: |
+      Name of the OTU.
+    type: string
+    required: false
   taxon_name_id:
     description: |
       ID for a given taxon
-    type: strintegering
+    type: integer
     required: false
   otu_ids[]:
     description: |
@@ -27,7 +32,7 @@ queryParameters:
     required: false
   taxon_name_classification_ids[]:
     description: |
-      List of cleassification IDs.
+      List of classification IDs.
     type: integer array
     required: false
   asserted_distribution_ids[]:
