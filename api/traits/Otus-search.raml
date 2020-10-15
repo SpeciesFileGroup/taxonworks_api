@@ -1,0 +1,51 @@
+is: [pageable: { default_per: 100, max_per: 1000 }]
+queryParameters:
+  otu_id:
+    description: |
+      ID for a single OTU.
+    type: integer
+    required: false
+  taxon_name_id:
+    description: |
+      ID for a given taxon
+    type: strintegering
+    required: false
+  otu_ids[]:
+    description: |
+      List of OTU IDs.
+    type: integer array
+    required: false
+  taxon_name_ids[]:
+    description: |
+      List of taxon name IDs.
+    type: integer array
+    required: false
+  taxon_name_relationships_ids[]:
+    description: |
+      List of relationship IDs
+    type: integer array
+    required: false
+  taxon_name_classification_ids[]:
+    description: |
+      List of cleassification IDs.
+    type: integer array
+    required: false
+  asserted_distribution_ids[]:
+    description: |
+      List of asserted distribution IDs.
+    type: integer array
+    required: false
+  data_attributes_attributes:
+    description: |
+      [ :id, :_destroy, :controlled_vocabulary_term_id, :type, :attribute subject_id:, attribute_subject_type, :value ]
+    type: mixed parameter array
+    required: false
+
+responses:
+  200:
+    body:
+      application/json:
+        type: Person[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/otus-result-example.json

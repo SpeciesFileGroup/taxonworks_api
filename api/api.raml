@@ -153,6 +153,11 @@ traits:
   description: See Overview at http://rdoc.taxonworks.org/Otu.html
 #  securedBy: token
   type: collection
+  get: !include /traits/Otus-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns OTU instance data.
 
 /downloads:
   is: [secured, project_tokenized]
