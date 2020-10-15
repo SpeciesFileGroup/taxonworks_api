@@ -6,12 +6,18 @@ queryParameters:
     type: string
     required: false
     example: "Rehn Hebard"
+  ids[]:
+     description: |
+       Filter by source IDs
+     type: integer array
+     required: false
+ #    example:  4365
   author_ids[]:
     description: |
-      Filter by author IDs
-    type: integer
-    required: false
-#    example:  4365
+        Filter by author IDs
+      type: integer array
+      required: false
+  #    example:  4365
   citation_object_type[]:
     description: |
       Get source metadata associated with these types (Source::verbatim, Source::human, Source::Bibtex)
