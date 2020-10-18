@@ -7,14 +7,14 @@
     "start": "npm run build-console && npx api-console serve api-console/"
   },
   "devDependencies": {
-    "api-console-cli": "^1.0.14",
-    "gulp": "4.0.1",
-    "gulp-rename": "^1.4.0",
+    "api-console-cli": "^2.1.1",
+    "gulp": "4.0.2",
+    "gulp-rename": "^2.0.0",
     "gulp-util": "^3.0.8",
-    "js-yaml": "^3.13.1",
+    "js-yaml": "^3.14.0",
     "raml2html": "^7.6.0",
     "raml2html-slate-theme": "^2.6.0",
-    "through2": "^3.0.1"
+    "through2": "^4.0.2"
   },
   "engines": {
     "node": ">=0.10.0"
