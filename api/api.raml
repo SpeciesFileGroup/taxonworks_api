@@ -150,7 +150,7 @@ traits:
 
 /otus:
   is: [secured, project_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/Otu.html
+  description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/Otu
 #  securedBy: token
   type: collection
   get: !include /traits/Otus-search.raml
@@ -161,7 +161,7 @@ traits:
 
 /downloads:
   is: [secured, project_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/Download.html
+  description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/Download
   type: collection
   /{id}:
     is: [secured, project_tokenized]
@@ -177,7 +177,7 @@ traits:
 
 /taxon_names:
   is: [secured, project_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/TaxonName.html
+  description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/TaxonName
   type: collection
   get: !include /traits/TaxonName-search.raml
   /autocomplete:
@@ -197,7 +197,7 @@ traits:
 
 /sources:
   is: [secured, project_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/Sources.html
+  description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/Source
   type: collection
   get:  !include /traits/Source-search.raml
   /{id}:
@@ -207,7 +207,7 @@ traits:
 
 /people:
   is: [secured, user_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/People.html
+  description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/Person
   type: collection
   get:  !include /traits/People-search.raml
   /?last_name_starts_with:
@@ -217,7 +217,7 @@ traits:
 
 /collection_objects:
   is: [secured, user_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/CollectionObjects.html
+  description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/CollectionObject
   type: collection
   get:  !include /traits/CollectionObjects-search.raml
   /{id}:
@@ -227,7 +227,7 @@ traits:
 
 /identifers:
   is: [secured, user_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/Identifier.html
+  description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/Identifier
   type: collection
   get:  !include /traits/Identifiers-search.raml
   /{id}:
@@ -237,7 +237,7 @@ traits:
 
 /collecting_events:
   is: [secured, user_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/CollectingEvent.html
+  description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/CollectingEvent
   type: collection
   get:  !include /traits/CollectingEvents-search.raml
   /{id}:
@@ -247,7 +247,7 @@ traits:
 
 /biological_associations:
   is: [secured, project_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/BiologicalAssociations.html
+  description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/BiologicalAssociation
   type: collection
   get: !include /traits/BiologicalAssociations-search.raml
   /{id}:
@@ -264,7 +264,7 @@ traits:
 
 /citations:
   is: [secured, project_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/Citations.html
+  description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/Citation
   type: collection
   get: !include /traits/Citations-search.raml
   /{id}:
@@ -281,7 +281,7 @@ traits:
 
 /asserted_distributions:
   is: [secured, project_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/AssertedDistribution.html
+  description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/AssertedDistribution
   type: collection
   get: !include /traits/AssertedDistributions-search.raml
   /{id}:
@@ -298,7 +298,7 @@ traits:
 
 /observations:
   is: [secured, project_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/Observation.html
+  description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/Observation
   type: collection
   get: !include /traits/Observations-search.raml
   /{id}:
