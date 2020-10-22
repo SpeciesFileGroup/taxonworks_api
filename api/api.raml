@@ -210,10 +210,25 @@ traits:
   description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/Person
   type: collection
   get:  !include /traits/People-search.raml
-  /?last_name_starts_with:
+  /{id}:
     is: [secured, user_tokenized]
     get:
-      description: returns array of people matching request parameters
+      description: returns array of people for this ID
+#  /first_name:
+#    is: [secured, user_tokenized]
+#    get:
+#      description: returns array of people matching first name
+#      type: string
+#      example:  "David"
+#  /last_name:
+#    is: [secured, user_tokenized]
+#    get:
+#      description: returns array of people matching last name
+#  /last_name_starts_with:
+#    is: [secured, user_tokenized]
+#    get:
+#      description: returns array of people matching request parameters
+
 
 /collection_objects:
   is: [secured, user_tokenized]
