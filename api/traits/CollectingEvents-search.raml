@@ -1,17 +1,17 @@
 is: [pageable: { default_per: 100, max_per: 1000 }]
 queryParameters:
-  keyword_ids[]:
+  collecting_events_wildcards[]:
     description: |
-      List of keyword IDs for associated collecting events.
+      ATTRIBUTES that should be wildcarded
+    type: string array
+    required: false
+#    example:  "?"
+  geographic_area_ids[]:
+    description: |
+      List of geographic area IDs for search
     type: integer
     required: false
-#    example:  47
-  recent:
-    md5_verbatim_labels: |
-      Include metadata for verbatim labels
-    type: string boolean
-    required: false
-#    example: "false"
+#    example: 2593
   in_labels:
     description: |
       Wildcard wrapped match against any label
@@ -24,30 +24,30 @@ queryParameters:
     type: string
     required: false
 #    example: "?"
-  spatial_geographic_areas:
+  keyword_ids[]:
     description: |
-      Reference geographic areas in a spatial query
-    type: string boolean
-    required: false
-#    example: "false"
-  geographic_area_ids[]:
-    description: |
-      List of geographic area IDs for search
+      List of keyword IDs for associated collecting events.
     type: integer
     required: false
-#    example: 2593
-  collecting_events_wildcards[]:
-    description: |
-      ATTRIBUTES that should be wildcarded
-    type: string array
-    required: false
-#    example:  "?"
+#    example:  47
   otu_ids[]:
     description: |
       List of OTU IDs
     type: integer array
     required: false
 #    example: 3809
+  recent:
+    md5_verbatim_labels: |
+      Include metadata for verbatim labels
+    type: string boolean
+    required: false
+#    example: "false"
+  spatial_geographic_areas:
+    description: |
+      Reference geographic areas in a spatial query
+    type: string boolean
+    required: false
+#    example: "false"
 
 responses:
   200:

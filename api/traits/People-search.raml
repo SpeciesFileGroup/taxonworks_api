@@ -1,10 +1,5 @@
 is: [pageable: { default_per: 100, max_per: 1000 }]
 queryParameters:
-  source_id:
-    description: |
-      Source identifier for a single source.
-    type: integer
-    required: false
   first_name:
     description: |
       Filter by person first name or fragment. Matching is case insensitive. Use " " for "and". See also `exact`.
@@ -35,6 +30,11 @@ queryParameters:
     type: integer
     required: true
     example:  2
+  source_id:
+    description: |
+      Source identifier for a single source.
+    type: integer
+    required: false
 
 responses:
   200:

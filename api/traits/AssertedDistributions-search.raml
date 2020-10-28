@@ -1,11 +1,5 @@
 is: [pageable: { default_per: 100, max_per: 1000 }]
 queryParameters:
-  recent:
-    description: |
-      Include recent searchs?.
-    type: string boolean
-    required: false
-    example: "false"
   geographic_area_id:
     description: |
       Identifier for the geographic area.
@@ -18,6 +12,12 @@ queryParameters:
     type: integer
     required: false
     example: 24061
+  recent:
+    description: |
+      Include recent searchs?.
+    type: string boolean
+    required: false
+    example: "false"
 
 responses:
   200:

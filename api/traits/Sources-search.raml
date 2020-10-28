@@ -6,12 +6,6 @@ queryParameters:
     type: string
     required: false
     example: "Rehn Hebard"
-  ids[]:
-     description: |
-       Filter by source IDs
-     type: integer array
-     required: false
- #    example:  4365
   author_ids[]:
     description: |
         Filter by author IDs
@@ -58,22 +52,33 @@ queryParameters:
       Last part of identifier associated with source
     type: string
     required: false
-  identifier_start:
-    description: |
-      First part of identifier associated with source
-    type: string
-    required: false
   identifier_exact:
     description: |
       Exact identifier associated with source
     type: string
     required: false
+  identifier_start:
+    description: |
+      First part of identifier associated with source
+    type: string
+    required: false
+  ids[]:
+     description: |
+       Filter by source IDs
+     type: integer array
+     required: false
+ #    example:  4365
   in_project:
     description: |
       Search only this project for the source metadata
     type: string boolean
     required: false
     example: true
+  keyword_ids[]:
+    description: |
+      Get source metadata associated with these keyword IDs
+    type: integer
+    required: false
   nomenclature:
     description: |
       include nomenclature metadata
@@ -116,11 +121,6 @@ queryParameters:
     type: string
     required: false
 #    example: "Studies in American Tettigoniidae"
-  keyword_ids[]:
-    description: |
-      Get source metadata associated with these keyword IDs
-    type: integer
-    required: false
   topic_ids[]:
     description: |
       Get source metadata associated with these topic IDs

@@ -1,29 +1,29 @@
 is: [pageable: { default_per: 100, max_per: 1000 }]
 queryParameters:
+  collection_object_id:
+    description: |
+      Identifier for the collection object for which the observation is made.
+    type: integer
+    required: false
+    example: 4754
   descriptor_id:
     description: |
       Identifier for the descriptor.
     type: integer
     required: false
     example: 3
+  observation_object_global_id:
+    description: |
+      Identifier for the observation object global id for which the observation is made.
+    type: integer
+    required: false
+    example: 8388489
   otu_id:
     description: |
       Identifier for the otu for which the observation is made.
     type: integer
     required: false
     example: 130037
-collection_object_id:
-    description: |
-      Identifier for the collection object for which the observation is made.
-    type: integer
-    required: false
-    example: 4754
-observation_object_global_id:
-    description: |
-      Identifier for the observation object global id for which the observation is made.
-    type: integer
-    required: false
-    example: 8388489
 
 responses:
   200:

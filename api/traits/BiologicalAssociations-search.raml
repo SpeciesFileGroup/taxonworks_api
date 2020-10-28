@@ -1,5 +1,22 @@
 is: [pageable: { default_per: 100, max_per: 1000 }]
 queryParameters:
+  any_global_id:
+    description: |
+      Any global identifier for the relationship.
+    type: string
+    required: false
+  biological_association_object_type:
+    description: |
+      Object part of the association triple
+    type: string
+    required: false
+    example: "Otu"
+  biological_association_subject_type:
+    description: |
+      Subject part of the association triple
+    type: string
+    required: false
+    example: "Otu"
   biological_relationship_id:
     description: |
       Identifier for the relationship.
@@ -18,35 +35,18 @@ queryParameters:
 #    type: integer
 #    required: false
 #    example: 130025
-  biological_association_subject_type:
-    description: |
-      Subject part of the association triple
-    type: string
-    required: false
-    example: "Otu"
-  biological_association_object_type:
-    description: |
-      Object part of the association triple
-    type: string
-    required: false
-    example: "Otu"
-  subject_global_id:
-    description: |
-      Identifier for the subject.
-    type: string
-    required: false
-    example: "gid://taxon-works/Otu/23068"
   object_global_id:
     description: |
       Identifier for the object.
     type: string
     required: false
     example: "gid://taxon-works/Otu/130025"
-  any_global_id:
+  subject_global_id:
     description: |
-      Any global identifier for the relationship.
+      Identifier for the subject.
     type: string
     required: false
+    example: "gid://taxon-works/Otu/23068"
 #  origin_citation_attributes:
 #    description: |
 #      [:id, :_destroy, :source_id, :pages]

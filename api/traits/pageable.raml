@@ -18,14 +18,6 @@ queryParameters:
 responses:
   200:
     headers:
-      Pagination-Total:
-        description: Total number of <<resourcePathName>> in result set.
-        type: integer
-        example: 30034
-      Pagination-Total-Pages:
-        description: Total number of pages for result set.
-        type: integer
-        example: 300
       Pagination-Page:
         description: Page number of result set.
         type: integer
@@ -42,3 +34,11 @@ responses:
         description: Next page number.
         type: integer
         example: 6
+      Pagination-Total:
+        description: Total number of <<resourcePathName>> in result set.
+        type: integer
+        example: 30034
+      Pagination-Total-Pages:
+        description: Total number of pages for result set.
+        type: integer
+        example: 300

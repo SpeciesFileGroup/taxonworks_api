@@ -1,87 +1,11 @@
 is: [pageable: { default_per: 100, max_per: 1000 }]
 queryParameters:
-  collection_object_type:
-    description: |
-      Type of collection object, e.g., "Specimen"
-    type: string
-    required: false
-  collecting_event_ids[]:
-    description: |
-      List of IDs for associated collecting events.
-    type: integer
-    required: false
-#    example:  47
-  geographic_area_ids[]:
-    description: |
-      List of IDs for associated geographic areas.
-    type: integer
-    required: false
-  recent:
-    description: |
-      Include metadata for recent searches
-    type: string boolean
-    required: false
-    example: "false"
-  otu_ids[]:
-    description: |
-      Filter by OTU IDs
-    type: integer
-    required: false
-#    example: 1793
-  is_type:
-    description: |
-      Include metadata for primary types
-    type: string boolean
-    required: false
-#    example: "false"
-  otu_descendants:
-    description: |
-      Include metadata for OTU decendants
-    type: string boolean
-    required: false
-    example: "false"
   ancestor_id:
     description: |
       Include OTU ancestor in search
     type: integer
     required: false
 #    example: 2593
-  project_id:
-    description: |
-      The project for the source search
-    type: integer
-    required: true
-    example: 2
-  current_determinations:
-    description: |
-      Include metadata for current determinations
-    type: string boolean
-    required: false
-    example: "false"
-  validity:
-    description: |
-      Include metadata for valid (?)
-    type: string boolean
-    required: false
-#    example: "false"
-  on_loan:
-    description: |
-      Include metadata for onjects on loan
-    type: string boolean
-    required: false
-#    example: "false"
-  loaned:
-    description: |
-      Include metadata for loaned (borrowed) objects
-    type: string boolean
-    required: false
-    example: "false"
-  never_loaned:
-    description: |
-      Include metadata for objects
-    type: string boolean
-    required: false
-#    example: "false"
   biocuration_class_ids:
     description: |
       Include metadata for biocuration classes by id
@@ -94,35 +18,38 @@ queryParameters:
     type: string boolean
     required: false
     example: "false"
+  collection_object_type:
+    description: |
+      Type of collection object, e.g., "Specimen"
+    type: string
+    required: false
+  collecting_event_ids[]:
+    description: |
+      List of IDs for associated collecting events.
+    type: integer
+    required: false
+#    example:  47
+  current_determinations:
+    description: |
+      Include metadata for current determinations
+    type: string boolean
+    required: false
+    example: "false"
   depicted:
     description: |
       Include metadata for depicted objects
     type: string boolean
     required: false
     example: "false"
+  dwc_indexed:
+    description: |
+      Include metadata for Darwin Core indexed events
+    type: string boolean
+    required: false
+#    example: "false"
   end_date:
     description:
       Limit search to dates prior
-    type: string
-    required: false
-  start_date:
-    description:
-      Limit search to dates later
-    type: string
-    required: false
-  partial_overlap_dates:
-    description: |
-      Allow date overlap
-    type: string boolean
-    required: false
-  user_date_end:
-    description:
-      Limit search to user dates prior
-    type: string
-    required: false
-  user_date_start:
-    description:
-      Limit search to user dates later
     type: string
     required: false
   geo_json:
@@ -130,15 +57,10 @@ queryParameters:
       geoJSON of the search area
     type: string
     required: false
-  radius:
+  geographic_area_ids[]:
     description: |
-      Radius around location
-    type: string
-    required: false
-  wkt:
-    description: |
-      Well Known Text describing the search area
-    type: string
+      List of IDs for associated geographic areas.
+    type: integer
     required: false
   identifier:
     description: |
@@ -150,14 +72,14 @@ queryParameters:
       Last part of identifier associated with collection object
     type: string
     required: false
-  identifier_start:
-    description: |
-      First part of identifier associated with collection object
-    type: string
-    required: false
   identifier_exact:
     description: |
       Exact identifier associated with collection object
+    type: string
+    required: false
+  identifier_start:
+    description: |
+      First part of identifier associated with collection object
     type: string
     required: false
   in_labels:
@@ -170,6 +92,18 @@ queryParameters:
       Search in verbatim locality
     type: string boolean
     required: false
+  is_type:
+    description: |
+      Include metadata for primary types
+    type: string boolean
+    required: false
+#    example: "false"
+  loaned:
+    description: |
+      Include metadata for loaned (borrowed) objects
+    type: string boolean
+    required: false
+    example: "false"
   md5_verbatim_label:
     description: |
       Match verbatim lable md5
@@ -180,30 +114,96 @@ queryParameters:
       Include metadata for a namespace by id
     type: integer
     required: false
-  dwc_indexed:
+  never_loaned:
+     description: |
+       Include metadata for objects
+     type: string boolean
+     required: false
+ #    example: "false"
+  on_loan:
     description: |
-      Include metadata for Darwin Core indexed events
+      Include metadata for onjects on loan
     type: string boolean
     required: false
 #    example: "false"
-  type_specimen_taxon_name_id:
+  otu_descendants:
     description: |
-      Include metadata for specific taxon by id
+      Include metadata for OTU decendants
+    type: string boolean
+    required: false
+    example: "false"
+  otu_ids[]:
+    description: |
+      Filter by OTU IDs
     type: integer
     required: false
-#    example: 1947
-  sled_image_id:
+#    example: 1793
+  partial_overlap_dates:
     description: |
-      Include metadata for SLED images by id
-    type: integer
+      Allow date overlap
+    type: string boolean
     required: false
-#    example: 1266
+  project_id:
+    description: |
+      The project for the source search
+    type: integer
+    required: true
+    example: 2
+  radius:
+    description: |
+      Radius around location
+    type: string
+    required: false
+  recent:
+    description: |
+      Include metadata for recent searches
+    type: string boolean
+    required: false
+    example: "false"
   repository_id:
     description: |
       Include metadata for repository by id
     type: integer
     required: false
 #    example: 129
+  sled_image_id:
+    description: |
+      Include metadata for SLED images by id
+    type: integer
+    required: false
+#    example: 1266
+  start_date:
+    description:
+      Limit search to dates later
+    type: string
+    required: false
+  type_specimen_taxon_name_id:
+    description: |
+      Include metadata for specific taxon by id
+    type: integer
+    required: false
+#    example: 1947
+  user_date_end:
+    description:
+      Limit search to user dates prior
+    type: string
+    required: false
+  user_date_start:
+    description:
+      Limit search to user dates later
+    type: string
+    required: false
+  validity:
+    description: |
+      Include metadata for valid (?)
+    type: string boolean
+    required: false
+#    example: "false"
+  wkt:
+    description: |
+      Well Known Text describing the search area
+    type: string
+    required: false
 
 responses:
   200:
