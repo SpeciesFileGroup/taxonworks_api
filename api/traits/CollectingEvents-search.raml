@@ -6,6 +6,21 @@ queryParameters:
     type: string array
     required: false
 #    example:  "?"
+  collector_ids[]:
+    description:  |
+      List of collector IDs
+    type: integer array
+    required: false
+  collector_ids_or:
+    description:  |
+      Find collecting events with ANY one of these collectors (true) or ALL of these collectors (false)
+    type: string boolean
+    required: false
+  geo_json:
+    description:
+      geoJSON of the search area
+    type: string
+    required: false
   geographic_area_ids[]:
     description: |
       List of geographic area IDs for search
@@ -36,18 +51,33 @@ queryParameters:
     type: integer array
     required: false
 #    example: 3809
-  recent:
-    md5_verbatim_labels: |
+  md5_verbatim_labels: |
       Include metadata for verbatim labels
     type: string boolean
     required: false
 #    example: "false"
+  radius:
+    description: |
+      Search area radius in meters.
+    type: integer
+    required: false
+  recent:
+    description: |
+      Include metadata for recent searches
+    type: string boolean
+    required: false
+    example: "false"
   spatial_geographic_areas:
     description: |
       Reference geographic areas in a spatial query
     type: string boolean
     required: false
 #    example: "false"
+  wkt:
+    description: |
+      Well Known Text describing the search area
+    type: string
+    required: false
 
 responses:
   200:
