@@ -2,7 +2,9 @@ is: [pageable: { default_per: 100, max_per: 1000 }]
 queryParameters:
   collecting_events_wildcards[]:
     description: |
-      ATTRIBUTES that should be wildcarded
+      ATTRIBUTES that can be wildcarded.
+      See https://www.rubydoc.info/github/SpeciesFileGroup/taxonworks/CollectingEvent,
+      Instance Attribute Summary, which details columns of the collecting_events table.
     type: string array
     required: false
 #    example:  "?"
