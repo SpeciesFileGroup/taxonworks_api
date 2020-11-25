@@ -1,5 +1,33 @@
 is: [pageable: { default_per: 100, max_per: 1000 }]
 queryParameters:
+  active_after_year:
+    description: |
+      Restrict search to persons active after this year date
+    type: integer
+    required: false
+  active_before_year:
+    description: |
+      Restrict search to persons active before this year date
+    type: integer
+    required: false
+  born_after_year:
+    description: |
+      Restrict search to persons who were born after this year date
+  born_before_year:
+    description: |
+      Restrict search to persons who were born before this year date
+    type: integer
+    required: false
+  died_after_year:
+    description: |
+      Restrict search to persons who died after this year date
+    type: integer
+    required: false
+  died_before_year:
+    description: |
+      Restrict search to persons who died before this year date
+    type: integer
+    required: false
   first_name:
     description: |
       Filter by person first name or fragment. Matching is case insensitive. Use " " for "and". See also `exact`.
@@ -18,10 +46,20 @@ queryParameters:
     type: string
     required: false
     example: "Murp"
-  limit_to_roles:
+  levenshtein_cuttoff:
+    description:  |
+      The maximum Levenshtein distance to be used in the fuzzy match for name searches.
+    type: integer
+    required: false
+  person_wildcard[]:
+    description:  |
+      Wildcard parameter(s)
+    type: string
+    required: false
+  role[]:
     description: |
       Filter by person role(s), e.g., SourceAuthor, SourceEditor, SourceSource, TaxonNameAuthor. Matching is case insensitive. Use " " for "and". See also `exact`.
-    type: string
+    type: string array
     required: false
     example: "SourceAuthor"
   project_id:
