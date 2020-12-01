@@ -1,6 +1,6 @@
 [
   {
-    "id": 65,
+    "id": 64,
     "type": "Person::Vetted",
     "last_name": "Murphy",
     "first_name": "D.H.",
@@ -14,55 +14,17 @@
     "created_by_id": 5,
     "updated_by_id": 1,
     "created_at": "2013-02-12T18:22:00.000Z",
-    "updated_at": "2019-11-11T20:02:56.194Z",
-    "label_html": "Murphy, D.H. <span class=\"feedback feedback-secondary feedback-thin\">lived: ?-? active ~ 1973-?</span> <span class=\"feedback feedback-thin feedback-primary\">2 uses</span> <span class=\"feedback feedback-thin feedback-secondary\">Author</span> <span class=\"feedback feedback-thin feedback-success\">In&nbsp;Project</span>",
-    "object_tag": "Murphy, D.H.",
-    "object_label": null,
-    "global_id": "gid://taxon-works/Person::Vetted/65",
-    "base_class": "Person",
-    "url_for": "http://localhost:3000/api/v1/people",
-    "object_url": "/people/65",
-    "roles": [
-      {
-        "id": 16701,
-        "person_id": 65,
-        "role_object_id": 11202,
-        "role_object_type": "Source",
-        "position": 1,
-        "created_by_id": 5,
-        "updated_by_id": 24,
-        "created_at": "2013-02-12T18:23:00.000Z",
-        "updated_at": "2013-01-21T14:27:00.000Z",
-        "role_object_tag": "Author of Murphy, D.H. (1973) A mangrove inhabiting cricket from peninsular Malaysia. <i>Malayan Nature Journal</i> 26, 171.",
-        "global_id": "gid://taxon-works/SourceAuthor/16701",
-        "type": "Role",
-        "url": "http://localhost:3000/api/v1/people"
-      },
-      {
-        "id": 53123,
-        "person_id": 65,
-        "role_object_id": 37255,
-        "role_object_type": "Source",
-        "position": 1,
-        "created_by_id": 24,
-        "updated_by_id": 24,
-        "created_at": "2014-11-20T08:13:00.000Z",
-        "updated_at": "2014-11-20T08:13:00.000Z",
-        "role_object_tag": "Author of Murphy, D.H. (1973) Guide to Genera of Malayan Blattodea, Gryllacridoidea and Tettigonioidea Department of Zoology, University of Singapore, 33 pp. pp.",
-        "global_id": "gid://taxon-works/SourceAuthor/53123",
-        "type": "Role",
-        "url": "http://localhost:3000/api/v1/people"
-      }
-    ]
+    "updated_at": "2020-09-17T01:45:56.770Z",
+    "global_id": "gid://taxon-works/Person::Vetted/64"
   },
   {
-    "id": 6731,
+    "id": 6701,
     "type": "Person::Vetted",
     "last_name": "Murphy",
-    "first_name": "S.T.",
+    "first_name": "Sean T.",
     "suffix": null,
     "prefix": null,
-    "cached": "Murphy, S.T.",
+    "cached": "Murphy, Sean T.",
     "year_born": null,
     "year_died": null,
     "year_active_start": 1999,
@@ -70,34 +32,11 @@
     "created_by_id": 5,
     "updated_by_id": 1,
     "created_at": "2013-03-28T17:06:00.000Z",
-    "updated_at": "2019-11-11T20:07:54.266Z",
-    "label_html": "Murphy, S.T. <span class=\"feedback feedback-secondary feedback-thin\">lived: ?-? active ~ 1999-?</span> <span class=\"feedback feedback-thin feedback-primary\">1 uses</span> <span class=\"feedback feedback-thin feedback-secondary\">Author</span> <span class=\"feedback feedback-thin feedback-success\">In&nbsp;Project</span>",
-    "object_tag": "Murphy, S.T.",
-    "object_label": null,
-    "global_id": "gid://taxon-works/Person::Vetted/6731",
-    "base_class": "Person",
-    "url_for": "http://localhost:3000/api/v1/people",
-    "object_url": "/people/6731",
-    "roles": [
-      {
-        "id": 21818,
-        "person_id": 6731,
-        "role_object_id": 14569,
-        "role_object_type": "Source",
-        "position": 3,
-        "created_by_id": 5,
-        "updated_by_id": 10,
-        "created_at": "2013-03-28T17:06:00.000Z",
-        "updated_at": "2008-05-01T16:59:00.000Z",
-        "role_object_tag": "Author of Watson, G.W., Voegtlin, D.J., Murphy, S.T. &amp; Foottit, R.G. (1999) Biogeography of the Cinara cupressi complex (Hemiptera: Aphididae) on Cupressaceae, with description of a pest species introduced into Africa. <i>Bulletin of Entomological Research</i> 89, 271–283.",
-        "global_id": "gid://taxon-works/SourceAuthor/21818",
-        "type": "Role",
-        "url": "http://localhost:3000/api/v1/people"
-      }
-    ]
+    "updated_at": "2020-09-17T01:48:56.566Z",
+    "global_id": "gid://taxon-works/Person::Vetted/6701"
   },
   {
-    "id": 7087,
+    "id": 7057,
     "type": "Person::Vetted",
     "last_name": "Murphy",
     "first_name": "Troy G.",
@@ -111,34 +50,11 @@
     "created_by_id": 5,
     "updated_by_id": 1,
     "created_at": "2013-03-28T17:06:00.000Z",
-    "updated_at": "2019-11-11T20:06:32.356Z",
-    "label_html": "Murphy, Troy G. <span class=\"feedback feedback-secondary feedback-thin\">lived: ?-? active ~ 1999-?</span> <span class=\"feedback feedback-thin feedback-primary\">1 uses</span> <span class=\"feedback feedback-thin feedback-secondary\">Author</span> <span class=\"feedback feedback-thin feedback-success\">In&nbsp;Project</span>",
-    "object_tag": "Murphy, Troy G.",
-    "object_label": null,
-    "global_id": "gid://taxon-works/Person::Vetted/7087",
-    "base_class": "Person",
-    "url_for": "http://localhost:3000/api/v1/people",
-    "object_url": "/people/7087",
-    "roles": [
-      {
-        "id": 20416,
-        "person_id": 7087,
-        "role_object_id": 13675,
-        "role_object_type": "Source",
-        "position": 4,
-        "created_by_id": 5,
-        "updated_by_id": 404,
-        "created_at": "2013-03-28T17:06:00.000Z",
-        "updated_at": "2009-10-01T17:42:00.000Z",
-        "role_object_tag": "Author of Moran, N.A., Kaplan, M.E., Gelsey, M.J., Murphy, T.G. &amp; Scholes, E.A. (1999) Phylogenetics and evolution of the aphid genus Uroleucon based on mitochondrial and nuclear DNA sequences. <i>Systematic Entomology</i> 24, 85–93.",
-        "global_id": "gid://taxon-works/SourceAuthor/20416",
-        "type": "Role",
-        "url": "http://localhost:3000/api/v1/people"
-      }
-    ]
+    "updated_at": "2020-09-17T01:48:10.524Z",
+    "global_id": "gid://taxon-works/Person::Vetted/7057"
   },
   {
-    "id": 21015,
+    "id": 20981,
     "type": "Person::Vetted",
     "last_name": "Murphy",
     "first_name": "Megan A.",
@@ -152,49 +68,11 @@
     "created_by_id": 24,
     "updated_by_id": 1,
     "created_at": "2016-10-25T13:15:00.000Z",
-    "updated_at": "2019-11-11T20:47:05.838Z",
-    "label_html": "Murphy, Megan A. <span class=\"feedback feedback-secondary feedback-thin\">lived: ?-? active ~ 2016-2017</span> <span class=\"feedback feedback-thin feedback-primary\">2 uses</span> <span class=\"feedback feedback-thin feedback-secondary\">Author</span> <span class=\"feedback feedback-thin feedback-success\">In&nbsp;Project</span>",
-    "object_tag": "Murphy, Megan A.",
-    "object_label": null,
-    "global_id": "gid://taxon-works/Person::Vetted/21015",
-    "base_class": "Person",
-    "url_for": "http://localhost:3000/api/v1/people",
-    "object_url": "/people/21015",
-    "roles": [
-      {
-        "id": 59504,
-        "person_id": 21015,
-        "role_object_id": 40697,
-        "role_object_type": "Source",
-        "position": 1,
-        "created_by_id": 24,
-        "updated_by_id": 24,
-        "created_at": "2016-10-25T13:17:00.000Z",
-        "updated_at": "2016-10-25T13:17:00.000Z",
-        "role_object_tag": "Author of Murphy, M.A., Thompson, N.L. &amp; Schul, J. (2016) Keeping up with the neighbor: a novel mechanism of call synchrony in Neoconocephalus ensiger katydids. <i>Journal of Comparative Physiology A Sensory Neural and Behavioral Physiology</i> 202, 225–234.",
-        "global_id": "gid://taxon-works/SourceAuthor/59504",
-        "type": "Role",
-        "url": "http://localhost:3000/api/v1/people"
-      },
-      {
-        "id": 61480,
-        "person_id": 21015,
-        "role_object_id": 41729,
-        "role_object_type": "Source",
-        "position": 1,
-        "created_by_id": 24,
-        "updated_by_id": 24,
-        "created_at": "2017-06-05T12:04:00.000Z",
-        "updated_at": "2017-06-05T12:04:00.000Z",
-        "role_object_tag": "Author of Murphy, M.A. &amp; Schul, J. (2017) Does leadership indicate male quality in Neoconocephalus katydids? <i>Behavioral Ecology and Sociobiology</i> 71.",
-        "global_id": "gid://taxon-works/SourceAuthor/61480",
-        "type": "Role",
-        "url": "http://localhost:3000/api/v1/people"
-      }
-    ]
+    "updated_at": "2020-09-17T02:09:34.309Z",
+    "global_id": "gid://taxon-works/Person::Vetted/20981"
   },
   {
-    "id": 24121,
+    "id": 24087,
     "type": "Person::Vetted",
     "last_name": "Murphey",
     "first_name": "Katherine J.",
@@ -208,30 +86,25 @@
     "created_by_id": 24,
     "updated_by_id": 1,
     "created_at": "2019-10-03T09:02:00.000Z",
-    "updated_at": "2019-11-11T20:54:53.409Z",
-    "label_html": "Murphey, Katherine J. <span class=\"feedback feedback-secondary feedback-thin\">lived: ?-? active ~ 2019-?</span> <span class=\"feedback feedback-thin feedback-primary\">1 uses</span> <span class=\"feedback feedback-thin feedback-secondary\">Author</span> <span class=\"feedback feedback-thin feedback-success\">In&nbsp;Project</span>",
-    "object_tag": "Murphey, Katherine J.",
-    "object_label": null,
-    "global_id": "gid://taxon-works/Person::Vetted/24121",
-    "base_class": "Person",
-    "url_for": "http://localhost:3000/api/v1/people",
-    "object_url": "/people/24121",
-    "roles": [
-      {
-        "id": 69231,
-        "person_id": 24121,
-        "role_object_id": 45318,
-        "role_object_type": "Source",
-        "position": 2,
-        "created_by_id": 24,
-        "updated_by_id": 24,
-        "created_at": "2019-10-03T09:05:00.000Z",
-        "updated_at": "2019-10-03T09:05:00.000Z",
-        "role_object_tag": "Author of Beckers, O.M., Murphey, K.J., Pease, J.R. &amp; Norman, N. (2019) Parallel plasticity of mating songs and preferences in the field cricket Gryllus rubens. <i>Ethology</i> 125, 476–484.",
-        "global_id": "gid://taxon-works/SourceAuthor/69231",
-        "type": "Role",
-        "url": "http://localhost:3000/api/v1/people"
-      }
-    ]
+    "updated_at": "2020-09-17T02:13:44.835Z",
+    "global_id": "gid://taxon-works/Person::Vetted/24087"
+  },
+  {
+    "id": 24492,
+    "type": "Person::Vetted",
+    "last_name": "Murphy",
+    "first_name": "Raymond J.",
+    "suffix": null,
+    "prefix": null,
+    "cached": "Murphy, Raymond J.",
+    "year_born": null,
+    "year_died": null,
+    "year_active_start": 2020,
+    "year_active_end": 2020,
+    "created_by_id": 24,
+    "updated_by_id": 1,
+    "created_at": "2020-01-27T09:04:00.000Z",
+    "updated_at": "2020-09-17T02:14:16.888Z",
+    "global_id": "gid://taxon-works/Person::Vetted/24492"
   }
 ]
