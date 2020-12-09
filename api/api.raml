@@ -311,6 +311,40 @@ traits:
           required: false
           example: 4
 
+/notes:
+  is: [secured, project_tokenized]
+  description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/Note
+  type: collection
+  get: !include /traits/Notes-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns Notes instance data.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 2
+
+/contents:
+  is: [secured, project_tokenized]
+  description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/Content
+  type: collection
+  get: !include /traits/Contents-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns Content instance data.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 2
+
 /observations:
   is: [secured, project_tokenized]
   description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/Observation

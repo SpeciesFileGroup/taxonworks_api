@@ -1,0 +1,75 @@
+is: [pageable: { default_per: 100, max_per: 1000 }]
+queryParameters:
+  citations:
+    description: |
+      Include associated citations in results.
+    type: string boolean
+    required: false
+  depictions:
+    description: |
+      Include associated depictions in results.
+    type: string boolean
+    required: false
+  exact:
+    description: |
+      Description needed !
+    type: string boolean
+    required: false
+  otu_id:
+    description: |
+      ID of an OTU to be included in the search.
+    type: integer
+    required: false
+  otu_id[]:
+    description: |
+      IDs of OTUs to be included in the search.
+    type: integer array
+    required: false
+  text:
+    description: |
+      Text segment to be searched for in contents.
+    type: string
+    required: false
+    example:  "subterr"
+  topic_id:
+    description: |
+      ID of a topic to be included in the search.
+    type: integer
+    required: false
+  topic_id[]:
+    description: |
+      IDs of topics to be included in the search.
+    type: integer array
+    required: false
+  user_date_end:
+    description: |
+      Description needed !
+    type: integer array
+    required: false
+  user_date_start:
+    description: |
+      Replace me !
+    type: integer array
+    required: false
+  user_id:
+    description: |
+      Description needed !
+    type: integer array
+    required: false
+  user_target:
+    description: |
+      Description needed !
+    type: integer array
+    required: false
+
+responses:
+  200:
+    body:
+      application/json:
+        type: Content[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/contents-result-example.json
+
+
+

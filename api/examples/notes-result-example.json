@@ -1,0 +1,158 @@
+[
+  {
+    "id": 3,
+    "text": "infrasubspecific name not available after 1960 (cf. ICZN 45.5. and 45.6.3.)",
+    "note_object_attribute": null,
+    "note_object_id": 235,
+    "note_object_type": "TaxonName",
+    "created_by_id": 5,
+    "updated_by_id": 5,
+    "project_id": 2,
+    "note_object": {
+      "global_id": "gid://taxon-works/Protonym/235"
+    }
+  },
+  {
+    "id": 6,
+    "text": "Infrasubspecific names published after 1960 are not available (cf. ICZN 10.2).",
+    "note_object_attribute": null,
+    "note_object_id": 339,
+    "note_object_type": "TaxonName",
+    "created_by_id": 5,
+    "updated_by_id": 5,
+    "project_id": 2,
+    "note_object": {
+      "global_id": "gid://taxon-works/Protonym/339"
+    }
+  },
+  {
+    "id": 222,
+    "text": "Proposed as infrasubspecific name",
+    "note_object_attribute": null,
+    "note_object_id": 33058,
+    "note_object_type": "TaxonName",
+    "created_by_id": 5,
+    "updated_by_id": 243,
+    "project_id": 2,
+    "note_object": {
+      "global_id": "gid://taxon-works/Protonym/33058"
+    }
+  },
+  {
+    "id": 297,
+    "text": "Originally infrasubspecific taxon that cannot be made available (ICZN Articles 11.5.2. and 45.5.1.)",
+    "note_object_attribute": null,
+    "note_object_id": 46196,
+    "note_object_type": "TaxonName",
+    "created_by_id": 5,
+    "updated_by_id": 24,
+    "project_id": 2,
+    "note_object": {
+      "global_id": "gid://taxon-works/Protonym/46196"
+    }
+  },
+  {
+    "id": 298,
+    "text": "Infrasubspecific taxon.",
+    "note_object_attribute": null,
+    "note_object_id": 46197,
+    "note_object_type": "TaxonName",
+    "created_by_id": 24,
+    "updated_by_id": 24,
+    "project_id": 2,
+    "note_object": {
+      "global_id": "gid://taxon-works/Protonym/46197"
+    }
+  },
+  {
+    "id": 299,
+    "text": "Infrasubspecific taxon.",
+    "note_object_attribute": null,
+    "note_object_id": 46198,
+    "note_object_type": "TaxonName",
+    "created_by_id": 24,
+    "updated_by_id": 24,
+    "project_id": 2,
+    "note_object": {
+      "global_id": "gid://taxon-works/Protonym/46198"
+    }
+  },
+  {
+    "id": 300,
+    "text": "Infrasubspecific taxon.",
+    "note_object_attribute": null,
+    "note_object_id": 46213,
+    "note_object_type": "TaxonName",
+    "created_by_id": 24,
+    "updated_by_id": 24,
+    "project_id": 2,
+    "note_object": {
+      "global_id": "gid://taxon-works/Protonym/46213"
+    }
+  },
+  {
+    "id": 467,
+    "text": "Published as an infrasubspecific name and therefore unavailable.",
+    "note_object_attribute": null,
+    "note_object_id": 56907,
+    "note_object_type": "TaxonName",
+    "created_by_id": 5,
+    "updated_by_id": 495,
+    "project_id": 4,
+    "note_object": {
+      "global_id": "gid://taxon-works/Protonym/56907"
+    }
+  },
+  {
+    "id": 166966,
+    "text": "a p. 102 (O.D.) || (Kerzhner 1979a p. 70 believes infrasubspecific form)",
+    "note_object_attribute": null,
+    "note_object_id": 108260,
+    "note_object_type": "Citation",
+    "created_by_id": 5,
+    "updated_by_id": 878,
+    "project_id": 18,
+    "note_object": {
+      "global_id": "gid://taxon-works/Citation/108260"
+    }
+  },
+  {
+    "id": 166967,
+    "text": "infrasubspecific form",
+    "note_object_attribute": null,
+    "note_object_id": 616549,
+    "note_object_type": "Citation",
+    "created_by_id": 878,
+    "updated_by_id": 878,
+    "project_id": 18,
+    "note_object": {
+      "global_id": "gid://taxon-works/Citation/616549"
+    }
+  },
+  {
+    "id": 167949,
+    "text": "infrasubspecific taxon",
+    "note_object_attribute": null,
+    "note_object_id": 619479,
+    "note_object_type": "Citation",
+    "created_by_id": 24,
+    "updated_by_id": 1532,
+    "project_id": 2,
+    "note_object": {
+      "global_id": "gid://taxon-works/Citation/619479"
+    }
+  },
+  {
+    "id": 168771,
+    "text": "infrasubspecific name",
+    "note_object_attribute": null,
+    "note_object_id": 620914,
+    "note_object_type": "Citation",
+    "created_by_id": 24,
+    "updated_by_id": 1532,
+    "project_id": 2,
+    "note_object": {
+      "global_id": "gid://taxon-works/Citation/620914"
+    }
+  }
+]
