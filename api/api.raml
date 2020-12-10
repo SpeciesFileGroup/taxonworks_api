@@ -313,13 +313,13 @@ traits:
 
 /notes:
   is: [secured, project_tokenized]
-  description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/Note
+  description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/Note.html
   type: collection
   get: !include /traits/Notes-search.raml
   /{id}:
     is: [secured, project_tokenized]
     get:
-      description: Returns Notes instance data.
+      description: Returns Note instance data.
       queryParameters:
         project_id:
           description: |
@@ -330,7 +330,7 @@ traits:
 
 /contents:
   is: [secured, project_tokenized]
-  description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/Content
+  description: See Overview at https://rdoc.info/github/SpeciesFileGroup/taxonworks/Content.html
   type: collection
   get: !include /traits/Contents-search.raml
   /{id}:
