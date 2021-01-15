@@ -154,6 +154,9 @@ traits:
 #  securedBy: token
   type: collection
   get: !include /traits/Otus-search.raml
+  /autocomplete:
+    is: [secured, project_tokenized]
+    get: !include /traits/Otus-autocomplete.raml
   /{id}:
     is: [secured, project_tokenized]
     get:
@@ -350,6 +353,23 @@ traits:
   description: See Overview at http://rdoc.taxonworks.org/Observation.html
   type: collection
   get: !include /traits/Observations-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns Observation instance data.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 4
+
+/images:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Observation.html
+  type: collection
+  get: !include /traits/Images-search.raml
   /{id}:
     is: [secured, project_tokenized]
     get:
