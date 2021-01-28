@@ -115,3 +115,12 @@ queryParameters:
       Limit search to user dates later
     type: string
     required: false
+
+responses:
+  200:
+    body:
+      application/json:
+        type: Note[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/images-result-example.json
