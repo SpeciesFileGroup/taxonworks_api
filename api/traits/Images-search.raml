@@ -1,25 +1,117 @@
 is: [pageable: { default_per: 100, max_per: 1000 }]
 queryParameters:
   ancestor_id_target:
+    description:  |
+      The object class of the ancestor, e.g., otu
+    type: string
+    require:  false
   biocuration_class_id:
+    description: |
+      Include metadata for biocuration classes by id
+    type: string integer
+    required: false
   biocuration_class_id[]:
+    description: |
+      Include metadata for biocuration classes by id array
+    type: string integer array
+    required: false
   collection_object_id:
+    description: |
+      Identifier associated with collection object
+    type: string integer
+    required: false
   collection_object_id[]:
+    description: |
+      Identifier associated with collection object
+    type: string integer array
+    required: false
   depiction:
+    description: |
+      Include depiction in result
+    type: string boolean
+    required: false
   identifier:
+    description: |
+      Identifier associated with collection object
+    type: string
+    required: false
   identifier_end:
+    description: |
+      Last part of identifier associated with collection object
+    type: string
+    required: false
   identifier_exact:
+    description: |
+      Exact identifier associated with collection object
+    type: string
+    required: false
   identifier_start:
-  image_id[]:
-  keyword_ids[]:
-  otu_id:
-  otu_id[]:
+    description: |
+      First part of identifier associated with collection object
+    type: string
+    required: false
   image_id:
+    description: |
+      ID for the image
+    type: string integer
+    required: false
+  image_id[]:
+    description: |
+      List of IDs for images e.g., image_id[]=34&image_id[]=398&image_id[]=726
+    type: string integer array
+    required: false
+  keyword_ids[]:
+    description: |
+      List of IDs for keywords
+    type: string intger array
+    required: false
+  otu_id:
+    description: |
+      ID for a specific OTU
+    type: string integer
+    required: false
+  otu_id[]:
+    description: |
+      List of OTU IDs e.g., otu_id[]=768&otu_id[]=1024&otu_id[]=2047
+    type: string integer array
+    required: false
   sled_image_id:
+    description: |
+      ID for a specific SLED image
+    type: string integer
+    required: false
   sled_image_id[]:
+    description: |
+      List of IDs for specific SLED images
+    type: string
+    required: false
   taxon_name_id:
+    description: |
+      ID for a specific taxon name
+    type: string integer
+    required: false
   taxon_name_id[]:
+    description: |
+      List of IDs for specific taxon names
+    type: string integer array
+    required: false
   user_id: # user
+    description: |
+      ID for a user
+    type: string integer
+    required: false
   user_target:
-  user_date_start:
+    description: |
+      one of "created" or "updated"; if absent, both are searched
+    type: string
+    required: false
   user_date_end:
+    description:
+      Limit search to user dates prior
+    type: string
+    required: false
+  user_date_start:
+    description:
+      Limit search to user dates later
+    type: string
+    required: false
