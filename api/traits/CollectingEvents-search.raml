@@ -11,7 +11,7 @@ queryParameters:
   collector_ids[]:
     description:  |
       List of collector IDs
-    type: integer array
+    type: string integer array
     required: false
   collector_ids_or:
     description:  |
@@ -41,16 +41,20 @@ queryParameters:
     type: string
     required: false
 #    example: "?"
-  keyword_ids[]:
+  keyword_id_and[]:
     description: |
-      List of keyword IDs for associated collecting events.
-    type: integer
+      List of keyword IDs for associated collecting events where all enumerated keywords are present.
+    type: string integer array
     required: false
-#    example:  47
+  keyword_id_or[]:
+    description: |
+      List of keyword IDs for associated collecting events where any of the enumerated keywords are present.
+    type: string integer array
+    required: false
   otu_ids[]:
     description: |
       List of OTU IDs
-    type: integer array
+    type: string integer array
     required: false
 #    example: 3809
   md5_verbatim_labels: |

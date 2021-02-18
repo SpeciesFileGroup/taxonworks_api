@@ -61,10 +61,15 @@ queryParameters:
       List of IDs for images e.g., image_id[]=34&image_id[]=398&image_id[]=726
     type: string integer array
     required: false
-  keyword_ids[]:
+  keyword_id_and[]:
     description: |
-      List of IDs for keywords
-    type: string intger array
+      List of keyword IDs for images where all enumerated keywords are present.
+    type: string integer array
+    required: false
+  keyword_id_or[]:
+    description: |
+      List of keyword IDs for images where any of the enumerated keywords are present.
+    type: string integer array
     required: false
   otu_id:
     description: |

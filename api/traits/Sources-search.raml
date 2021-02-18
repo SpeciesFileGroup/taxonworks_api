@@ -9,7 +9,7 @@ queryParameters:
   author_ids[]:
     description: |
         Filter by author IDs
-      type: integer array
+      type: string integer array
       required: false
   #    example:  4365
   citation_object_type[]:
@@ -65,7 +65,7 @@ queryParameters:
   ids[]:
      description: |
        Filter by source IDs
-     type: integer array
+     type: string integer array
      required: false
  #    example:  4365
   in_project:
@@ -74,10 +74,15 @@ queryParameters:
     type: string boolean
     required: false
     example: true
-  keyword_ids[]:
+  keyword_id_and[]:
     description: |
-      Get source metadata associated with these keyword IDs
-    type: integer
+      List of keyword IDs for sources where all enumerated keywords are present.
+    type: string integer array
+    required: false
+  keyword_id_or[]:
+    description: |
+      List of keyword IDs for sources where any of the enumerated keywords are present.
+    type: string integer array
     required: false
   nomenclature:
     description: |
