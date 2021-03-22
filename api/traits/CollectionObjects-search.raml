@@ -18,10 +18,25 @@ queryParameters:
     type: string boolean
     required: false
     example: "false"
-  collection_object_type:
+  buffered_collecting_event:
     description: |
-      Type of collection object, e.g., "Specimen"
+      .
     type: string
+    required: false
+  buffered_determinations:
+    description: |
+      .
+    type: string
+    required: false
+  buffered_other_labels:
+    description: |
+      .
+    type: string
+    required: false
+  collecting_event:
+    description: |
+      Return data where for associated collecting event.
+    type: string boolean
     required: false
   collecting_event_ids[]:
     description: |
@@ -29,18 +44,29 @@ queryParameters:
     type: integer
     required: false
 #    example:  47
+  collection_object_type:
+    description: |
+      Type of collection object, e.g., "Specimen"
+    type: string
+    required: false
   current_determinations:
     description: |
       Include metadata for current determinations
     type: string boolean
     required: false
     example: "false"
-  depicted:
+  depictions:
     description: |
       Include metadata for depicted objects
     type: string boolean
     required: false
     example: "false"
+  determiner_id[]:
+    description: |
+      Only include result which are related to these determiners (by ID),
+      e.g., determiner_id[]=325&determiner_id[]=9032
+    type: string integer array
+    required: false
   dwc_indexed:
     description: |
       Include metadata for Darwin Core indexed events
@@ -50,6 +76,21 @@ queryParameters:
   end_date:
     description:
       Limit search to dates prior
+    type: string
+    required: false
+  exact_buffered_collecting_event:
+    description: |
+      .
+    type: string
+    required: false
+  exact_buffered_determinations:
+    description: |
+      .
+    type: string
+    required: false
+  exact_buffered_other_labels:
+    description: |
+      .
     type: string
     required: false
   geo_json:
@@ -176,6 +217,11 @@ queryParameters:
     description:
       Limit search to dates later
     type: string
+    required: false
+  taxon_determinations:
+    description:
+      Include taxon determinations
+    type: string boolean
     required: false
   type_specimen_taxon_name_id:
     description: |
