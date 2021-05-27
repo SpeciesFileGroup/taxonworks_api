@@ -8,10 +8,15 @@ queryParameters:
     type: string array
     required: false
 #    example:  "?"
-  collector_ids[]:
+  collector_id:
+    description:  |
+      A single collector ID
+    type: string integer
+    required: false
+  collector_id[]:
     description:  |
       List of collector IDs
-    type: integer array
+    type: string integer array
     required: false
   collector_ids_or:
     description:  |
@@ -23,7 +28,12 @@ queryParameters:
       geoJSON of the search area
     type: string
     required: false
-  geographic_area_ids[]:
+  geographic_area_id:
+    description: |
+      Single geographic area ID for search
+    type: integer
+    required: false
+  geographic_area_id[]:
     description: |
       List of geographic area IDs for search
     type: integer
@@ -41,20 +51,29 @@ queryParameters:
     type: string
     required: false
 #    example: "?"
-  keyword_ids[]:
+  keyword_id_and[]:
     description: |
-      List of keyword IDs for associated collecting events.
-    type: integer
+      List of keyword IDs for associated collecting events where all enumerated keywords are present.
+    type: string integer array
     required: false
-#    example:  47
-  otu_ids[]:
+  keyword_id_or[]:
     description: |
-      List of OTU IDs
-    type: integer array
+      List of keyword IDs for associated collecting events where any of the enumerated keywords are present.
+    type: string integer array
+    required: false
+  otu_ids:
+    description: |
+      A single OTU ID to match.
+    type: string integer
+    required: false
+  otu_id[]:
+    description: |
+      List of OTU IDs to all match.
+    type: string integer array
     required: false
 #    example: 3809
   md5_verbatim_labels: |
-      Include metadata for verbatim labels
+      Include metadata for verbatim labels.
     type: string boolean
     required: false
 #    example: "false"
@@ -69,9 +88,19 @@ queryParameters:
     type: string boolean
     required: false
     example: "false"
+  spatial_geographic_area_id:
+    description: |
+      Reference a geographic_area in a spatial query
+    type: string integer
+    required: false
+  spatial_geographic_area_id[]:
+    description: |
+      Reference a list of geographic areas in a spatial query
+    type: string integer
+    required: false
   spatial_geographic_areas:
     description: |
-      Reference geographic areas in a spatial query
+      Find CollectingEvents having spatial geographic areas
     type: string boolean
     required: false
 #    example: "false"

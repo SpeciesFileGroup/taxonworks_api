@@ -1,49 +1,64 @@
 is: [pageable: { default_per: 100, max_per: 1000 }]
 queryParameters:
+  identifier:
+    description: |
+      Search for
+    type: string
+    required: false
+#    example: "1540-7063"
   identifier_object_id:
     description: |
       Metadata for an ID of an object.
     type: integer
     required: false
 #    example:  47
-  identifier_object_ids[]:
+  identifier_object_id[]:
     description: |
       Metadata for an array of IDs of objects
-      identifier_object_ids[]=47&identifier_object_ids[]=2232.
+      identifier_object_id[]=47&identifier_object_id[]=2232.
     type: integer
     required: false
 #    example:  2322
   identifier_object_type:
     description: |
-      Metadata for an object type.
+      Metadata for an object type, case sensitive.
     type: string
     required: false
 #    example:  "CollectionObject"
-  identifier_object_types[]:
+  identifier_object_type[]:
     description: |
       Metadata for an array of object types.
-      ?identifier_object_types[]=CollectionObject&identifier_object_types[]=Serial
+      ?identifier_object_type[]=CollectionObject&identifier_object_type[]=Serial
     type: string
     required: false
     example:  "Serial"
-  identifier:
+  namespace_id:
     description: |
-      Include metadata for recent searches
+      The ID for the namespace name.
+    type: integer
+    required: false
+  namespace_name:
+    description: |
+      The namespace name for the identifier.
     type: string
     required: false
-#    example: "1540-7063"
+  namespace_short_name:
+    description: |
+      The short version of the namespace name for the identifier.
+    type: string
+    required: false
+  object_global_id:
+    description: |
+      Filter by object global ID
+    type: integer
+    required: false
+#    example: 1793
   type:
     description: |
       Include metadata for a specific type, e.g, "Identifier::Local::CatalogNumber"
     type: string
     required: false
 #    example: "Identifier::Local::CatalogNumber"
-#  object_global_id:
-#    description: |
-#      Filter by object global ID
-#    type: integer
-#    required: false
-#    example: 1793
 
 responses:
   200:

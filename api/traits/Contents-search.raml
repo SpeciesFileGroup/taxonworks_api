@@ -23,7 +23,7 @@ queryParameters:
   otu_id[]:
     description: |
       IDs of OTUs to be included in the search.
-    type: integer array
+    type: string integer array
     required: false
   text:
     description: |
@@ -39,7 +39,7 @@ queryParameters:
   topic_id[]:
     description: |
       IDs of topics to be included in the search.
-    type: integer array
+    type: string integer array
     required: false
   user_date_end:
     description: |
@@ -58,7 +58,7 @@ queryParameters:
     required: false
   user_target:
     description: |
-      one of "created" or "updated"; if absent, both are searched
+      One of "created" or "updated"; if absent, both are searched.
     type: string
     required: false
 
@@ -70,6 +70,3 @@ responses:
         maxItems: 100
         uniqueItems: true
         example: !include /examples/contents-result-example.json
-
-
-
