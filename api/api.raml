@@ -382,3 +382,20 @@ traits:
           required: false
           example: 4
 
+/taxon_name_classifications:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Observation.html
+  type: collection
+  get: !include /traits/TaxonNameClassifications-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns taxon name classifications instance data.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 2
+

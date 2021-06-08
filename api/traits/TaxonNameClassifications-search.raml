@@ -1,0 +1,42 @@
+is: [pageable: { default_per: 100, max_per: 1000 }]
+queryParameters:
+  taxon_name_id:
+    description: |
+      A single ID for the taxon name.
+    type: string integer
+    required: false
+  taxon_name_id[]:
+    description: |
+      Array of IDs for the taxon names.
+    type: string integer array
+    required: false
+  taxon_name_classification_type:
+    description: |
+      Type of classification
+    type: string
+    required: false
+    example: "TaxonNameClassification::Iczn::Unavailable::NomenNudum"
+  taxon_name_classification_type[]:
+    description: |
+      Array of classifications
+    type: string array
+    required: false
+  taxon_name_classification_set:
+    description: |
+        One of 'validating', 'invalidating', 'exceptions'
+    type: string
+    required: false
+  taxon_name_classification_set[]:
+    description: |
+        One or more of 'validating', 'invalidating', 'exceptions'
+    type: string array
+    required: false
+
+responses:
+  200:
+    body:
+      application/json:
+        type: TaxonNameClassification[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/taxon_name_classifications-result-example.json
