@@ -1,5 +1,15 @@
 is: [pageable: { default_per: 100, max_per: 1000 }]
 queryParameters:
+  object_taxon_name_id:
+    description: |
+      A single ID for the object taxon name.
+    type: string integer
+    required: false
+  object_taxon_name_id[]:
+    description: |
+      Array of IDs for the onject taxon names.
+    type: string integer array
+    required: false
   subject_taxon_name_id:
     description: |
       A single ID for the subject taxon name.
@@ -11,19 +21,30 @@ queryParameters:
       Array of IDs for the subject taxon names.
     type: string integer array
     required: false
-  object_taxon_name_id:
+  taxon_name_id:
     description: |
-      A single ID for the object taxon name.
+      A single ID for the taxon name as either subject or object.
     type: string integer
     required: false
-  object_taxon_name_id[]:
+    example:  377
+  taxon_name_id[]:
     description: |
-      Array of IDs for the onject taxon names.
+      Array of IDs for the taxon names as either subject or object.
     type: string integer array
+    required: false
+  taxon_name_relationship_set:
+    description: |
+        One of 'validating', 'invalidating', 'exceptions'
+    type: string
+    required: false
+  taxon_name_relationship_set[]:
+    description: |
+        One or more of 'validating', 'invalidating', 'exceptions'
+    type: string array
     required: false
   taxon_name_relationship_type:
     description: |
-        One exact NOMEN/Ruby class/type
+        One exact NOMEN/Ruby class/type, e.g., "TaxonNameRelationship::Iczn::Invalidating"
     type: string
     required: false
   taxon_name_relationship_type[]:
