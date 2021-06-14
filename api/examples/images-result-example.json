@@ -1,12 +1,14 @@
 {
   "id": 1,
-  "height": 1120,
-  "width": 702,
-  "image_file_fingerprint": "ea791e56a1d1b6c5eb96c54a6bafdc3f",
-  "image_file_file_name": "unadjustednonraw_thumb_1.jpg",
-  "image_file_file_size": 141662,
-  "image_file_meta": "BAh7CDoNb3JpZ2luYWx7CDoKd2lkdGhpAr4COgtoZWlnaHRpAmAEOglzaXpl aQNeKQI6CnRodW1iewg7BmlEOwdpaTsIaQItGToLbWVkaXVtewg7BmkBvDsH aQIsATsIaQL6TA==",
-  "created_by_id": 1623,
-  "updated_by_id": 1623,
-  "pixels_to_centimeter": null
+  "height": 721,
+  "width": 766,
+  "image_file_fingerprint": "a7b370c43fb3a976cdc53c3d6f57be71",
+  "image_file_file_name": "126710",
+  "image_file_file_size": 674248,
+  "created_by_id": 5,
+  "updated_by_id": 5,
+  "pixels_to_centimeter": null,
+  "original": "http://localhost:3000/s/dk07y4",
+  "thumb": "http://localhost:3000/s/ldoxt3",
+  "medium": "http://localhost:3000/s/1nhuch"
 }
