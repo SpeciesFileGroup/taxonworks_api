@@ -1,20 +1,65 @@
 #%RAML 1.0
 ---
-title: TaxonWorks
+title: TaxonWorks API
 documentation:
   - title: Introduction
     content: |
-      Documentation for JSON API endpoints in TaxonWorks. The most upto date list of endpoints can be seen by running `rake routes | grep api`.
+      This is the documentation for external [TaxonWorks](http://taxonworks.org) API endpoints. Documentation source is at [https://github.com/SpeciesFileGroup/taxonworks_api](https://github.com/SpeciesFileGroup/taxonworks_api). In brief this allows users to access data curated in a copy of TaxonWorks via a `user` or `project` (anonymous) level token.
+  - title: Servers with live APIs
+    content: |
+      Each instance of TaxonWorks serves its own API. _Add your instance to this list with a pull request._
+      * [Species File Group (production)](https://sfg.taxonworks.org/api/v1) - A production instance of TaxonWorks hosted by the Species File Group (SFG).
+      * [SFG Sandbox (sandbox)](https://sandbox.taxonworks.org/api/v1) - A SFG sandbox, may/not be live.
+      * [SFG Sandfly (sandbox)](https://sandfly.taxonworks.org/api/v1) - A SFG sandbox, may/not be live.
+  - title: Roadmap
+    content: |
+      Our approach:
+      * **v1** (current)
+          * Goal is to expose existing internal endpoints that the application is built upon
+          * Endpoints are practical, in that they are nearly being used in interfaces, but not necessarily optimized
+          * Largely JSON based, and are derived from Rails conventions
+      * **v2** (planned)
+          * Optimize existing routes, remove nestedness where it makes sense
+          * Increase standardization of traits (params) across endpoints
+          * Explore delayed responses/ticketing system for long running queries
+      * **v3** (planned)
+          * Integrate caching other optimizations optimization
+          * Perhaps move to a fully cached solution, using GraphQL
+          * May move cache to a graph DB or other flattened indexer
+  - title: Running an api-console
+    content: |
+      This both lets you read the API documentation and experiment directly therein against a local rails server (localhost:3000).
+
+      You must have a TaxonWorks instance running at localhost:3000 (`rails s`, see [install_taxonworks](https://github.com/SpeciesFileGroup/install_taxonworks)) before sending API requests though the console.
+
+      Use `npm install` if you haven't already. Then just run `npm start -- --open` (`-- --open` is optional, it will make your browser open the URL the console is being served from).
+
+      Once it is ready to explore you should see something like this:
+      ```bash
+      $ npm start -- --open
+
+      (OUTPUT OMITTED)
+
+      API console build ready.
+      Thanks for using our API tools!
+
+      Files in this directory are available under the following URLs
+              applications: http://127.0.0.1:8081
+      ```
+      **NOTE**: It might display a white screen when the browser opens the URL (specially true with Firefox, Chrome seems inmune to this problem). Refresh a few times until it shows the documentation.
+  - title: Other endpoints
+    content: |
+      From your terminal within the _source_ directory (not this repo) use `rake routes` to get a list of all endpoints.  Endpoints are defined as Rails routes in `/config/routes/api*`.
 version: v1
 baseUri: https://{host}/api/{version}
 baseUriParameters:
   host:
-    description: The server host optionally with port at with the API is located
+    description: The server host optionally with port at which the API is located
     example: linnaeus.taxonworks.org
 protocols: [ HTTPS ]
 securitySchemes:
   token:
-    type: Pass Through # Not supported by api-console unfortunately but should be like traits/secured.raml
+    type: Pass Through # Not supported by api-console unfortunately, but should be like traits/secured.raml
     description: |
       Token based per-use authentication.
     describedBy:
@@ -47,6 +92,7 @@ traits:
   production: !include /traits/production.raml
   future_branch: !include /traits/future_branch.raml
   project_tokenized: !include /traits/project_tokenized.raml
+  user_tokenized: !include /traits/user_tokenized.raml
   pageable: !include /traits/pageable.raml
 
 /:
@@ -89,7 +135,7 @@ traits:
         body:
           application/json:
             example:
-              {"success": true}
+              {"success":true,"open_projects":[{"mFPoRURskHhXu29nbAxoNy":"My TaxonWorks Project"}]}
 
 /both_authenticated:
   description: A single purpose route to test both User and Project tokens.
@@ -107,11 +153,34 @@ traits:
   description: See Overview at http://rdoc.taxonworks.org/Otu.html
 #  securedBy: token
   type: collection
+  get: !include /traits/Otus-search.raml
+  /autocomplete:
+    is: [secured, project_tokenized]
+    get: !include /traits/Otus-autocomplete.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns OTU instance data.
+
+/downloads:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Download.html
+  type: collection
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns Download metadata instance
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 1
 
 /taxon_names:
   is: [secured, project_tokenized]
   description: See Overview at http://rdoc.taxonworks.org/TaxonName.html
-#  securedBy: token
   type: collection
   get: !include /traits/TaxonName-search.raml
   /autocomplete:
@@ -121,3 +190,195 @@ traits:
     is: [secured, project_tokenized]
     get:
       description: Returns TaxonName instance data.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 1
+
+/sources:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Source.html
+  type: collection
+  get:  !include /traits/Sources-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns array of Sources metadata
+
+/people:
+  is: [secured, user_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Person.html
+  type: collection
+  get:  !include /traits/People-search.raml
+  /{id}:
+    is: [secured, user_tokenized]
+    get:
+      description: returns array of people for this ID
+#  /first_name:
+#    is: [secured, user_tokenized]
+#    get:
+#      description: returns array of people matching first name
+#      type: string
+#      example:  "David"
+#  /last_name:
+#    is: [secured, user_tokenized]
+#    get:
+#      description: returns array of people matching last name
+#  /last_name_starts_with:
+#    is: [secured, user_tokenized]
+#    get:
+#      description: returns array of people matching request parameters
+
+
+/collection_objects:
+  is: [secured, user_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/CollectionObject.html
+  type: collection
+  get:  !include /traits/CollectionObjects-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns collection objects metadata for this ID
+
+/identifers:
+  is: [secured, user_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Identifier.html
+  type: collection
+  get:  !include /traits/Identifiers-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+      get:
+        description: Returns Identifiers metadata for this ID - caution, project-agnostic identifiers not returned.
+
+/collecting_events:
+  is: [secured, user_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/CollectingEvent.html
+  type: collection
+  get:  !include /traits/CollectingEvents-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+      get:
+        description: Returns Identifiers metadata for this ID - caution, project-agnostic identifiers not returned.
+
+/biological_associations:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/BiologicalAssociation.html
+  type: collection
+  get: !include /traits/BiologicalAssociations-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns BiologicalAssociations instance data.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 2
+
+/citations:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Citation.html
+  type: collection
+  get: !include /traits/Citations-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns Citations instance data.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 4
+
+/asserted_distributions:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/AssertedDistribution.html
+  type: collection
+  get: !include /traits/AssertedDistributions-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns AssertedDistribution instance data.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 4
+
+/notes:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Note.html
+  type: collection
+  get: !include /traits/Notes-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns Note instance data.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 2
+
+/contents:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Content.html
+  type: collection
+  get: !include /traits/Contents-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns Content instance data.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 2
+
+/observations:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Observation.html
+  type: collection
+  get: !include /traits/Observations-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns Observation instance data.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 4
+
+/images:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Observation.html
+  type: collection
+  get: !include /traits/Images-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns Observation instance data.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 4
+

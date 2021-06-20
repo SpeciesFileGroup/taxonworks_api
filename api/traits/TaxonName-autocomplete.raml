@@ -1,5 +1,11 @@
 description: Returns a single TaxonName instance with related data included.
 queryParameters:
+  project_id:
+    description: |
+      Project identifier. In the absence of a project token you must provide this parameter.
+    type: integer
+    required: false
+    example: 1
   term:
     description: |
       The search term by which names will be filtered.

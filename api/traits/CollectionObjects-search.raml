@@ -1,0 +1,340 @@
+is: [pageable: { default_per: 100, max_per: 1000 }]
+queryParameters:
+  ancestor_id:
+    description: |
+      Include OTU ancestor in search.
+    type: integer
+    required: false
+  biocuration_class_ids[]:
+    description: |
+      Include metadata for biocuration classes by id.
+    type: string boolean
+    required: false
+  biological_relationship_ids[]:
+    description: |
+      Include metadata biological relationships by id.
+    type: string boolean
+    required: false
+  buffered_collecting_event:
+    description: |
+      Include data where collecting event information contains this text value.
+    type: string
+    required: false
+    example:  colorado
+  buffered_determinations:
+    description: |
+      Include data where determination contains this text value.
+    type: string
+    required: false
+  buffered_other_labels:
+    description: |
+      Include data where other labels information contains this text value.
+    type: string
+    required: false
+  collecting_event:
+    description: |
+      Return data if associated collecting event; true / false has/not, if param not present ignore.
+    type: string boolean
+    required: false
+  collecting_event_ids[]:
+    description: |
+      List of IDs for associated collecting events.
+    type: integer array
+    required: false
+  collection_object_type:
+    description: |
+      Type of collection object, e.g., "Specimen".
+    type: string
+    required: false
+  collector_ids[]:
+    description:  |
+      IDs for collectors to be included in the search.
+    type: string integer
+    required: false
+  collector_ids_or:
+    description:  |
+      IDs for any of the collectors are to be included in the search.
+    type: string boolean
+    required: false
+  current_determinations:
+    description: |
+      Include metadata for current determinations.
+    type: string boolean
+    required: false
+  depictions:
+    description: |
+      Include metadata for depicted objects; true / false index is/not built, if not present ignore.
+    type: string boolean
+    required: false
+  determiner_id[]:
+    description: |
+      Include results which are related to any of these determiners (by ID),
+      e.g., determiner_id[]=325&determiner_id[]=9032
+    type: string integer array
+    required: false
+  determiner_id_or:
+    description: |
+      Include results which are related to any of these determiners (by ID),
+    type: string boolean
+    required: false
+  dwc_indexed:
+    description: |
+      Include metadata for Darwin Core indexed objects; true / false index is/not built, if not present ignore.
+    type: string boolean
+    required: false
+  end_date:
+    description:
+      Limit search to dates prior to this value.
+    type: string
+    required: false
+  exact_buffered_collecting_event:
+    description: |
+      Include data where collecting event information contains this exact text value.
+    type: string
+    required: false
+  exact_buffered_determinations:
+    description: |
+      Include data where determinations information contains this exact text value.
+    type: string
+    required: false
+  exact_buffered_other_labels:
+    description: |
+      Include data where other labels information contains this exact text value.
+    type: string
+    required: false
+  geo_json:
+    description:
+      geoJSON of the search area.
+    type: string
+    required: false
+  geographic_area:
+    description: |
+      Find if associated collecting event has/not a geographic area.  Ignored if param not present.
+    type: string boolean
+    required: false
+  geographic_area_ids[]:
+     description: |
+       List of IDs for associated geographic areas.
+     type: integer
+     required: false
+  georeferences:
+    description:  |
+      Include metadata for associated collecting event georeferences.
+    type: string boolean
+    required: false
+  identifier:
+    description: |
+      Identifier associated with collection object.
+    type: string
+    required: false
+  identifier_end:
+    description: |
+      Last part of identifier associated with collection object
+    type: string
+    required: false
+  identifier_exact:
+    description: |
+      Exact identifier associated with collection object
+    type: string
+    required: false
+  identifier_start:
+    description: |
+      First part of identifier associated with collection object
+    type: string
+    required: false
+  identifiers:
+    description:  |
+      Include metadata for associated collecting event identifiers.
+    type: string boolean
+    required: false
+  in_labels:
+    description: |
+      Search wildcard in all related collecting event labels.
+    type: string boolean
+    required: false
+  in_verbatim_locality:
+    description: |
+      Search in verbatim locality in related collecting events.
+    type: string boolean
+    required: false
+  is_type[]:
+    description: |
+      Include metadata for primary types by IDs
+    type: string integer array
+    required: false
+  keyword_id_and[]:
+    description:  |
+      Search must include all keyword IDs
+    type: string integer
+    required: false
+  keyword_id_or[]:
+    description:  |
+      Search may include any of these keyword IDs
+    type: string integer
+    required: false
+  loaned:
+    description: |
+      Include metadata for loaned (borrowed) objects
+    type: string boolean
+    required: false
+  md5_verbatim_label:
+    description: |
+      Match md5 verbatim label if in_labels is true
+    type: string
+    required: false
+  namespace_id:
+    description: |
+      Include metadata for associated identifier namespace by id.
+    type: integer
+    required: false
+  never_loaned:
+     description: |
+       Include metadata for collection objects never loaned.
+     type: string boolean
+     required: false
+  on_loan:
+    description: |
+      Include metadata for collection objects on loan.
+    type: string boolean
+    required: false
+#    example: "false"
+#  otu_descendants:
+#    description: |
+#      Include metadata for OTU decendants.
+#    type: string boolean
+#    required: false
+  otu_ids[]:
+    description: |
+      Filter by OTU IDs.
+    type: integer
+    required: false
+#    example: 1793
+  partial_overlap_dates:
+    description: |
+      Allow date overlap.
+    type: string boolean
+    required: false
+  preparation_type_id:
+    description: |
+      The ID for a single preparation type in the search.
+    type: integer
+    required: false
+  preparation_type_id[]:
+    description: |
+      The IDs for preparation types in the search.
+    type: integer
+    required: false
+  project_id:
+    description: |
+      The id for the project for the search.
+    type: integer
+    required: true
+    example: 4
+  radius:
+    description: |
+      Radius around location
+    type: string
+    required: false
+#  recent:
+#    description: |
+#      Include metadata for recent searches
+#    type: string boolean
+#    required: false
+  repository:
+    description: |
+      Include metadata for repository.
+    type: integer
+    required: false
+  repository_id:
+    description: |
+      Include metadata for repository by id.
+    type: integer
+    required: false
+#    example: 129
+  sled_image_id:
+    description: |
+      Include metadata for SLED images by id.
+    type: integer
+    required: false
+#    example: 1266
+  spatial_geographic_areas:
+    description: |
+      Find if associated collecting event has/not a geographic area.  Ignored if param not present.
+    type: string boolean
+    required: false
+  start_date:
+    description:
+      Limit search to dates later
+    type: string
+    required: false
+  taxon_determinations:
+    description:
+      Include taxon determinations.
+    type: string boolean
+    required: false
+  type_material:
+    description:
+      Include type material.
+    type: string boolean
+    required: false
+  type_specimen_taxon_name_id:
+    description: |
+      Include metadata for specific type taxon by id.
+    type: integer
+    required: false
+#    example: 1947
+  user_date_end:
+    description:
+      Limit search to user dates prior.
+    type: string
+    required: false
+  user_date_start:
+    description:
+      Limit search to user dates later.
+    type: string
+    required: false
+  user_id:
+    description:  |
+      ID of the user for date ranges.
+    type: string integer
+    required:  false
+  user_target:
+    description:  |
+      One of "created" or "updated"; if absent, both are searched.
+    type: string
+    required:  false
+  validity:
+    description: |
+      Include metadata for valid/invalid or ignore.  Used only in conjunction with ancestor_id.
+    type: string boolean
+    required: false
+#    example: "false"
+  with_buffered_collecting_event:
+    description: |
+      Return collection object with/without buffered collecting event.
+    type: string boolean
+    required: false
+  with_buffered_determinations:
+    description: |
+      Return collection object with/without buffered determinations.
+    type: string boolean
+    required: false
+  with_buffered_other_labels:
+    description: |
+      Return collection object with/without buffered other labels.
+    type: string boolean
+    required: false
+  wkt:
+    description: |
+      Well Known Text describing the search area.
+    type: string
+    required: false
+
+responses:
+  200:
+    body:
+      application/json:
+        type: CollectionObject[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/collection_objects-result-example.json
