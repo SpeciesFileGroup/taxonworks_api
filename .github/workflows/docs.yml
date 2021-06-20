@@ -1,0 +1,29 @@
+name: docs
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node 10
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10'
+
+      - name: Install Node packages
+        run: npm install
+          
+      - name: Build API docs
+        run: npx gulp apidoc
+      
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@bbdfb200618d235585ad98e965f4aafc39b4c501 # Pinning for security reasons (action not provided by GitHub)
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
