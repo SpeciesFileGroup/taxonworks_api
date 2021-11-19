@@ -1,5 +1,32 @@
 description: Returns a single TaxonName instance with related data included.
 queryParameters:
+  exact:
+    description: |
+      If true TaxonName.name must match the search term exactly to be returned (i.e. no fuzzy matching)
+    type: boolean
+    required: false
+    default: false
+    example: true
+  no_leaves:
+    description: |
+      If 'true' names with no children will be excluded.
+    type: boolean
+    required: false
+    example: true
+  nomenclature_group[]:
+    description: |
+      Filter by nomenclature group.
+    type: string array
+    items:
+      enum: [Higher, Family, Genus, Species]
+    required: false
+    example: "Genus&nomenclature_group[]=Species"
+  parent_id[]:
+    description: |
+      Filter by all children of these parents. Filter includes supplied parents.
+    type: integer[]
+    required: false
+#    example: [1, 5] not
   project_id:
     description: |
       Project identifier. In the absence of a project token you must provide this parameter.
@@ -15,42 +42,15 @@ queryParameters:
   type[]:
     description: |
       The type of TaxonName (e.g. Protonym, Combination).
-    type: array
+    type: string array
     required: false
-    example: [Combination, Hybrid]
-  exact:
-    description: |
-      If true TaxonName.name must match the search term exactly to be returned (i.e. no fuzzy matching)
-    type: boolean
-    required: false
-    default: false
-    example: true
+    example: "Combination&type[]=Protonym"
   valid:
     description: |
       Filter by validity. True if only valid, false if only invalid, nil if both
     type: string | nil
     required: false
     default: nil
-    example: true
-  parent_id[]:
-    description: |
-      Filter by all children of these parents. Filter includes supplied parents.
-    type: integer[]
-    required: false
-    example: [1, 5]
-  nomenclature_group[]:
-    description: |
-      Filter by nomenclature group.
-    type: array
-    items:
-      enum: [Higher, Family, Genus, Species]
-    required: false
-    example: [Genus, Species]
-  no_leaves:
-    description: |
-      If 'true' names with no children will be excluded.
-    type: boolean
-    required: false
     example: true
 responses:
   200:
