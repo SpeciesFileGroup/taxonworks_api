@@ -95,6 +95,11 @@ traits:
   user_tokenized: !include /traits/user_tokenized.raml
   pageable: !include /traits/pageable.raml
 
+/ New special parameters for model data requests:
+  description: |
+   Apply to many model data requests: extend[] and embed[] <br />
+    e.g., extend[]=citations will add any citation data to the response.<br />
+    embed[]=
 /:
   description: Base of the API. Includes an index of open projects indexed by project_token.
   get:
@@ -228,6 +233,23 @@ traits:
     is: [secured, project_tokenized]
     get:
       description: Returns Content instance data.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 2
+
+/data_attributes:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Data_attribute.html
+  type: collection
+  get: !include /traits/data_attributes-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns data_attributes instance data.
       queryParameters:
         project_id:
           description: |
@@ -406,7 +428,7 @@ traits:
     get: !include /traits/TaxonName-autocomplete.raml
   /{id}:
     is: [secured, project_tokenized]
-    get:
+    get: !include /traits/TaxonName123.raml
       description: Returns TaxonName instance data.
       queryParameters:
         project_id:
@@ -415,6 +437,8 @@ traits:
           type: integer
           required: false
           example: 1
-
+  /{id}/status:
+    get: !include /traits/TaxonName123status.raml
+      description: returns human-readable taxon name data and metadata
 
 
