@@ -245,7 +245,7 @@ traits:
   is: [secured, project_tokenized]
   description: See Overview at http://rdoc.taxonworks.org/Data_attribute.html
   type: collection
-  get: !include /traits/data_attributes-search.raml
+  get: !include /traits/Data_attributes-search.raml
   /{id}:
     is: [secured, project_tokenized]
     get:
@@ -310,6 +310,23 @@ traits:
     is: [secured, project_tokenized]
     get:
       description: Returns Note instance data.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 2
+
+/observation_matrices:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/ObservationMatrices.html
+  type: collection
+  get: !include /traits/Observation_matrices-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns Observation matrices data.
       queryParameters:
         project_id:
           description: |
