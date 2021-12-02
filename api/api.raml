@@ -245,18 +245,17 @@ traits:
   is: [secured, project_tokenized]
   description: See Overview at http://rdoc.taxonworks.org/Data_attribute.html
   type: collection
-  get: !include /traits/Data_attributes-search.raml
+  get: !include /traits/DataAttributes-search.raml
   /{id}:
     is: [secured, project_tokenized]
-    get:
+    get:  !include DataAttributesID-search.raml
       description: Returns data_attributes instance data.
       queryParameters:
-        project_id:
-          description: |
-            Project identifier. In the absence of a project token you must provide this parameter.
+        id:
+          description: Identifier.
           type: integer
           required: false
-          example: 2
+          example: 50111
 
 /downloads:
   is: [secured, project_tokenized]
@@ -322,7 +321,7 @@ traits:
   is: [secured, project_tokenized]
   description: See Overview at http://rdoc.taxonworks.org/ObservationMatrices.html
   type: collection
-  get: !include /traits/Observation_matrices-search.raml
+  get: !include /traits/ObservationMatrices-search.raml
   /{id}:
     is: [secured, project_tokenized]
     get:

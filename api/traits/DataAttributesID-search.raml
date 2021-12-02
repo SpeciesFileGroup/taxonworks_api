@@ -1,11 +1,10 @@
 is: [pageable: { default_per: 50, max_per: 1000 }]
 queryParameters:
-  project_id:
-    description: |
-      The project for the data attribute search
+  id:
+    description: The ID for the data atribute search
     type: integer
     required: true
-    example: 2
+    example: 50111
 
 responses:
   200:
@@ -14,4 +13,4 @@ responses:
         type: DataAttribute[]
         maxItems: 100
         uniqueItems: true
-        example: !include /examples/data_attributes-result-example.json
+        example: !include /examples/data_attributes_id-result-example.json

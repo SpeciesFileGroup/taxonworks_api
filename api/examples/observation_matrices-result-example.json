@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "id":8,"name":"matrix1",
+    "created_by_id":775,
+    "updated_by_id":775,
+    "project_id":262,
+    "created_at":"2020-06-29T16:09:39.944Z",
+    "updated_at":"2020-06-29T16:09:39.944Z",
+    "object_tag":"matrix1",
+    "object_label":null,
+    "global_id":"gid://taxon-works/ObservationMatrix/8",
+    "base_class":"ObservationMatrix","url_for":"https://sandbox.taxonworks.org/api/v1/observation_matrices",
+    "object_url":"/observation_matrices/8",
+    "is_media_matrix":true
+  }
+]
