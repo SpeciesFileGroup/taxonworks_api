@@ -248,7 +248,7 @@ traits:
   get: !include /traits/DataAttributes-search.raml
   /{id}:
     is: [secured, project_tokenized]
-    get:  !include DataAttributesID-search.raml
+    get: !include /traits/DataAttributesID-search.raml
       description: Returns data_attributes instance data.
       queryParameters:
         id:
