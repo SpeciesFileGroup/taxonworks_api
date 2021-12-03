@@ -10,10 +10,15 @@ This project <em>does not yet</em> adheres to [Semantic Versioning](https://semv
 ## [unreleased] - yyyy-mm-dd
 
 ### Added
+- data_attributes endpoint
+- observation_matrices endpoint
 - CHANGELOG.md
 - stubbed `/downloads/`
 
 ### Changed
+- minor adjustments to various endpoints
+- still struggling with extend/embed examples
+- still unsuccessful with /{id} result presentation
 - update to Ruby 2.7.1
 - update raml2html and corresponding slate packages
 - update bundle
