@@ -1,16 +1,5 @@
 [
   {
-    "id": 1,
-    "name": null,
-    "taxon_name_id": 46,
-    "created_by_id": 5,
-    "updated_by_id": 5,
-    "project_id": 2,
-    "created_at": "2020-09-17T02:19:43.367Z",
-    "updated_at": "2020-09-17T02:19:43.367Z",
-    "global_id": "gid://taxon-works/Otu/1"
-  },
-  {
     "id": 2,
     "name": "nympha maris",
     "taxon_name_id": 47,
@@ -20,17 +9,6 @@
     "created_at": "2020-09-17T02:19:43.419Z",
     "updated_at": "2020-09-17T02:19:43.419Z",
     "global_id": "gid://taxon-works/Otu/2"
-  },
-  {
-    "id": 3,
-    "name": null,
-    "taxon_name_id": 48,
-    "created_by_id": 5,
-    "updated_by_id": 5,
-    "project_id": 2,
-    "created_at": "2020-09-17T02:19:43.451Z",
-    "updated_at": "2020-09-17T02:19:43.451Z",
-    "global_id": "gid://taxon-works/Otu/3"
   },
   {
     "id": 8485,

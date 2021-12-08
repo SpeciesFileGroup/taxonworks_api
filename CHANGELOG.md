@@ -12,6 +12,7 @@ This project <em>does not yet</em> adheres to [Semantic Versioning](https://semv
 ### Added
 - data_attributes endpoint
 - observation_matrices endpoint
+- rollup of #2241, #2276, and #2277 branches
 - CHANGELOG.md
 - stubbed `/downloads/`
 
