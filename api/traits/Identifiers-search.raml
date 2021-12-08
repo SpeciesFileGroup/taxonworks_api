@@ -5,33 +5,28 @@ queryParameters:
       Search for
     type: string
     required: false
-#    example: "1540-7063"
   identifier_object_id:
     description: |
       Metadata for an ID of an object.
     type: integer
     required: false
-#    example:  47
   identifier_object_id[]:
     description: |
       Metadata for an array of IDs of objects
       identifier_object_id[]=47&identifier_object_id[]=2232.
     type: integer
     required: false
-#    example:  2322
   identifier_object_type:
     description: |
       Metadata for an object type, case sensitive.
     type: string
     required: false
-#    example:  "CollectionObject"
   identifier_object_type[]:
     description: |
       Metadata for an array of object types.
       ?identifier_object_type[]=CollectionObject&identifier_object_type[]=Serial
     type: string
     required: false
-    example:  "Serial"
   namespace_id:
     description: |
       The ID for the namespace name.
@@ -52,13 +47,11 @@ queryParameters:
       Filter by object global ID
     type: integer
     required: false
-#    example: 1793
   type:
     description: |
       Include metadata for a specific type, e.g, "Identifier::Local::CatalogNumber"
     type: string
     required: false
-#    example: "Identifier::Local::CatalogNumber"
 
 responses:
   200:

@@ -197,18 +197,11 @@ queryParameters:
       Include metadata for collection objects on loan.
     type: string boolean
     required: false
-#    example: "false"
-#  otu_descendants:
-#    description: |
-#      Include metadata for OTU decendants.
-#    type: string boolean
-#    required: false
   otu_ids[]:
     description: |
       Filter by OTU IDs.
     type: integer
     required: false
-#    example: 1793
   partial_overlap_dates:
     description: |
       Allow date overlap.
@@ -235,11 +228,6 @@ queryParameters:
       Radius around location
     type: string
     required: false
-#  recent:
-#    description: |
-#      Include metadata for recent searches
-#    type: string boolean
-#    required: false
   repository:
     description: |
       Include metadata for repository.
@@ -250,13 +238,11 @@ queryParameters:
       Include metadata for repository by id.
     type: integer
     required: false
-#    example: 129
   sled_image_id:
     description: |
       Include metadata for SLED images by id.
     type: integer
     required: false
-#    example: 1266
   spatial_geographic_areas:
     description: |
       Find if associated collecting event has/not a geographic area.  Ignored if param not present.
@@ -282,7 +268,6 @@ queryParameters:
       Include metadata for specific type taxon by id.
     type: integer
     required: false
-#    example: 1947
   user_date_end:
     description:
       Limit search to user dates prior.
@@ -308,7 +293,6 @@ queryParameters:
       Include metadata for valid/invalid or ignore.  Used only in conjunction with ancestor_id.
     type: string boolean
     required: false
-#    example: "false"
   with_buffered_collecting_event:
     description: |
       Return collection object with/without buffered collecting event.
