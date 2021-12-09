@@ -1,4 +1,4 @@
-is: [pageable: { default_per: 100, max_per: 1000 }]
+is: [pageable: { default_per: 50, max_per: 1000 }]
 queryParameters:
   collecting_events_wildcards[]:
     description: |
@@ -7,7 +7,6 @@ queryParameters:
       Instance Attribute Summary, which details columns of the collecting_events table.
     type: string array
     required: false
-#    example:  "?"
   collector_id:
     description:  |
       A single collector ID
@@ -38,19 +37,16 @@ queryParameters:
       List of geographic area IDs for search
     type: integer
     required: false
-#    example: 2593
   in_labels:
     description: |
       Wildcard wrapped match against any label
     type: string
     required: false
-#    example: "?"
   in_verbatim_locality:
     description: |
       Wildcard wrapped match against verbatim locality (via ATTRIBUTES)
     type: string
     required: false
-#    example: "?"
   keyword_id_and[]:
     description: |
       List of keyword IDs for associated collecting events where all enumerated keywords are present.
@@ -71,12 +67,10 @@ queryParameters:
       List of OTU IDs to all match.
     type: string integer array
     required: false
-#    example: 3809
   md5_verbatim_labels: |
       Include metadata for verbatim labels.
     type: string boolean
     required: false
-#    example: "false"
   radius:
     description: |
       Search area radius in meters.
@@ -88,16 +82,6 @@ queryParameters:
     type: string boolean
     required: false
     example: "false"
-#  spatial_geographic_area_id:
-#    description: |
-#      Reference a geographic_area in a spatial query
-#    type: string integer
-#    required: false
-#  spatial_geographic_area_id[]:
-#    description: |
-#      Reference a list of geographic areas in a spatial query
-#    type: string integer
-#    required: false
   spatial_geographic_areas:
     description: |
       Find CollectingEvents having spatial geographic areas

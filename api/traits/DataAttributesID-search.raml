@@ -1,0 +1,16 @@
+is: [pageable: { default_per: 50, max_per: 1000 }]
+queryParameters:
+  id:
+    description: The ID for the data atribute search
+    type: integer
+    required: true
+    example: 50111
+
+responses:
+  200:
+    body:
+      application/json:
+        type: DataAttribute[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/data_attributes_id-result-example.json

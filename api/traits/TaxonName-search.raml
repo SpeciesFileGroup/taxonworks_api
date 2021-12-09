@@ -1,4 +1,4 @@
-is: [pageable: { default_per: 100, max_per: 1000 }]
+is: [pageable: { default_per: 50, max_per: 1000 }]
 queryParameters:
   author:
     description: |
@@ -122,7 +122,7 @@ responses:
   200:
     body:
       application/json:
-        type: TaxonNameItem[]
+        type: TaxonName[]
         maxItems: 100
         uniqueItems: true
         example: !include /examples/taxon_names-result-example.json

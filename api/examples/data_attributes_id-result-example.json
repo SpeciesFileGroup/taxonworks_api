@@ -1,0 +1,21 @@
+{
+  "id": 50111,
+  "type": "InternalAttribute",
+  "attribute_subject_id": 3,
+  "attribute_subject_type": "Person",
+  "controlled_vocabulary_term_id": 42,
+  "import_predicate": null,
+  "value": "Dr.",
+  "created_at": "2016-09-28T14:40:29.862Z",
+  "updated_at": "2016-09-28T14:40:29.862Z",
+  "created_by_id": 3,
+  "updated_by_id": 3,
+  "project_id": 1,
+  "predicate_name": "Honorarium",
+  "object_tag": "<b>Honorarium:</b>Dr.",
+  "object_label": null,
+  "global_id": "gid://taxon-works/InternalAttribute/50111",
+  "base_class": "DataAttribute",
+  "url_for": "https://sandbox.taxonworks.org/api/v1/data_attributes/50111",
+  "object_url": "/data_attributes/50111"
+}

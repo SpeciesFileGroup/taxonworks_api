@@ -95,6 +95,11 @@ traits:
   user_tokenized: !include /traits/user_tokenized.raml
   pageable: !include /traits/pageable.raml
 
+/ New special parameters for model data requests:
+  description: |
+   Apply to many model data requests: extend[] and embed[] <br />
+    e.g., extend[]=citations will add any citation data to the response.<br />
+    embed[]= adds a data attribute at the base of the response.
 /:
   description: Base of the API. Includes an index of open projects indexed by project_token.
   get:
@@ -148,120 +153,22 @@ traits:
             example:
               {"success": true}
 
-/otus:
+/asserted_distributions:
   is: [secured, project_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/Otu.html
-#  securedBy: token
+  description: See Overview at http://rdoc.taxonworks.org/AssertedDistribution.html
   type: collection
-  get: !include /traits/Otus-search.raml
-  /autocomplete:
-    is: [secured, project_tokenized]
-    get: !include /traits/Otus-autocomplete.raml
+  get: !include /traits/AssertedDistributions-search.raml
   /{id}:
     is: [secured, project_tokenized]
     get:
-      description: Returns OTU instance data.
-
-/downloads:
-  is: [secured, project_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/Download.html
-  type: collection
-  /{id}:
-    is: [secured, project_tokenized]
-    get:
-      description: Returns Download metadata instance
+      description: Returns AssertedDistribution instance data.
       queryParameters:
         project_id:
           description: |
             Project identifier. In the absence of a project token you must provide this parameter.
           type: integer
           required: false
-          example: 1
-
-/taxon_names:
-  is: [secured, project_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/TaxonName.html
-  type: collection
-  get: !include /traits/TaxonName-search.raml
-  /autocomplete:
-    is: [secured, project_tokenized]
-    get: !include /traits/TaxonName-autocomplete.raml
-  /{id}:
-    is: [secured, project_tokenized]
-    get:
-      description: Returns TaxonName instance data.
-      queryParameters:
-        project_id:
-          description: |
-            Project identifier. In the absence of a project token you must provide this parameter.
-          type: integer
-          required: false
-          example: 1
-
-/sources:
-  is: [secured, project_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/Source.html
-  type: collection
-  get:  !include /traits/Sources-search.raml
-  /{id}:
-    is: [secured, project_tokenized]
-    get:
-      description: Returns array of Sources metadata
-
-/people:
-  is: [secured, user_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/Person.html
-  type: collection
-  get:  !include /traits/People-search.raml
-  /{id}:
-    is: [secured, user_tokenized]
-    get:
-      description: returns array of people for this ID
-#  /first_name:
-#    is: [secured, user_tokenized]
-#    get:
-#      description: returns array of people matching first name
-#      type: string
-#      example:  "David"
-#  /last_name:
-#    is: [secured, user_tokenized]
-#    get:
-#      description: returns array of people matching last name
-#  /last_name_starts_with:
-#    is: [secured, user_tokenized]
-#    get:
-#      description: returns array of people matching request parameters
-
-
-/collection_objects:
-  is: [secured, user_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/CollectionObject.html
-  type: collection
-  get:  !include /traits/CollectionObjects-search.raml
-  /{id}:
-    is: [secured, project_tokenized]
-    get:
-      description: Returns collection objects metadata for this ID
-
-/identifers:
-  is: [secured, user_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/Identifier.html
-  type: collection
-  get:  !include /traits/Identifiers-search.raml
-  /{id}:
-    is: [secured, project_tokenized]
-      get:
-        description: Returns Identifiers metadata for this ID - caution, project-agnostic identifiers not returned.
-
-/collecting_events:
-  is: [secured, user_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/CollectingEvent.html
-  type: collection
-  get:  !include /traits/CollectingEvents-search.raml
-  /{id}:
-    is: [secured, project_tokenized]
-      get:
-        description: Returns Identifiers metadata for this ID - caution, project-agnostic identifiers not returned.
+          example: 4
 
 /biological_associations:
   is: [secured, project_tokenized]
@@ -297,15 +204,94 @@ traits:
           required: false
           example: 4
 
-/asserted_distributions:
-  is: [secured, project_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/AssertedDistribution.html
+/collecting_events:
+  is: [secured, user_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/CollectingEvent.html
   type: collection
-  get: !include /traits/AssertedDistributions-search.raml
+  get:  !include /traits/CollectingEvents-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+      get:
+        description: Returns Identifiers metadata for this ID - caution, project-agnostic identifiers not returned.
+
+/collection_objects:
+  is: [secured, user_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/CollectionObject.html
+  type: collection
+  get:  !include /traits/CollectionObjects-search.raml
   /{id}:
     is: [secured, project_tokenized]
     get:
-      description: Returns AssertedDistribution instance data.
+      description: Returns collection objects metadata for this ID
+
+/contents:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Content.html
+  type: collection
+  get: !include /traits/Contents-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns Content instance data.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 2
+
+/data_attributes:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Data_attribute.html
+  type: collection
+  get: !include /traits/DataAttributes-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get: !include /traits/DataAttributesID-search.raml
+      description: Returns data_attributes instance data.
+      queryParameters:
+        id:
+          description: Identifier.
+          type: integer
+          required: false
+          example: 50111
+
+/downloads:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Download.html
+  type: collection
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns Download metadata instance
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 1
+
+/identifers:
+  is: [secured, user_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Identifier.html
+  type: collection
+  get:  !include /traits/Identifiers-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+      get:
+        description: Returns Identifiers metadata for this ID - caution, project-agnostic identifiers not returned.
+
+/images:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Observation.html
+  type: collection
+  get: !include /traits/Images-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns Observation instance data.
       queryParameters:
         project_id:
           description: |
@@ -331,15 +317,15 @@ traits:
           required: false
           example: 2
 
-/contents:
+/observation_matrices:
   is: [secured, project_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/Content.html
+  description: See Overview at http://rdoc.taxonworks.org/ObservationMatrices.html
   type: collection
-  get: !include /traits/Contents-search.raml
+  get: !include /traits/ObservationMatrices-search.raml
   /{id}:
     is: [secured, project_tokenized]
     get:
-      description: Returns Content instance data.
+      description: Returns Observation matrices data.
       queryParameters:
         project_id:
           description: |
@@ -365,22 +351,54 @@ traits:
           required: false
           example: 4
 
-/images:
+/otus:
   is: [secured, project_tokenized]
-  description: See Overview at http://rdoc.taxonworks.org/Observation.html
+  description: See Overview at http://rdoc.taxonworks.org/Otu.html
+#  securedBy: token
   type: collection
-  get: !include /traits/Images-search.raml
+  get: !include /traits/Otus-search.raml
+  /autocomplete:
+    is: [secured, project_tokenized]
+    get: !include /traits/Otus-autocomplete.raml
   /{id}:
     is: [secured, project_tokenized]
     get:
-      description: Returns Observation instance data.
-      queryParameters:
-        project_id:
-          description: |
-            Project identifier. In the absence of a project token you must provide this parameter.
-          type: integer
-          required: false
-          example: 4
+      description: Returns OTU instance data.
+
+/people:
+  is: [secured, user_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Person.html
+  type: collection
+  get:  !include /traits/People-search.raml
+  /{id}:
+    is: [secured, user_tokenized]
+    get:
+      description: returns array of people for this ID
+#  /first_name:
+#    is: [secured, user_tokenized]
+#    get:
+#      description: returns array of people matching first name
+#      type: string
+#      example:  "David"
+#  /last_name:
+#    is: [secured, user_tokenized]
+#    get:
+#      description: returns array of people matching last name
+#  /last_name_starts_with:
+#    is: [secured, user_tokenized]
+#    get:
+#      description: returns array of people matching request parameters
+
+
+/sources:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/Source.html
+  type: collection
+  get:  !include /traits/Sources-search.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns array of Sources metadata
 
 /taxon_name_classifications:
   is: [secured, project_tokenized]
@@ -415,5 +433,28 @@ traits:
           type: integer
           required: false
           example: 2
+
+/taxon_names:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/TaxonName.html
+  type: collection
+  get: !include /traits/TaxonName-search.raml
+  /autocomplete:
+    is: [secured, project_tokenized]
+    get: !include /traits/TaxonName-autocomplete.raml
+  /{id}:
+    is: [secured, project_tokenized]
+    get: !include /traits/TaxonName123.raml
+      description: Returns TaxonName instance data.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
+          example: 1
+  /{id}/status:
+    get: !include /traits/TaxonName123status.raml
+      description: returns human-readable taxon name data and metadata
 
 

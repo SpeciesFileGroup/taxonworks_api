@@ -1,8 +1,13 @@
-is: [pageable: { default_per: 100, max_per: 1000 }]
+is: [pageable: { default_per: 50, max_per: 1000 }]
 queryParameters:
   asserted_distribution_ids[]:
     description: |
       List of asserted distribution IDs.
+    type: string integer array
+    required: false
+  biological_association_ids[]:
+    description: |
+      List of biological_association IDs (via &extend[]=biological_association_ids).
     type: string integer array
     required: false
   data_attributes_attributes:
@@ -50,7 +55,7 @@ responses:
   200:
     body:
       application/json:
-        type: Person[]
+        type: Otu[]
         maxItems: 100
         uniqueItems: true
         example: !include /examples/otus-result-example.json

@@ -1,4 +1,4 @@
-is: [pageable: { default_per: 100, max_per: 1000 }]
+is: [pageable: { default_per: 50, max_per: 1000 }]
 queryParameters:
   geographic_area_id:
     description: |
@@ -8,10 +8,14 @@ queryParameters:
     example: 33609
   otu_id:
     description: |
-      Identifier for the otu for which the distribution is asserted.
+      Identifier for the otu for which distribution is asserted.
     type: integer
     required: false
-    example: 24061
+  otu_id[]:
+    description: |
+      Array of identifier IDs for otus for which distribution is asserted.
+    type: integer array
+    required: false
   recent:
     description: |
       Include recent searchs?.

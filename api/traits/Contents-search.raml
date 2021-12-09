@@ -1,4 +1,4 @@
-is: [pageable: { default_per: 100, max_per: 1000 }]
+is: [pageable: { default_per: 50, max_per: 1000 }]
 queryParameters:
   citations:
     description: |
@@ -12,7 +12,7 @@ queryParameters:
     required: false
   exact:
     description: |
-      Description needed !
+      The string in the content should match exactly.
     type: string boolean
     required: false
   otu_id:

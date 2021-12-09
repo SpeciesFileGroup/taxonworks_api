@@ -1,4 +1,4 @@
-is: [pageable: { default_per: 100, max_per: 1000 }]
+is: [pageable: { default_per: 50, max_per: 1000 }]
 queryParameters:
   ancestor_id_target:
     description:  |
@@ -101,16 +101,6 @@ queryParameters:
       List of IDs for specific taxon names
     type: string integer array
     required: false
-  user_id: # user
-    description: |
-      ID for a user
-    type: string integer
-    required: false
-  user_target:
-    description: |
-      one of "created" or "updated"; if absent, both are searched
-    type: string
-    required: false
   user_date_end:
     description:
       Limit search to user dates prior
@@ -119,6 +109,16 @@ queryParameters:
   user_date_start:
     description:
       Limit search to user dates later
+    type: string
+    required: false
+  user_id: # user
+    description: |
+      ID for a user
+    type: string integer
+    required: false
+  user_target:
+    description: |
+      one of "created" or "updated"; if absent, both are searched
     type: string
     required: false
 
