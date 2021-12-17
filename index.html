@@ -5035,19 +5035,20 @@ API console build ready.
 Thanks for using our API tools!
 
 Files in this directory are available under the following URLs
-      applications: http://127.0.0.1:8081</code></pre><p><strong>NOTE</strong>: It might display a white screen when the browser opens the URL (specially true with Firefox, Chrome seems inmune to this problem). Refresh a few times until it shows the documentation.</p></div></div><h1 id="other-endpoints">Other endpoints</h1><div class="set"><div class="set-description"><p>From your terminal within the <em>source</em> directory (not this repo) use <code>rake routes</code> to get a list of all endpoints. Endpoints are defined as Rails routes in <code>/config/routes/api*</code>.</p></div></div><h1 id="types">Types</h1><div class="set"><div class="set-description"><h2 id="type-taxonnameitem">TaxonNameItem</h2><br><p><strong><em><big>Properties</big></em></strong></p></div><div class="set-examples"><blockquote><h3 class="toc-ignore">TYPE DEFINITION</h3></blockquote><div class="languagebox"><pre><code>{
-  &quot;name&quot;: &quot;TaxonNameItem&quot;,
+      applications: http://127.0.0.1:8081</code></pre><p><strong>NOTE</strong>: It might display a white screen when the browser opens the URL (specially true with Firefox, Chrome seems inmune to this problem). Refresh a few times until it shows the documentation.</p></div></div><h1 id="other-endpoints">Other endpoints</h1><div class="set"><div class="set-description"><p>From your terminal within the <em>source</em> directory (not this repo) use <code>rake routes</code> to get a list of all endpoints. Endpoints are defined as Rails routes in <code>/config/routes/api*</code>.</p></div></div><h1 id="types">Types</h1><div class="set"><div class="set-description"><h2 id="type-taxonname">TaxonName</h2><br><p><strong><em><big>Properties</big></em></strong></p><p><strong>cached</strong><br></p><p>Genus-species combination for genus and lower, monomial for higher. The string has NO html, and no author/year.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr></tbody></table><p><strong>cached_author_year</strong><br></p><p>Author and year string with parentheses where necessary, i.e. with context of present placement for ICZN.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>union</td></tr></tbody></table><p><strong>cached_html</strong><br></p><p>As in <code>cached</code> but with <i></i> tags.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr></tbody></table><p><strong>etymology</strong><br></p><p>The derivation and history of the name in written form.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr></tbody></table><p><strong>feminine_name</strong><br></p><p>Species name which are adjective or participle change depending on the gender of the genus. 3 fields provide alternative species spelling. The part_of_speech is designated as a taxon_name_classification. The gender of a genus also designated as a taxon_name_classification.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr></tbody></table><p><strong>id</strong><br></p><p>TaxonName instance identifier</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>number</td></tr><tr><td><em>examples</em></td><td><code>25225</code></td></tr></tbody></table><p><strong>masculine_name</strong><br></p><p>Species name which are adjective or participle change depending on the gender of the genus. 3 fields provide alternative species spelling. The part_of_speech is designated as a taxon_name_classification. The gender of a genus also designated as a taxon_name_classification.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr></tbody></table><p><strong>neuter_name</strong><br></p><p>Species name which are adjective or participle change depending on the gender of the genus. 3 fields provide alternative species spelling. The part_of_speech is designated as a taxon_name_classification. The gender of a genus also designated as a taxon_name_classification.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr></tbody></table><p><strong>name</strong><br></p><p>The fully latinized string (monomimial) of a code governed taxonomic biological name not applicable for Combinations, they are derived from their pieces.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr><tr><td><em>examples</em></td><td><code>asymmetricus</code></td></tr></tbody></table><p><strong>name_string</strong><br></p><p>The current name/combination with author year, without HTML.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr></tbody></table><p><strong>nomenclatural_code</strong><br></p><p>The name of the nomenclatural code, as a short symbol (:iczn, :icn), or nil</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>union</td></tr></tbody></table><p><strong>original_combination</strong><br></p><p>The name in original combination, with author year, with HTML.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr></tbody></table><p><strong>parent_id</strong><br></p><p>The id of the parent taxon. The parent child relationship is exclusively organizational. All statuses and relationships of a taxon name must be explicitly defined via taxon name relationships or classifications. The parent of a taxon name can be thought of as &quot;the place where you&#39;d find this name in a hierarchy if you knew literally <em>nothing</em> else about that name.&quot; In practice read each monomial in the name (protonym or combination) from right to left, the parent is the parent of the last monomial read. There are 3 simple rules for determening the parent of a Protonym or Combination:</p><p>1) the parent must always be at least one rank higher than the target names rank 2) the parent of a synonym (any sense) is the parent of the synonym&#39;s valid name 3) the parent of a combination is the parent of the highest ranked monomial in the epithet (almost always the parent of the genus)</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>integer</td></tr><tr><td><em>examples</em></td><td><code>2</code></td></tr></tbody></table><p><strong>project_id</strong><br></p><p>The project ID</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>integer</td></tr></tbody></table><p><strong>rank_string</strong><br></p><p>Rank (Kindom, Phylum...) as a string, like {NomenclaturalRank::Iczn::SpeciesGroup::Species}</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr></tbody></table><p><strong>type</strong><br></p><p>The subclass of this taxon name, e.g. Protonym or Combination.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr></tbody></table><p><strong>verbatim_author</strong><br></p><p>The verbatim author string as provided ? is not post-filled in when Source is referenced !?</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr></tbody></table><p><strong>verbatim_name</strong><br></p><p>A representation of what the combination (fully spelled out) or protonym (monomial) <em>looked like</em> in its originating publication. The sole purpose of this string is to represent visual differences from what is recorded in the latinized version of the name (Protonym#name, Combination#cached) from what was originally transcribed. This string should NOT include the author year (see verbatim_author and year_of_publication for those data).</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr></tbody></table><p><strong>year_of_publication</strong><br></p><p>Sensu ICZN - the 4 digit year when this name was published, i.e. made available. Not the publishers date stamped on the title page, but the actual date of publication. Precedence for taxon name publication year is TaxonName#year_of_publication, Source#year, Source#stated_year.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>integer</td></tr><tr><td><em>examples</em></td><td><code>nil</code></td></tr></tbody></table></div><div class="set-examples"><blockquote><h3 class="toc-ignore">TYPE DEFINITION</h3></blockquote><div class="languagebox"><pre><code>{
+  &quot;name&quot;: &quot;TaxonName&quot;,
   &quot;type&quot;: &quot;object&quot;,
-  &quot;properties&quot;: {
-    &quot;cached&quot;: {
+  &quot;properties&quot;: [
+    {
       &quot;type&quot;: &quot;string&quot;,
       &quot;name&quot;: &quot;cached&quot;,
       &quot;displayName&quot;: &quot;cached&quot;,
       &quot;typePropertyKind&quot;: &quot;TYPE_EXPRESSION&quot;,
       &quot;required&quot;: true,
-      &quot;description&quot;: &quot;Genus-species combination for genus and lower, monomial for higher. The string has NO html, and no author/year.\n&quot;
+      &quot;description&quot;: &quot;Genus-species combination for genus and lower, monomial for higher. The string has NO html, and no author/year.\n&quot;,
+      &quot;key&quot;: &quot;cached&quot;
     },
-    &quot;cached_author_year&quot;: {
+    {
       &quot;anyOf&quot;: [
         {
           &quot;type&quot;: &quot;string&quot;
@@ -5064,33 +5065,37 @@ Files in this directory are available under the following URLs
       &quot;description&quot;: &quot;Author and year string with parentheses where necessary, i.e. with context of present placement for ICZN.\n&quot;,
       &quot;fixedFacets&quot;: {
         &quot;description&quot;: &quot;Author and year string with parentheses where necessary, i.e. with context of present placement for ICZN.\n&quot;
-      }
+      },
+      &quot;key&quot;: &quot;cached_author_year&quot;
     },
-    &quot;cached_html&quot;: {
+    {
       &quot;type&quot;: &quot;string&quot;,
       &quot;name&quot;: &quot;cached_html&quot;,
       &quot;displayName&quot;: &quot;cached_html&quot;,
       &quot;typePropertyKind&quot;: &quot;TYPE_EXPRESSION&quot;,
       &quot;required&quot;: true,
-      &quot;description&quot;: &quot;As in `cached` but with &lt;i&gt;&lt;/i&gt; tags.\n&quot;
+      &quot;description&quot;: &quot;As in `cached` but with &lt;i&gt;&lt;/i&gt; tags.\n&quot;,
+      &quot;key&quot;: &quot;cached_html&quot;
     },
-    &quot;etymology&quot;: {
+    {
       &quot;type&quot;: &quot;string&quot;,
       &quot;name&quot;: &quot;etymology&quot;,
       &quot;displayName&quot;: &quot;etymology&quot;,
       &quot;typePropertyKind&quot;: &quot;TYPE_EXPRESSION&quot;,
       &quot;required&quot;: true,
-      &quot;description&quot;: &quot;The derivation and history of the name in written form.\n&quot;
+      &quot;description&quot;: &quot;The derivation and history of the name in written form.\n&quot;,
+      &quot;key&quot;: &quot;etymology&quot;
     },
-    &quot;feminine_name&quot;: {
+    {
       &quot;type&quot;: &quot;string&quot;,
       &quot;name&quot;: &quot;feminine_name&quot;,
       &quot;displayName&quot;: &quot;feminine_name&quot;,
       &quot;typePropertyKind&quot;: &quot;TYPE_EXPRESSION&quot;,
       &quot;required&quot;: true,
-      &quot;description&quot;: &quot;Species name which are adjective or participle change depending on the gender of the genus.\n3 fields provide alternative species spelling. The part_of_speech is designated as a taxon_name_classification.\nThe gender of a genus also designated as a taxon_name_classification.\n&quot;
+      &quot;description&quot;: &quot;Species name which are adjective or participle change depending on the gender of the genus.\n3 fields provide alternative species spelling. The part_of_speech is designated as a taxon_name_classification.\nThe gender of a genus also designated as a taxon_name_classification.\n&quot;,
+      &quot;key&quot;: &quot;feminine_name&quot;
     },
-    &quot;id&quot;: {
+    {
       &quot;type&quot;: &quot;number&quot;,
       &quot;name&quot;: &quot;id&quot;,
       &quot;displayName&quot;: &quot;id&quot;,
@@ -5104,25 +5109,28 @@ Files in this directory are available under the following URLs
           &quot;name&quot;: null,
           &quot;structuredValue&quot;: 25225
         }
-      ]
+      ],
+      &quot;key&quot;: &quot;id&quot;
     },
-    &quot;masculine_name&quot;: {
+    {
       &quot;type&quot;: &quot;string&quot;,
       &quot;name&quot;: &quot;masculine_name&quot;,
       &quot;displayName&quot;: &quot;masculine_name&quot;,
       &quot;typePropertyKind&quot;: &quot;TYPE_EXPRESSION&quot;,
       &quot;required&quot;: true,
-      &quot;description&quot;: &quot;Species name which are adjective or participle change depending on the gender of the genus.\n3 fields provide alternative species spelling. The part_of_speech is designated as a taxon_name_classification.\nThe gender of a genus also designated as a taxon_name_classification.\n&quot;
+      &quot;description&quot;: &quot;Species name which are adjective or participle change depending on the gender of the genus.\n3 fields provide alternative species spelling. The part_of_speech is designated as a taxon_name_classification.\nThe gender of a genus also designated as a taxon_name_classification.\n&quot;,
+      &quot;key&quot;: &quot;masculine_name&quot;
     },
-    &quot;neuter_name&quot;: {
+    {
       &quot;type&quot;: &quot;string&quot;,
       &quot;name&quot;: &quot;neuter_name&quot;,
       &quot;displayName&quot;: &quot;neuter_name&quot;,
       &quot;typePropertyKind&quot;: &quot;TYPE_EXPRESSION&quot;,
       &quot;required&quot;: true,
-      &quot;description&quot;: &quot;Species name which are adjective or participle change depending on the gender of the genus.\n3 fields provide alternative species spelling. The part_of_speech is designated as a taxon_name_classification.\nThe gender of a genus also designated as a taxon_name_classification.\n&quot;
+      &quot;description&quot;: &quot;Species name which are adjective or participle change depending on the gender of the genus.\n3 fields provide alternative species spelling. The part_of_speech is designated as a taxon_name_classification.\nThe gender of a genus also designated as a taxon_name_classification.\n&quot;,
+      &quot;key&quot;: &quot;neuter_name&quot;
     },
-    &quot;name&quot;: {
+    {
       &quot;type&quot;: &quot;string&quot;,
       &quot;name&quot;: &quot;name&quot;,
       &quot;displayName&quot;: &quot;name&quot;,
@@ -5136,17 +5144,19 @@ Files in this directory are available under the following URLs
           &quot;name&quot;: null,
           &quot;structuredValue&quot;: &quot;asymmetricus&quot;
         }
-      ]
+      ],
+      &quot;key&quot;: &quot;name&quot;
     },
-    &quot;name_string&quot;: {
+    {
       &quot;type&quot;: &quot;string&quot;,
       &quot;name&quot;: &quot;name_string&quot;,
       &quot;displayName&quot;: &quot;name_string&quot;,
       &quot;typePropertyKind&quot;: &quot;TYPE_EXPRESSION&quot;,
       &quot;required&quot;: true,
-      &quot;description&quot;: &quot;The current name/combination with author year, without HTML.\n&quot;
+      &quot;description&quot;: &quot;The current name/combination with author year, without HTML.\n&quot;,
+      &quot;key&quot;: &quot;name_string&quot;
     },
-    &quot;nomenclatural_code&quot;: {
+    {
       &quot;anyOf&quot;: [
         {
           &quot;type&quot;: &quot;string&quot;
@@ -5163,17 +5173,19 @@ Files in this directory are available under the following URLs
       &quot;description&quot;: &quot;The name of the nomenclatural code, as a short symbol (:iczn, :icn), or nil\n&quot;,
       &quot;fixedFacets&quot;: {
         &quot;description&quot;: &quot;The name of the nomenclatural code, as a short symbol (:iczn, :icn), or nil\n&quot;
-      }
+      },
+      &quot;key&quot;: &quot;nomenclatural_code&quot;
     },
-    &quot;original_combination&quot;: {
+    {
       &quot;type&quot;: &quot;string&quot;,
       &quot;name&quot;: &quot;original_combination&quot;,
       &quot;displayName&quot;: &quot;original_combination&quot;,
       &quot;typePropertyKind&quot;: &quot;TYPE_EXPRESSION&quot;,
       &quot;required&quot;: true,
-      &quot;description&quot;: &quot;The name in original combination, with author year, with HTML.\n&quot;
+      &quot;description&quot;: &quot;The name in original combination, with author year, with HTML.\n&quot;,
+      &quot;key&quot;: &quot;original_combination&quot;
     },
-    &quot;parent_id&quot;: {
+    {
       &quot;type&quot;: &quot;integer&quot;,
       &quot;name&quot;: &quot;parent_id&quot;,
       &quot;displayName&quot;: &quot;parent_id&quot;,
@@ -5187,49 +5199,55 @@ Files in this directory are available under the following URLs
           &quot;name&quot;: null,
           &quot;structuredValue&quot;: 2
         }
-      ]
+      ],
+      &quot;key&quot;: &quot;parent_id&quot;
     },
-    &quot;project_id&quot;: {
+    {
       &quot;type&quot;: &quot;integer&quot;,
       &quot;name&quot;: &quot;project_id&quot;,
       &quot;displayName&quot;: &quot;project_id&quot;,
       &quot;typePropertyKind&quot;: &quot;TYPE_EXPRESSION&quot;,
       &quot;required&quot;: true,
-      &quot;description&quot;: &quot;The project ID\n&quot;
+      &quot;description&quot;: &quot;The project ID\n&quot;,
+      &quot;key&quot;: &quot;project_id&quot;
     },
-    &quot;rank_string&quot;: {
+    {
       &quot;type&quot;: &quot;string&quot;,
       &quot;name&quot;: &quot;rank_string&quot;,
       &quot;displayName&quot;: &quot;rank_string&quot;,
       &quot;typePropertyKind&quot;: &quot;TYPE_EXPRESSION&quot;,
       &quot;required&quot;: true,
-      &quot;description&quot;: &quot;Rank (Kindom, Phylum...) as a string, like {NomenclaturalRank::Iczn::SpeciesGroup::Species}\n&quot;
+      &quot;description&quot;: &quot;Rank (Kindom, Phylum...) as a string, like {NomenclaturalRank::Iczn::SpeciesGroup::Species}\n&quot;,
+      &quot;key&quot;: &quot;rank_string&quot;
     },
-    &quot;type&quot;: {
+    {
       &quot;type&quot;: &quot;string&quot;,
       &quot;name&quot;: &quot;type&quot;,
       &quot;displayName&quot;: &quot;type&quot;,
       &quot;typePropertyKind&quot;: &quot;TYPE_EXPRESSION&quot;,
       &quot;required&quot;: true,
-      &quot;description&quot;: &quot;The subclass of this taxon name, e.g. Protonym or Combination.\n&quot;
+      &quot;description&quot;: &quot;The subclass of this taxon name, e.g. Protonym or Combination.\n&quot;,
+      &quot;key&quot;: &quot;type&quot;
     },
-    &quot;verbatim_author&quot;: {
+    {
       &quot;type&quot;: &quot;string&quot;,
       &quot;name&quot;: &quot;verbatim_author&quot;,
       &quot;displayName&quot;: &quot;verbatim_author&quot;,
       &quot;typePropertyKind&quot;: &quot;TYPE_EXPRESSION&quot;,
       &quot;required&quot;: true,
-      &quot;description&quot;: &quot;The verbatim author string as provided ? is not post-filled in when Source is referenced !?\n&quot;
+      &quot;description&quot;: &quot;The verbatim author string as provided ? is not post-filled in when Source is referenced !?\n&quot;,
+      &quot;key&quot;: &quot;verbatim_author&quot;
     },
-    &quot;verbatim_name&quot;: {
+    {
       &quot;type&quot;: &quot;string&quot;,
       &quot;name&quot;: &quot;verbatim_name&quot;,
       &quot;displayName&quot;: &quot;verbatim_name&quot;,
       &quot;typePropertyKind&quot;: &quot;TYPE_EXPRESSION&quot;,
       &quot;required&quot;: true,
-      &quot;description&quot;: &quot;A representation of what the combination (fully spelled out) or protonym (monomial) *looked like* in its originating publication.\nThe sole purpose of this string is to represent visual differences from what is recorded in the\nlatinized version of the name (Protonym#name, Combination#cached) from what was originally transcribed.\nThis string should NOT include the author year (see verbatim_author and year_of_publication for those data).\n&quot;
+      &quot;description&quot;: &quot;A representation of what the combination (fully spelled out) or protonym (monomial) *looked like* in its originating publication.\nThe sole purpose of this string is to represent visual differences from what is recorded in the\nlatinized version of the name (Protonym#name, Combination#cached) from what was originally transcribed.\nThis string should NOT include the author year (see verbatim_author and year_of_publication for those data).\n&quot;,
+      &quot;key&quot;: &quot;verbatim_name&quot;
     },
-    &quot;year_of_publication&quot;: {
+    {
       &quot;type&quot;: &quot;integer&quot;,
       &quot;name&quot;: &quot;year_of_publication&quot;,
       &quot;displayName&quot;: &quot;year_of_publication&quot;,
@@ -5243,14 +5261,21 @@ Files in this directory are available under the following URLs
           &quot;name&quot;: null,
           &quot;structuredValue&quot;: &quot;nil&quot;
         }
-      ]
+      ],
+      &quot;key&quot;: &quot;year_of_publication&quot;
     }
-  }
-}</code></pre></div></div></div><hr><div class="set"><div class="set-description"><h2 id="type-taxonnameautocompleteitem">TaxonNameAutocompleteItem</h2><br><p><strong><em><big>Properties</big></em></strong></p></div><div class="set-examples"><blockquote><h3 class="toc-ignore">TYPE DEFINITION</h3></blockquote><div class="languagebox"><pre><code>{
-  &quot;name&quot;: &quot;TaxonNameAutocompleteItem&quot;,
+  ]
+}</code></pre></div></div></div><hr><div class="set"><div class="set-description"><h2 id="type-taxonnameautocomplete">TaxonNameAutocomplete</h2><br><p><strong><em><big>Properties</big></em></strong></p><p><strong>id</strong><br></p><p>TaxonName instance identifier</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>number</td></tr><tr><td><em>examples</em></td><td><code>11877</code></td></tr></tbody></table><p><strong>label</strong><br></p><p>Plaintext label for the taxon name comprised of both scientific name and authorship.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr><tr><td><em>examples</em></td><td><code>Jivarus Giglio-Tos, 1898</code></td></tr></tbody></table><p><strong>label_html</strong><br></p><p>HTML-formatted label for the taxon name comprised of both scientific name and authorship.</p><p></p><table><thead><th>Property</th><th style="width: 99%">Value</th></thead><tbody><tr><td><em>required</em></td><td>true</td></tr><tr><td><em>type</em></td><td>string</td></tr><tr><td><em>examples</em></td><td><code><span class="klass">
+  <i><mark>Jivarus</mark></i> Giglio-Tos, 1898</span>&nbsp;
+  <span class="feedback feedback-info feedback-thin">genus</span>&nbsp;
+  <span class="feedback feedback-secondary feedback-thin">Jivarini</span>&nbsp;
+  <span class="feedback feedback-notice feedback-thin">Jivarus
+</span>
+</code></td></tr></tbody></table></div><div class="set-examples"><blockquote><h3 class="toc-ignore">TYPE DEFINITION</h3></blockquote><div class="languagebox"><pre><code>{
+  &quot;name&quot;: &quot;TaxonNameAutocomplete&quot;,
   &quot;type&quot;: &quot;object&quot;,
-  &quot;properties&quot;: {
-    &quot;id&quot;: {
+  &quot;properties&quot;: [
+    {
       &quot;type&quot;: &quot;number&quot;,
       &quot;name&quot;: &quot;id&quot;,
       &quot;displayName&quot;: &quot;id&quot;,
@@ -5264,9 +5289,10 @@ Files in this directory are available under the following URLs
           &quot;name&quot;: null,
           &quot;structuredValue&quot;: 11877
         }
-      ]
+      ],
+      &quot;key&quot;: &quot;id&quot;
     },
-    &quot;label&quot;: {
+    {
       &quot;type&quot;: &quot;string&quot;,
       &quot;name&quot;: &quot;label&quot;,
       &quot;displayName&quot;: &quot;label&quot;,
@@ -5280,9 +5306,10 @@ Files in this directory are available under the following URLs
           &quot;name&quot;: null,
           &quot;structuredValue&quot;: &quot;Jivarus Giglio-Tos, 1898&quot;
         }
-      ]
+      ],
+      &quot;key&quot;: &quot;label&quot;
     },
-    &quot;label_html&quot;: {
+    {
       &quot;type&quot;: &quot;string&quot;,
       &quot;name&quot;: &quot;label_html&quot;,
       &quot;displayName&quot;: &quot;label_html&quot;,
@@ -5296,9 +5323,10 @@ Files in this directory are available under the following URLs
           &quot;name&quot;: null,
           &quot;structuredValue&quot;: &quot;&lt;span class=\&quot;klass\&quot;&gt;\n  &lt;i&gt;&lt;mark&gt;Jivarus&lt;/mark&gt;&lt;/i&gt; Giglio-Tos, 1898&lt;/span&gt;&amp;nbsp;\n  &lt;span class=\&quot;feedback feedback-info feedback-thin\&quot;&gt;genus&lt;/span&gt;&amp;nbsp;\n  &lt;span class=\&quot;feedback feedback-secondary feedback-thin\&quot;&gt;Jivarini&lt;/span&gt;&amp;nbsp;\n  &lt;span class=\&quot;feedback feedback-notice feedback-thin\&quot;&gt;Jivarus\n&lt;/span&gt;\n&quot;
         }
-      ]
+      ],
+      &quot;key&quot;: &quot;label_html&quot;
     }
-  }
+  ]
 }</code></pre></div></div></div><hr><h1 id="/-new-special-parameters-for-model-data-requests">/ New special parameters for model data requests</h1><p></p><p>Apply to many model data requests: extend[] and embed[]<br>e.g., extend[]=citations will add any citation data to the response.<br>embed[]= adds a data attribute at the base of the response.</p><p></p><h1 id="/">/</h1><p></p><p>Base of the API. Includes an index of open projects indexed by project_token.</p><p></p><div class="set"><div class="set-description"><hr><h2 id="/-get">/ get</h2><p><code>GET: /</code></p><br><p><strong><em><big>Possible Responses</big></em></strong></p><p><strong>200</strong></p></div><div class="set-examples"><hr><h2 class="toc-ignore" id="/-get">/ get</h2><blockquote><h3 class="toc-ignore">CURL EXAMPLE</h3></blockquote><div class="languagebox bash"><pre><code>curl -X GET &quot;https://{host}/api/{version}/&quot;</code></pre></div><blockquote><h3 h3 class="toc-ignore">RESPONSE BODY</h3></blockquote><h4 class="toc-ignore"><i>200</i></h4><div class="languagebox json"><pre><code>{
   &quot;success&quot;: true,
   &quot;open_projects&quot;: [
