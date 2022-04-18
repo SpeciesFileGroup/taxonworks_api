@@ -1,4 +1,4 @@
-[![docs](https://github.com/SpeciesFileGroup/taxonworks_api/workflows/docs/badge.svg?branch=master)](https://github.com/SpeciesFileGroup/taxonworks_api/actions?query=workflow%3Adocs)
+[![docs](https://github.com/SpeciesFileGroup/taxonworks_api/workflows/docs/badge.svg?branch=main)](https://github.com/SpeciesFileGroup/taxonworks_api/actions?query=workflow%3Adocs)
 
 # taxonworks_api
 
