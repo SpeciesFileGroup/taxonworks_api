@@ -153,6 +153,12 @@ traits:
             example:
               {"success": true}
 
+/activity:
+  is: [secured, projecttokenized]
+  description: See https://rdoc.taxonworks.org/Api/V1/StatsController.html
+  type: collection
+  get:  !include /traits/Activity-search.raml
+
 /asserted_distributions:
   is: [secured, project_tokenized]
   description: See Overview at http://rdoc.taxonworks.org/AssertedDistribution.html
@@ -272,6 +278,12 @@ traits:
           type: integer
           required: false
           example: 1
+
+/dwc_occurrences:
+  is: [secured, project_tokenized]
+  description: See Overview at http://rdoc.taxonworks.org/DWCOccurrences.html
+  type: collection
+  get: !include /traits/DWCOccurrences-search.raml
 
 /identifers:
   is: [secured, user_tokenized]

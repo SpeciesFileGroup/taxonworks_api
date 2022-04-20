@@ -1,0 +1,27 @@
+[
+  {
+    "id": 36259,
+    "basisOfRecord": "PreservedSpecimen",
+    "catalogNumber": "Insect Collection 754",
+    "country": "Dominican Republic",
+    "dateIdentified": "1996",
+    "eventDate": "1959-05-01/1959-05-31",
+    "individualCount": 1,
+    "institutionCode": "INHS",
+    "institutionID": "http://grbio.org/institution/illinois-natural-history-survey",
+    "kingdom": "Animalia",
+    "nomenclaturalCode": "iczn",
+    "occurrenceID": "61b61817-2dd0-4de6-bc8c-13fb988f4666",
+    "preparations": "Pin",
+    "recordedBy": "M.W. Sanderson",
+    "scientificName": "Animalia",
+    "stateProvince": "Santiago",
+    "taxonRank": "kingdom",
+    "verbatimLocality": "North of Santiago, Palo Alto de la Cumbre Region, below Pico Diego de Ocampo, near Pedro Garcia",
+    "dwc_occurrence_object_id": 1,
+    "dwc_occurrence_object_type": "CollectionObject",
+    "project_id": 1,
+    "created_at": "2021-12-01T16:13:21.282Z",
+    "updated_at": "2021-12-01T16:13:21.113Z"
+  }
+]

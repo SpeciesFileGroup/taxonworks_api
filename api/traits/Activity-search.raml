@@ -1,0 +1,16 @@
+is: [ pageable: { default_per: 50, max_per: 1000 } ]
+queryParameters:
+  project_token:
+    description: |
+      Security token for the project.  Implicitly set project ID.
+    type: token
+    required: true
+#example: 42463
+responses:
+  200:
+    body:
+      application/json:
+        type: Image[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/activity-result-example.json
