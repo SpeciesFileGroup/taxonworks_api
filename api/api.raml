@@ -278,6 +278,16 @@ traits:
           type: integer
           required: false
           example: 1
+  /{id}/file:
+    is: [secured, project_tokenized]
+    get:
+      description: Downloads metadata instance to specified file path
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
 
 /dwc_occurrences:
   is: [secured, project_tokenized]
