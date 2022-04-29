@@ -376,6 +376,14 @@ traits:
     is: [secured, project_tokenized]
     get:
       description: Returns OTU instance data.
+  /{id}/inventory/descendants:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns OTU descendants
+  /{otu_id}/inventory/images:
+    is: [secured, project_tokenized]
+    get:
+      description: Returns OTU images.
 
 /people:
   is: [secured, user_tokenized]
