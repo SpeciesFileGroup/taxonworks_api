@@ -1,0 +1,20 @@
+description: Returns a single TaxonName instance with related data included.
+queryParameters:
+  combination_id:
+    description: |
+      Combination_id to restrict scope of results
+    type: boolean
+    required: false
+  query_string:
+    description: |
+      String expression of name(s) to parse against.
+    type: string
+    required: true
+    example: Ripipteryx antennata
+responses:
+  200:
+    body:
+      application/json:
+        type: TaxonNameParse[]
+        uniqueItems: true
+        example: !include /examples/taxon_names-parse-result-example.json

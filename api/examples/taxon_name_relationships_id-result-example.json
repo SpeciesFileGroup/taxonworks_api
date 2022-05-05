@@ -1,0 +1,18 @@
+{
+  "id": 283818,
+  "subject_taxon_name_id": 153,
+  "object_taxon_name_id": 153,
+  "subject_status_tag": "as original species of",
+  "object_status_tag": "in original combination with original species",
+  "type": "TaxonNameRelationship::OriginalCombination::OriginalSpecies",
+  "created_by_id": 1,
+  "updated_by_id": 1,
+  "project_id": 2,
+  "created_at": "2021-08-16T19:37:39.014Z",
+  "updated_at": "2021-08-16T19:37:39.014Z",
+  "inverse_assignment_method": "original_species",
+  "assignment_method": "species_in_original_combination",
+  "subject_name": "Ripipteryx antennata Hebard, 1924",
+  "object_name": "Ripipteryx antennata Hebard, 1924",
+  "global_id": "gid://taxon-works/TaxonNameRelationship::OriginalCombination::OriginalSpecies/283818"
+}

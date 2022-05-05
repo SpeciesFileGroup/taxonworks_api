@@ -17,8 +17,7 @@ queryParameters:
       When `true` then only return taxon names that have citations attached to them.
     type: boolean
     required: false
-    enum:  [true, false, TRUE, FALSE, True, False]
-    example: false
+    example: [true, false, TRUE, FALSE, True, False]
   descendants:
     description: |
       Filter by parenthood. When set to true and one or more taxon_name_id values are provided then the request matches taxa which are children of at least one of the taxa specified by the taxon_name_ids. Has no effect if taxon_name_id is not provided.
@@ -64,9 +63,8 @@ queryParameters:
     description: |
       When `true` then only return taxon names that are linked to one or more Otus.
     type: boolean
-    enum: [true, false, TRUE, FALSE, True, False]
+    example: [true, false, TRUE, FALSE, True, False]
     required: false
-    example: true
   project_id:
     description: |
       Project identifier. In the absence of a project token you must provide this parameter.
@@ -96,8 +94,7 @@ queryParameters:
       Boolean. When `true` then only return taxon names that are linked to a type specimen (collection object).
     type: string
     required: false
-    enum: [true, false, TRUE, FALSE, True, False]
-    example: TRUE
+    example: [true, false, TRUE, FALSE, True, False]
   updated_since:
     description: |
       Names updated (modified_at property) since this datetime.
