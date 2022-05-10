@@ -229,6 +229,10 @@ traits:
     is: [ secured, project_tokenized ]
     get:
       description: Returns collection objects data for ID in URI.
+  /{id}/dwc:
+    is: [ secured, project_tokenized ]
+    get:
+      description: Get DWC formatted data for collecton object with ID in URI.
 
 /contents:
   is: [ secured, project_tokenized ]
