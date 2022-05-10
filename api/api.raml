@@ -167,7 +167,7 @@ traits:
   /{id}:
     is: [ secured, project_tokenized ]
     get:
-      description: Returns AssertedDistribution instance data.
+      description: Returns AssertedDistribution instance data for ID in URI.
       queryParameters:
         project_id:
           description: |
@@ -184,7 +184,7 @@ traits:
   /{id}:
     is: [ secured, project_tokenized ]
     get:
-      description: Returns BiologicalAssociations instance data.
+      description: Returns BiologicalAssociations instance data for ID in URI.
       queryParameters:
         project_id:
           description: |
@@ -201,7 +201,7 @@ traits:
   /{id}:
     is: [ secured, project_tokenized ]
     get:
-      description: Returns Citations instance data.
+      description: Returns Citations instance data for ID in URI.
       queryParameters:
         project_id:
           description: |
@@ -228,7 +228,7 @@ traits:
   /{id}:
     is: [ secured, project_tokenized ]
     get:
-      description: Returns collection objects metadata for this ID
+      description: Returns collection objects data for ID in URI.
 
 /contents:
   is: [ secured, project_tokenized ]
@@ -238,7 +238,7 @@ traits:
   /{id}:
     is: [ secured, project_tokenized ]
     get:
-      description: Returns Content instance data.
+      description: Returns Content instance data for ID in URI.
       queryParameters:
         project_id:
           description: |
@@ -255,13 +255,13 @@ traits:
   /{id}:
     is: [ secured, project_tokenized ]
     get: !include /traits/DataAttributesID-search.raml
-      description: Returns data_attributes instance data.
-      queryParameters:
-        id:
-          description: Identifier.
-          type: integer
-          required: false
-          example: 50111
+#      description: Returns data_attributes instance data.
+#      queryParameters:
+#        id:
+#          description: Identifier.
+#          type: integer
+#          required: false
+#          example: 50111
 
 /downloads:
   is: [ secured, project_tokenized ]
