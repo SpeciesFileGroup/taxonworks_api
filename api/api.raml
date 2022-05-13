@@ -259,13 +259,6 @@ traits:
   /{id}:
     is: [ secured, project_tokenized ]
     get: !include /traits/DataAttributesID-search.raml
-#      description: Returns data_attributes instance data.
-#      queryParameters:
-#        id:
-#          description: Identifier.
-#          type: integer
-#          required: false
-#          example: 50111
 
 /downloads:
   is: [ secured, project_tokenized ]
@@ -282,7 +275,7 @@ traits:
           type: integer
           required: false
           example: 1
-  /{id}/file:
+  /{id}/{file}:
     is: [ secured, project_tokenized ]
     get:
       description: Downloads metadata instance to specified file path
@@ -307,7 +300,7 @@ traits:
   /{id}:
     is: [ secured, project_tokenized ]
       get:
-        description: Returns Identifiers metadata for this ID - caution, project-agnostic identifiers not returned.
+        description: Returns Identifiers metadata for this ID in URI - caution, project-agnostic identifiers not returned.
 
 /images:
   is: [ secured, project_tokenized ]
@@ -317,7 +310,7 @@ traits:
   /{id}:
     is: [ secured, project_tokenized ]
     get:
-      description: Returns Observation instance data.
+      description: Returns Image data for ID in URI.
       queryParameters:
         project_id:
           description: |
@@ -325,7 +318,10 @@ traits:
           type: integer
           required: false
           example: 4
-
+  /{id}/file:
+    is: [ secured, project_tokenized ]
+      get:
+        description: Returns Image data for ID in URI as a file.
 /notes:
   is: [ secured, project_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/Note.html
@@ -334,7 +330,7 @@ traits:
   /{id}:
     is: [ secured, project_tokenized ]
     get:
-      description: Returns Note instance data.
+      description: Returns Note instance data for ID in URI.
       queryParameters:
         project_id:
           description: |
@@ -351,7 +347,7 @@ traits:
   /{id}:
     is: [ secured, project_tokenized ]
     get:
-      description: Returns Observation matrices data.
+      description: Returns Observation matrices data for ID in URI.
       queryParameters:
         project_id:
           description: |
@@ -368,7 +364,7 @@ traits:
   /{id}:
     is: [ secured, project_tokenized ]
     get:
-      description: Returns Observation instance data.
+      description: Returns Observation instance data for ID in URI.
       queryParameters:
         project_id:
           description: |
@@ -388,16 +384,22 @@ traits:
     get: !include /traits/Otus-autocomplete.raml
   /{id}:
     is: [ secured, project_tokenized ]
-    get:
-      description: Returns OTU instance data.
-  /{id}/inventory/descendants:
-    is: [ secured, project_tokenized ]
-    get:
-      description: Returns OTU descendants
+    get: !include /traits/OtusId-search.raml
   /{otu_id}/inventory/images:
     is: [ secured, project_tokenized ]
-    get:
-      description: Returns OTU images.
+    get:  !include /traits/OtusIdInventoryImages.raml
+  /{id}/inventory/nomenclature_citations:
+    is: [ secured, project_tokenized ]
+    get:  !include /traits/OtusIdInventoryNomenclatureCitations.raml
+#      description: Returns OTU nomenclatural citations data for ID in URI.
+  /{id}/inventory/taxonomy:
+    is: [ secured, project_tokenized ]
+    description:  Returns basic taxonomic information for this OTU.
+    get:  !include /traits/OtusIdInventoryTaxonomy.raml
+  /{id}/inventory/type_material:
+    is: [ secured, project_tokenized ]
+    get:  ! include /traits/OtusIdInventoryTypeMaterial.raml
+#      description: Returns OTU type material data for ID in URI.
 
 /people:
   is: [ secured, user_tokenized ]
@@ -407,7 +409,7 @@ traits:
   /{id}:
     is: [ secured, user_tokenized ]
     get:
-      description: returns array of people for this ID
+      description: returns people data for ID in URI.
 
 /sources:
   is: [ secured, project_tokenized ]
@@ -417,7 +419,7 @@ traits:
   /{id}:
     is: [ secured, project_tokenized ]
     get:
-      description: Returns array of Sources metadata
+      description: Returns Sources metadata for ID in URI.
 
 /taxon_name_classifications:
   is: [ secured, project_tokenized ]
