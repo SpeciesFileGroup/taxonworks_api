@@ -396,7 +396,7 @@ traits:
     get:  !include /traits/OtusIdInventoryTaxonomy.raml
   /{id}/inventory/type_material:
     is: [ secured, project_tokenized ]
-    get:  ! include /traits/OtusIdInventoryTypeMaterial.raml
+    get:  !include /traits/OtusIdInventoryTypeMaterial.raml
 
 /people:
   is: [ secured, user_tokenized ]
