@@ -391,15 +391,12 @@ traits:
   /{id}/inventory/nomenclature_citations:
     is: [ secured, project_tokenized ]
     get:  !include /traits/OtusIdInventoryNomenclatureCitations.raml
-#      description: Returns OTU nomenclatural citations data for ID in URI.
   /{id}/inventory/taxonomy:
     is: [ secured, project_tokenized ]
-    description:  Returns basic taxonomic information for this OTU.
     get:  !include /traits/OtusIdInventoryTaxonomy.raml
   /{id}/inventory/type_material:
     is: [ secured, project_tokenized ]
     get:  ! include /traits/OtusIdInventoryTypeMaterial.raml
-#      description: Returns OTU type material data for ID in URI.
 
 /people:
   is: [ secured, user_tokenized ]
