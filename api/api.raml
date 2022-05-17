@@ -385,6 +385,9 @@ traits:
   /{id}:
     is: [ secured, project_tokenized ]
     get: !include /traits/OtusId-search.raml
+  /{otu_id}/inventory/distribution:
+    is: [ secured, project_tokenized ]
+    get:  !include /traits/OtusIdInventoryDistribution.raml
   /{otu_id}/inventory/images:
     is: [ secured, project_tokenized ]
     get:  !include /traits/OtusIdInventoryImages.raml
