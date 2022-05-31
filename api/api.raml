@@ -404,6 +404,7 @@ traits:
 /people:
   is: [ secured, user_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/Person.html
+                extend available for [role] via &extend=roles
   type: collection
   get: !include /traits/People-search.raml
   /{id}:
