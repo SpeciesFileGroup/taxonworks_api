@@ -288,7 +288,7 @@ traits:
 
 /dwc_occurrences:
   is: [ secured, project_tokenized ]
-  description: See Overview at http://rdoc.taxonworks.org/DWCOccurrences.html
+  description: See Overview at https://rdoc.taxonworks.org/DwcOccurrence.html
   type: collection
   get: !include /traits/DWCOccurrences-search.raml
 
@@ -341,7 +341,7 @@ traits:
 
 /observation_matrices:
   is: [ secured, project_tokenized ]
-  description: See Overview at http://rdoc.taxonworks.org/ObservationMatrices.html
+  description: See Overview at https://rdoc.taxonworks.org/ObservationMatrix.html
   type: collection
   get: !include /traits/ObservationMatrices-search.raml
   /{id}:
@@ -423,7 +423,7 @@ traits:
 
 /taxon_name_classifications:
   is: [ secured, project_tokenized ]
-  description: See Overview at http://rdoc.taxonworks.org/TaxonNameClassifications.html
+  description: See Overview at http://rdoc.taxonworks.org/TaxonNameClassification.html
   type: collection
   get: !include /traits/TaxonNameClassifications-search.raml
   /{id}:
@@ -433,7 +433,7 @@ traits:
 
 /taxon_name_relationships:
   is: [ secured, project_tokenized ]
-  description: See Overview at http://rdoc.taxonworks.org/TaxonNameRelationships.html
+  description: See Overview at http://rdoc.taxonworks.org/TaxonNameRelationship.html
   type: collection
   get: !include /traits/TaxonNameRelationships-search.raml
   /{id}:
