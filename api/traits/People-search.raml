@@ -34,6 +34,26 @@ queryParameters:
     type: string
     required: false
 #    example: "Megan"
+  identifier:
+    description:  |
+      Identifier contains the identifier string.
+    type: string
+    required: false
+  identifier_end:
+    description:  |
+      Identifier ends with the identifier string.
+    type: string
+    required: false
+  identifier_exact:
+    description:  |
+      Identifier strng must exactly match.
+    type: string
+    required: false
+  identifier_start:
+    description:  |
+      Identifier starts with the identifier string.
+    type: string
+    required: false
   last_name:
     description: |
       Filter by person last name or fragment. Matching is case insensitive. Use " " for "and". See also `exact`.
@@ -46,19 +66,25 @@ queryParameters:
     type: string
     required: false
     example: "Murp"
-  levenshtein_cuttoff:
-    description:  |
-      The maximum Levenshtein distance to be used in the fuzzy match for name searches.
-    type: integer
-    required: false
+#  levenshtein_cuttoff:
+#    description:  |
+#      The maximum Levenshtein distance to be used in the fuzzy match for name searches.
+#    type: integer
+#    required: false
   person_wildcard[]:
     description:  |
       Wildcard parameter(s)
     type: string
     required: false
+  role:
+    description: |
+      Filter by a person's role, e.g., SourceAuthor, SourceEditor, SourceSource, TaxonNameAuthor. Matching is case insensitive. Use " " for "and". See also `exact`.
+    type: string array
+    required: false
+    example: "SourceAuthor"
   role[]:
     description: |
-      Filter by person role(s), e.g., SourceAuthor, SourceEditor, SourceSource, TaxonNameAuthor. Matching is case insensitive. Use " " for "and". See also `exact`.
+      Filter by person role(s), e.g., &role[]=SourceAuthor&role[]=TaxonNameAuthor.
     type: string array
     required: false
     example: "SourceAuthor"
@@ -68,11 +94,33 @@ queryParameters:
     type: integer
     required: true
     example:  2
+  name:
+    description:|
+      Search for names containing this string.
+    type: strng
+    required: false
   source_id:
     description: |
       Source identifier for a single source.
     type: integer
     required: false
+  tags:
+    description:  |
+      Optional tags for person search.
+    requied:  false
+  user_date_end:
+    description:  |
+      User
+    required: false
+  user_date_start:
+    description:  |
+      User
+    required: false
+#  user_id:
+#    description:  |
+#      User ID
+#    required: false
+
 
 responses:
   200:

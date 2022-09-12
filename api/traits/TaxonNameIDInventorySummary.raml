@@ -1,0 +1,14 @@
+is: [pageable: { default_per: 50, max_per: 1000 }]
+queryParameters:
+  id:
+    type: integer
+    required: true
+    example:  123
+responses:
+  200:
+    body:
+      application/json:
+        type: TaxonName[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/taxon_names_id_inventory_summary-result-example.json
