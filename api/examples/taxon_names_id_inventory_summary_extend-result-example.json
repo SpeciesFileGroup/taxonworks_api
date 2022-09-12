@@ -1,0 +1,35 @@
+{
+	"id": 109,
+	"parent_id": 105,
+	"name": "hebardi",
+	"is_valid": true,
+	"full_name": "Mirhipipteryx hebardi (Chopard, 1931)",
+	"nomenclatural_code": "iczn",
+	"short_status": "This name is valid/accepted.",
+	"status": "",
+	"rank": "species",
+	"author": "Chopard",
+	"year": 1931,
+	"pages": "244",
+	"original_citation": "Chopard, L. (1931) Ergebnisse einer zoologischen Sammelreise nach Brasilien, insbesondere in das Amazonasgebiet, ausgeführt von Dr. H. Zerny. VIII. Teil. Orthoptera: Gryllodea. <i>Annalen des Naturhistorischen Museums in Wien</i>, 46, 243–253. Available from http://www.biologiezentrum.at/pdf_frei_remote/ANNA_46_0243-0253.pdf",
+	"elements": {
+		"name": {
+			"nomenclatural rank": "Root",
+			"kingdom": "Animalia",
+			"cohort": "Polyneoptera",
+			"superorder": "Orthopterida",
+			"order": "Orthoptera",
+			"suborder": "Caelifera",
+			"infraorder": "Tridactylidea",
+			"superfamily": "Tridactyloidea",
+			"family": "Ripipterygidae",
+			"subfamily": "Ripipteryginae",
+			"genus": "Mirhipipteryx",
+			"species": "hebardi"
+		},
+		"original_combination": {
+			"genus": "Rhipipteryx [sic]",
+			"species": "hebardi"
+		}
+	}
+}

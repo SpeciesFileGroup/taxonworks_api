@@ -354,7 +354,16 @@ traits:
             Project identifier. In the absence of a project token you must provide this parameter.
           type: integer
           required: false
-          example: 2
+  /{id}/key:
+    is: [ secured, project_tokenized ]
+    get:
+      description: Returns Observation matrices data for ID in URI.
+      queryParameters:
+        project_id:
+          description: |
+            Project identifier. In the absence of a project token you must provide this parameter.
+          type: integer
+          required: false
 
 /observations:
   is: [ secured, project_tokenized ]
@@ -385,6 +394,9 @@ traits:
   /{id}:
     is: [ secured, project_tokenized ]
     get: !include /traits/OtusId-search.raml
+  /{otu_id}/inventory/content:
+    is: [ secured, project_tokenized ]
+    get:  !include /traits/OtusIdInventoryContent.raml
   /{otu_id}/inventory/distribution:
     is: [ secured, project_tokenized ]
     get:  !include /traits/OtusIdInventoryDistribution.raml
@@ -404,6 +416,7 @@ traits:
 /people:
   is: [ secured, user_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/Person.html
+                extend available for [role] via &extend=roles
   type: collection
   get: !include /traits/People-search.raml
   /{id}:
@@ -454,7 +467,10 @@ traits:
     get: !include /traits/TaxonNameID-search.raml
   /{id}/inventory/summary:
     is: [ secured, project_tokenized ]
-    get: !include /traits/TaxonNameIDInventory.raml
+    get: !include /traits/TaxonNameIDInventorySummary.raml
+  /{id}/inventory/summary&extend[]=name_elements:
+    is: [ secured, project_tokenized ]
+    get: !include /traits/TaxonNameIDInventorySummaryExtend.raml
   /parse:
     is: [ secured, project_tokenized ]
     get: !include /traits/TaxonNameParse.raml

@@ -9,33 +9,33 @@ queryParameters:
   authors:
     description: |
       When `true` then only return taxon names that have an author string present.
-    type: boolean
+    type: boolean:
     required: false
-    example: [true, false, TRUE, FALSE, True, False]
+    enum: [true, false]
   citations:
     description: |
       When `true` then only return taxon names that have citations attached to them.
-    type: boolean
+    type: boolean:
     required: false
-    example: [true, false, TRUE, FALSE, True, False]
+    enum: [true, false]
   descendants:
     description: |
       Filter by parenthood. When set to true and one or more taxon_name_id values are provided then the request matches taxa which are children of at least one of the taxa specified by the taxon_name_ids. Has no effect if taxon_name_id is not provided.
-    type: boolean
+    type: string boolean:
     required: false
     default: false
     example: true
   exact:
     description: |
       True if filter matching must be exact, false if partial matches are allowed.
-    type: boolean
+    type: string boolean:
     required: false
     default: false
     example: true
   leaves:
     description: |
       If 'true' filters by names having no descendents or with descendants if 'false'.
-    type: boolean | nil
+    type: string boolean: | nil
     required: false
     default: nil
     example: true
@@ -62,8 +62,8 @@ queryParameters:
   otus:
     description: |
       When `true` then only return taxon names that are linked to one or more Otus.
-    type: boolean
-    example: [true, false, TRUE, FALSE, True, False]
+    type: boolean:
+    enum: [true, false]
     required: false
   project_id:
     description: |
@@ -73,10 +73,9 @@ queryParameters:
     example: 1
   taxon_name_id[]:
     description: |
-      Return only taxon names with these ids. To also return children see `descendants`.
-    type: integer[]
+      Return only taxon names with these ids. E.g., "?taxon_name_id[]=5&taxon_name_id[]=194".  To also return children see `descendants`.
+    type: integer array
     required: false
-    example: [1, 5]
   taxon_name_relationship_type[]:
     description: |
       Filter by names having relationships of these types
@@ -92,9 +91,9 @@ queryParameters:
   type_metadata:
     description: |
       Boolean. When `true` then only return taxon names that are linked to a type specimen (collection object).
-    type: string
+    type: boolean
     required: false
-    example: [true, false, TRUE, FALSE, True, False]
+    enum: [true, false]
   updated_since:
     description: |
       Names updated (modified_at property) since this datetime.
