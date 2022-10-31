@@ -99,7 +99,16 @@ traits:
   description: |
     Apply to many model data requests: extend[] and embed[] <br />
      e.g., extend[]=citations will add any citation data to the response.<br />
-     embed[]= adds a data attribute at the base of the response.
+     embed[]= adds a data attribute at the base of the response.<br />
+     At this time, embed[] is available in asserted_distributions, biological_associations,
+     citations, collecting_events, collection_objects, contents, data_attributes,
+     identifiers, images, observation_matrices, observations, otus, people, sources,
+     and taxon_names. <br />
+#     Embed is available only in taxon_names/{id}/inventory/content?embed[]=depictions.
+# Check _metadata, loan_items, combinations, observations, type_materials,
+# geographic_areas, protocal_relationships, observation_matrix_rows, bioogical_relationships,
+# controlled_vocabulary_terms, common_names, roles, users, biological_relationshup_types,
+# taxonomy, summary, extracts, depictions
 /:
   description: Base of the API. Includes an index of open projects indexed by project_token.
   get:
@@ -162,6 +171,7 @@ traits:
 /asserted_distributions:
   is: [ secured, project_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/AssertedDistribution.html
+                extend[]= available for [otu, geographic_area]
   type: collection
   get: !include /traits/AssertedDistributions-search.raml
   /{id}:
@@ -179,6 +189,9 @@ traits:
 /biological_associations:
   is: [ secured, project_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/BiologicalAssociation.html
+                extend[]= available for [biological_relationship, subject,
+                 subject_biological_relationship_types, family_names, object,
+                 object_biological_relationship_types]
   type: collection
   get: !include /traits/BiologicalAssociations-search.raml
   /{id}:
@@ -196,6 +209,7 @@ traits:
 /citations:
   is: [ secured, project_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/Citation.html
+      extend[]= available for [citation_object, citation_topics, source, target_document]
   type: collection
   get: !include /traits/Citations-search.raml
   /{id}:
@@ -213,6 +227,7 @@ traits:
 /collecting_events:
   is: [ secured, user_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/CollectingEvent.html
+                extend[]= available for [parent, roles]
   type: collection
   get: !include /traits/CollectingEvents-search.raml
   /{id}:
@@ -223,6 +238,7 @@ traits:
 /collection_objects:
   is: [ secured, user_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/CollectionObject.html
+                Extend[]= available for [container, dwc_fields, type_material, taxon_determination_images]
   type: collection
   get: !include /traits/CollectionObjects-search.raml
   /{id}:
@@ -237,6 +253,7 @@ traits:
 /contents:
   is: [ secured, project_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/Content.html
+                extend[]= available for [public_content, otu, topic]
   type: collection
   get: !include /traits/Contents-search.raml
   /{id}:
@@ -254,6 +271,7 @@ traits:
 /data_attributes:
   is: [ secured, project_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/Data_attribute.html
+  extend[]= available for [annotated_object, predicate]
   type: collection
   get: !include /traits/DataAttributes-search.raml
   /{id}:
@@ -295,6 +313,7 @@ traits:
 /identifers:
   is: [ secured, user_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/Identifier.html
+                  extend[]= available for [namespace]
   type: collection
   get: !include /traits/Identifiers-search.raml
   /{id}:
@@ -305,6 +324,7 @@ traits:
 /images:
   is: [ secured, project_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/Observation.html
+                extend[]= available for [depictions, attribution, source]
   type: collection
   get: !include /traits/Images-search.raml
   /{id}:
@@ -342,6 +362,7 @@ traits:
 /observation_matrices:
   is: [ secured, project_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/ObservationMatrices.html
+                extend[]= available for [rows, columns]
   type: collection
   get: !include /traits/ObservationMatrices-search.raml
   /{id}:
@@ -368,6 +389,7 @@ traits:
 /observations:
   is: [ secured, project_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/Observation.html
+                extend[]= available for [character_state, depictions]
   type: collection
   get: !include /traits/Observations-search.raml
   /{id}:
@@ -385,7 +407,7 @@ traits:
 /otus:
   is: [ secured, project_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/Otu.html
-  #  securedBy: token
+                extend[]= available for [parents]
   type: collection
   get: !include /traits/Otus-search.raml
   /autocomplete:
@@ -416,7 +438,7 @@ traits:
 /people:
   is: [ secured, user_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/Person.html
-                extend available for [role] via &extend=roles
+                extend[]= available for [roles]
   type: collection
   get: !include /traits/People-search.raml
   /{id}:
@@ -427,6 +449,7 @@ traits:
 /sources:
   is: [ secured, project_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/Source.html
+                extend[]= available for [roles, documents]
   type: collection
   get: !include /traits/Sources-search.raml
   /{id}:
@@ -443,7 +466,6 @@ traits:
     is: [ secured, project_tokenized ]
     get:  !include /traits/TaxonNameClassificationsID-search.raml
 
-
 /taxon_name_relationships:
   is: [ secured, project_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/TaxonNameRelationships.html
@@ -457,6 +479,8 @@ traits:
 /taxon_names:
   is: [ secured, project_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/TaxonName.html
+                extend[]= available for [otus, roles, ancestor_ids, parent, children,
+                 type_taxon_name_relationship]
   type: collection
   get: !include /traits/TaxonName-search.raml
   /autocomplete:
@@ -468,6 +492,9 @@ traits:
   /{id}/inventory/summary:
     is: [ secured, project_tokenized ]
     get: !include /traits/TaxonNameIDInventorySummary.raml
+  /{id}/inventory/summary&embed[]=depictions:
+    is: [ secured, project_tokenized ]
+    get: !include /traits/TaxonNameIDInventorySummaryEmbed.raml
   /{id}/inventory/summary&extend[]=name_elements:
     is: [ secured, project_tokenized ]
     get: !include /traits/TaxonNameIDInventorySummaryExtend.raml
