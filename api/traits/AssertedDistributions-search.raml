@@ -1,27 +1,114 @@
 is: [pageable: { default_per: 50, max_per: 1000 }]
 queryParameters:
+  asserted_distribution_id:
+    description: |
+      ID for a specific asserted distribution
+      type: integer
+      required: false
+  asserted_distribution_id[]:
+    description: |
+      IDs for specific asserted distributions
+    type: integer array
+    required: false
+  descendants:
+    description: |
+      True: include descendants of taxon_name_id in scope, else
+      type: boolean
+      required: false
+  geo_json:
+    description: |
+      Flag to return result as geoJSON
+    type: boolean
+    required: false
   geographic_area_id:
     description: |
       Identifier for the geographic area.
     type: integer
     required: false
     example: 33609
+  geographic_area_id[]:
+    description: |
+      Identifiers for specific geographic areas.
+    type: integer
+    required: false
+  geographic_area_mode:
+    description:
+      Flag to set area mode, in conjunction with geographic_area_id/geographic_area_id[]
+    type: boolean, nil
+    required: false
   otu_id:
     description: |
       Identifier for the otu for which distribution is asserted.
-    type: integer
+    type: integerarray
     required: false
   otu_id[]:
     description: |
       Array of identifier IDs for otus for which distribution is asserted.
     type: integer array
     required: false
-  recent:
+  presence:
     description: |
-      Include recent searchs?.
-    type: string boolean
+      ? description needed
+    type: boolean
     required: false
-    example: "false"
+  radius:
+    description: |
+      Meters around shape boundary, 100m by default
+    type: integer
+    required: false
+  taxon_name_id:
+    description: |
+      Return results for all OTUs corresponding to this taxon_name_id.
+    type: integer
+    required: false
+  taxon_name_id[]:
+    description: |
+      Return results for all OTUs corresponding to these IDs.
+    type: integer array
+    required: false
+  wkt:
+    description: |
+      WKT shape to search for asserted distributions
+    type: string
+    required: false
+  Annotators:
+    description: |
+      - Users:
+         -- user_id
+         -- user_target
+         -- user_date_start
+         -- user_date_end
+         -- updated_since
+      - Citations
+          -- citations
+          -- origin_citation
+      - DataAttributes
+          -- data_attribute_exact_value
+          -- data_attribute_predicate_id *
+          -- data_attribute_value *
+          -- data_attributes
+      - Identifiers
+          -- identifier
+          -- identifier_end
+          -- identifier_exact
+          -- identifier_start
+          -- identifier_type *
+          -- identifiers
+          -- local_identifiers
+          -- match_identifiers
+          -- match_identifiers_delimiter
+          -- match_identifiers_type
+          -- namespace_id
+      - Notes
+          -- note_exact
+          -- note_text
+          -- notes
+      - Tags
+          -- keyword_id_and *
+          -- keyword_id_or *
+          -- tags
+    type: PARAM
+    required: false
 
 responses:
   200:
