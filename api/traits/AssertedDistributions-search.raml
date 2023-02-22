@@ -73,29 +73,11 @@ queryParameters:
     required: false
   Annotators:
     description: |
-      - Users:
-         -- user_id
-         -- user_target
-         -- user_date_start
-         -- user_date_end
-         -- updated_since
-      - Citations
-          -- citations
-          -- origin_citation
-      - DataAttributes
-          -- data_attribute_exact_value
-          -- data_attribute_predicate_id *
-          -- data_attribute_value *
-          -- data_attributes
-      - Identifiers
-          -- identifier
-          -- identifier_end
-          -- identifier_exact
-          -- identifier_start
-          -- identifier_type *
-          -- identifiers
-          -- local_identifiers
-          -- match_identifiers
+      - Users: user_id, user_target, user_date_start, user_date_end, updated_since
+      - Citations:citations, origin_citation
+      - DataAttributes: data_attribute_exact_value, data_attribute_predicate_id [], data_attribute_value [], data_attributes
+      - Identifiers: identifier, identifier_end, identifier_exact, identifier_start, identifier_type [], identifiers, local_identifiers,
+          -- match_identifiers,
           -- match_identifiers_delimiter
           -- match_identifiers_type
           -- namespace_id
