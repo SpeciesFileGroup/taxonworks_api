@@ -12,7 +12,9 @@ Please follow the [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
 ### Overview
 
-API documentation is decoupled from code generation,  i.e. we use RAML strictly to build out the HTML documentation at present.
+Development happens on `development`, or lands there as a precursor to merging in `main`.
+
+API documentation is decoupled from code generation, i.e. we use RAML strictly to build out the HTML documentation at present.
 
 Most routes will correspond to filter code in `lib/queries/`, i.e. we expose `/<model>.json` endpoints via a new parallel route.
 
