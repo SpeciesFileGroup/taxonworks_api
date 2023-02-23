@@ -5,4 +5,4 @@ api-console-cli.log
 api-console
 api/api.raml.build
 .orig
-.idea
+
