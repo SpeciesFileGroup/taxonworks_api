@@ -344,7 +344,7 @@ traits:
       get:
         description: Returns Image data for ID in URI as a file.
 /notes:
-  is: [ secured, project_tokenized, pageable: { default_per: 50, max_per: 1000 } ]
+  is: [ notes, secured, project_tokenized, pageable: { default_per: 50, max_per: 1000 } ]
   description: See Overview at http://rdoc.taxonworks.org/Note.html
   type: collection
   get: !include /searches/Notes-search.raml
