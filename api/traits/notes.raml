@@ -1,14 +1,25 @@
 #%RAML 1.0 Trait
 
 queryParameters:
+  note_id:
+    description: |
+      Single ID for the note object to be found.
+    type: integer
+    required: false
+  note_id[]:
+    description: |
+      Array of IDs for the notes to be found.
+    type: integer
+    required: false
   note_object_id:
     description: |
-      Single identifier for the note object.
+      Find all notes that reference any objects that have a note_object_id.
+      This param should only be used in tandem with note_object_type.
     type: integer
     required: false
   note_object_id[]:
     description: |
-      Array of identifiers for the note objects#, e.g., note_object_id[]=3254&note_object_id[]=197.
+      Array of global identifiers for the note objects#, e.g., note_object_id[]=3254&note_object_id[]=197.
     type: integer
     required: false
   note_object_type:
@@ -21,11 +32,11 @@ queryParameters:
       Array of object types for the notes#, note_object_type[]=TaxonDetermination&note_object_type[]=Otu.
     type: string
     required: false
-  object_global_id:
-    description: |
-      Identifier for the note's source.
-    type: integer
-    required: false
+#  object_global_id:
+#    description: |
+#      Identifier for the note's source.
+#    type: integer
+#    required: false
   text:
     description: |
       Text segment to be searched for in notes.

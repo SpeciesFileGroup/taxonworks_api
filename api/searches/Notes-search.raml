@@ -1,37 +1,41 @@
-is: [notes:, pageable: { default_per: 50, max_per: 1000 }]
-#queryParameters:
-#  note_object_id:
-#    description: |
-#      Single identifier for the note object.
-#    type: integer
-#    required: false
-#  note_object_id[]:
-#    description: |
-#      Array of identifiers for the note objects#, e.g., note_object_id[]=3254&note_object_id[]=197.
-#    type: integer
-#    required: false
-##    example: 42463
-#  note_object_type:
-#    description: |
-#      Object type for the note, such as TaxonDetermination, TaxonName, Otu, etc.
-#    type: string
-#    required: false
-#  note_object_type[]:
-#    description: |
-#      Array of object types for the notes#, note_object_type[]=TaxonDetermination&note_object_type[]=Otu.
-#    type: string
-#    required: false
-#  object_global_id:
-#    description: |
-#      Identifier for the note's source.
-#    type: integer
-#    required: false
-##    example: 1
-#  text:
-#    description: |
-#      Text segment to be searched for in notes.
-#    type: string
-#    required: false
+is: [pageable: { default_per: 50, max_per: 1000 }]
+queryParameters:
+  note_id:
+    description: |
+      Single ID for the note object to be found.
+    type: integer
+    required: false
+  note_id[]:
+    description: |
+      Array of IDs for the notes to be found.
+    type: integer
+    required: false
+  note_object_id:
+    description: |
+      Single identifier for the note object.
+    type: integer
+    required: false
+  note_object_id[]:
+    description: |
+      Array of identifiers for the note objects#, e.g., note_object_id[]=3254&note_object_id[]=197.
+    type: integer
+    required: false
+  note_object_type:
+    description: |
+      Object type for the note, such as TaxonDetermination, TaxonName, Otu, etc.
+    type: string
+    required: false
+  note_object_type[]:
+    description: |
+      Array of object types for the notes, note_object_type[]=TaxonDetermination&note_object_type[]=Otu.
+      Should be used only with note_object_id[].
+    type: string
+    required: false
+  text:
+    description: |
+      Text segment to be searched for in notes.
+    type: string
+    required: false
 get:  !include /traits/notes.raml
 responses:
   200:
