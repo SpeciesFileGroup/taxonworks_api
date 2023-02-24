@@ -166,14 +166,14 @@ traits:
   is: [ secured, projecttokenized ]
   description: See https://rdoc.taxonworks.org/Api/V1/StatsController.html
   type: collection
-  get: !include /traits/Activity-search.raml
+  get: !include /searches/Activity-search.raml
 
 /asserted_distributions:
   is: [ secured, project_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/AssertedDistribution.html
                 extend[]= available for [otu, geographic_area]
   type: collection
-  get: !include /traits/AssertedDistributions-search.raml
+  get: !include /searches/AssertedDistributions-search.raml
   /{id}:
     is: [ secured, project_tokenized ]
     get:
@@ -193,7 +193,7 @@ traits:
                  subject_biological_relationship_types, family_names, object,
                  object_biological_relationship_types]
   type: collection
-  get: !include /traits/BiologicalAssociations-search.raml
+  get: !include /searches/BiologicalAssociations-search.raml
   /{id}:
     is: [ secured, project_tokenized ]
     get:
@@ -211,7 +211,7 @@ traits:
   description: See Overview at http://rdoc.taxonworks.org/Citation.html
       extend[]= available for [citation_object, citation_topics, source, target_document]
   type: collection
-  get: !include /traits/Citations-search.raml
+  get: !include /searches/Citations-search.raml
   /{id}:
     is: [ secured, project_tokenized ]
     get:
@@ -229,7 +229,7 @@ traits:
   description: See Overview at http://rdoc.taxonworks.org/CollectingEvent.html
                 extend[]= available for [parent, roles]
   type: collection
-  get: !include /traits/CollectingEvents-search.raml
+  get: !include /searches/CollectingEvents-search.raml
   /{id}:
     is: [ secured, project_tokenized ]
       get:
@@ -240,7 +240,7 @@ traits:
   description: See Overview at http://rdoc.taxonworks.org/CollectionObject.html
                 Extend[]= available for [container, dwc_fields, type_material, taxon_determination_images]
   type: collection
-  get: !include /traits/CollectionObjects-search.raml
+  get: !include /searches/CollectionObjects-search.raml
   /{id}:
     is: [ secured, project_tokenized ]
     get:
@@ -255,7 +255,7 @@ traits:
   description: See Overview at http://rdoc.taxonworks.org/Content.html
                 extend[]= available for [public_content, otu, topic]
   type: collection
-  get: !include /traits/Contents-search.raml
+  get: !include /searches/Contents-search.raml
   /{id}:
     is: [ secured, project_tokenized ]
     get:
@@ -273,10 +273,10 @@ traits:
   description: See Overview at http://rdoc.taxonworks.org/Data_attribute.html
   extend[]= available for [annotated_object, predicate]
   type: collection
-  get: !include /traits/DataAttributes-search.raml
+  get: !include /searches/DataAttributes-search.raml
   /{id}:
     is: [ secured, project_tokenized ]
-    get: !include /traits/DataAttributesID-search.raml
+    get: !include /searches/DataAttributesID-search.raml
 
 /downloads:
   is: [ secured, project_tokenized ]
@@ -308,14 +308,14 @@ traits:
   is: [ secured, project_tokenized ]
   description: See Overview at https://rdoc.taxonworks.org/DwcOccurrence.html
   type: collection
-  get: !include /traits/DWCOccurrences-search.raml
+  get: !include /searches/DWCOccurrences-search.raml
 
 /identifers:
   is: [ secured, user_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/Identifier.html
                   extend[]= available for [namespace]
   type: collection
-  get: !include /traits/Identifiers-search.raml
+  get: !include /searches/Identifiers-search.raml
   /{id}:
     is: [ secured, project_tokenized ]
       get:
@@ -326,7 +326,7 @@ traits:
   description: See Overview at http://rdoc.taxonworks.org/Observation.html
                 extend[]= available for [depictions, attribution, source]
   type: collection
-  get: !include /traits/Images-search.raml
+  get: !include /searches/Images-search.raml
   /{id}:
     is: [ secured, project_tokenized ]
     get:
@@ -346,7 +346,7 @@ traits:
   is: [ secured, project_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/Note.html
   type: collection
-  get: !include /traits/Notes-search.raml
+  get: !include /searches/Notes-search.raml
   /{id}:
     is: [ secured, project_tokenized ]
     get:
@@ -364,7 +364,7 @@ traits:
   description: See Overview at http://rdoc.taxonworks.org/ObservationMatrices.html
                 extend[]= available for [rows, columns]
   type: collection
-  get: !include /traits/ObservationMatrices-search.raml
+  get: !include /searches/ObservationMatrices-search.raml
   /{id}:
     is: [ secured, project_tokenized ]
     get:
@@ -391,7 +391,7 @@ traits:
   description: See Overview at http://rdoc.taxonworks.org/Observation.html
                 extend[]= available for [character_state, depictions]
   type: collection
-  get: !include /traits/Observations-search.raml
+  get: !include /searches/Observations-search.raml
   /{id}:
     is: [ secured, project_tokenized ]
     get:
@@ -409,38 +409,38 @@ traits:
   description: See Overview at http://rdoc.taxonworks.org/Otu.html
                 extend[]= available for [parents]
   type: collection
-  get: !include /traits/Otus-search.raml
+  get: !include /searches/Otus-search.raml
   /autocomplete:
     is: [ secured, project_tokenized ]
-    get: !include /traits/Otus-autocomplete.raml
+    get: !include /searches/Otus-autocomplete.raml
   /{id}:
     is: [ secured, project_tokenized ]
-    get: !include /traits/OtusId-search.raml
+    get: !include /searches/OtusId-search.raml
   /{otu_id}/inventory/content:
     is: [ secured, project_tokenized ]
-    get:  !include /traits/OtusIdInventoryContent.raml
+    get:  !include /searches/OtusIdInventoryContent.raml
   /{otu_id}/inventory/distribution:
     is: [ secured, project_tokenized ]
-    get:  !include /traits/OtusIdInventoryDistribution.raml
+    get:  !include /searches/OtusIdInventoryDistribution.raml
   /{otu_id}/inventory/images:
     is: [ secured, project_tokenized ]
-    get:  !include /traits/OtusIdInventoryImages.raml
+    get:  !include /searches/OtusIdInventoryImages.raml
   /{id}/inventory/nomenclature_citations:
     is: [ secured, project_tokenized ]
-    get:  !include /traits/OtusIdInventoryNomenclatureCitations.raml
+    get:  !include /searches/OtusIdInventoryNomenclatureCitations.raml
   /{id}/inventory/taxonomy:
     is: [ secured, project_tokenized ]
-    get:  !include /traits/OtusIdInventoryTaxonomy.raml
+    get:  !include /searches/OtusIdInventoryTaxonomy.raml
   /{id}/inventory/type_material:
     is: [ secured, project_tokenized ]
-    get:  !include /traits/OtusIdInventoryTypeMaterial.raml
+    get:  !include /searches/OtusIdInventoryTypeMaterial.raml
 
 /people:
   is: [ secured, user_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/Person.html
                 extend[]= available for [roles]
   type: collection
-  get: !include /traits/People-search.raml
+  get: !include /searches/People-search.raml
   /{id}:
     is: [ secured, user_tokenized ]
     get:
@@ -451,7 +451,7 @@ traits:
   description: See Overview at http://rdoc.taxonworks.org/Source.html
                 extend[]= available for [roles, documents]
   type: collection
-  get: !include /traits/Sources-search.raml
+  get: !include /searches/Sources-search.raml
   /{id}:
     is: [ secured, project_tokenized ]
     get:
@@ -461,19 +461,19 @@ traits:
   is: [ secured, project_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/TaxonNameClassification.html
   type: collection
-  get: !include /traits/TaxonNameClassifications-search.raml
+  get: !include /searches/TaxonNameClassifications-search.raml
   /{id}:
     is: [ secured, project_tokenized ]
-    get:  !include /traits/TaxonNameClassificationsID-search.raml
+    get:  !include /searches/TaxonNameClassificationsID-search.raml
 
 /taxon_name_relationships:
   is: [ secured, project_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/TaxonNameRelationship.html
   type: collection
-  get: !include /traits/TaxonNameRelationships-search.raml
+  get: !include /searches/TaxonNameRelationships-search.raml
   /{id}:
     is: [ secured, project_tokenized ]
-    get: !include /traits/TaxonNameRelationshipsID.raml
+    get: !include /searches/TaxonNameRelationshipsID.raml
       description: Returns taxon name relationships instance data.
 
 /taxon_names:
@@ -482,25 +482,25 @@ traits:
                 extend[]= available for [otus, roles, ancestor_ids, parent, children,
                  type_taxon_name_relationship]
   type: collection
-  get: !include /traits/TaxonName-search.raml
+  get: !include /searches/TaxonName-search.raml
   /autocomplete:
     is: [ secured, project_tokenized ]
-    get: !include /traits/TaxonName-autocomplete.raml
+    get: !include /searches/TaxonName-autocomplete.raml
   /{id}:
     is: [ secured, project_tokenized ]
-    get: !include /traits/TaxonNameID-search.raml
+    get: !include /searches/TaxonNameID-search.raml
   /{id}/inventory/summary:
     is: [ secured, project_tokenized ]
-    get: !include /traits/TaxonNameIDInventorySummary.raml
+    get: !include /searches/TaxonNameIDInventorySummary.raml
   /{id}/inventory/summary&embed[]=depictions:
     is: [ secured, project_tokenized ]
-    get: !include /traits/TaxonNameIDInventorySummaryEmbed.raml
+    get: !include /searches/TaxonNameIDInventorySummaryEmbed.raml
   /{id}/inventory/summary&extend[]=name_elements:
     is: [ secured, project_tokenized ]
-    get: !include /traits/TaxonNameIDInventorySummaryExtend.raml
+    get: !include /searches/TaxonNameIDInventorySummaryExtend.raml
   /parse:
     is: [ secured, project_tokenized ]
-    get: !include /traits/TaxonNameParse.raml
+    get: !include /searches/TaxonNameParse.raml
 
 
 

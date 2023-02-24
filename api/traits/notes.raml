@@ -1,4 +1,5 @@
-is: [pageable: { default_per: 50, max_per: 1000 }]
+#%RAML 1.0 Trait
+
 queryParameters:
   note_object_id:
     description: |
@@ -10,7 +11,6 @@ queryParameters:
       Array of identifiers for the note objects#, e.g., note_object_id[]=3254&note_object_id[]=197.
     type: integer
     required: false
-#    example: 42463
   note_object_type:
     description: |
       Object type for the note, such as TaxonDetermination, TaxonName, Otu, etc.
@@ -26,18 +26,8 @@ queryParameters:
       Identifier for the note's source.
     type: integer
     required: false
-#    example: 1
   text:
     description: |
       Text segment to be searched for in notes.
     type: string
     required: false
-
-responses:
-  200:
-    body:
-      application/json:
-        type: Note[]
-        maxItems: 100
-        uniqueItems: true
-        example: !include /examples/notes-result-example.json
