@@ -6,3 +6,4 @@ api-console
 api/api.raml.build
 .orig
 .idea
+docs/index.html
