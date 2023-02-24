@@ -12,7 +12,8 @@ queryParameters:
     required: false
   note_object_id:
     description: |
-      Single identifier for the note object.
+      Find all notes that reference any objects that have a note_object_id.
+      This param should only be used in tandem with note_object_type.
     type: integer
     required: false
   note_object_id[]:
@@ -36,7 +37,7 @@ queryParameters:
       Text segment to be searched for in notes.
     type: string
     required: false
-get:  !include /traits/notes.raml
+
 responses:
   200:
     body:
