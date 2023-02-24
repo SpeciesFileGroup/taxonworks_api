@@ -94,6 +94,7 @@ traits:
   project_tokenized: !include /traits/project_tokenized.raml
   user_tokenized: !include /traits/user_tokenized.raml
   pageable: !include /traits/pageable.raml
+  notes: !include /traits/notes.raml
 
 / New special parameters for model data requests:
   description: |
@@ -343,7 +344,7 @@ traits:
       get:
         description: Returns Image data for ID in URI as a file.
 /notes:
-  is: [ secured, project_tokenized ]
+  is: [ secured, project_tokenized, pageable: { default_per: 50, max_per: 1000 } ]
   description: See Overview at http://rdoc.taxonworks.org/Note.html
   type: collection
   get: !include /searches/Notes-search.raml
@@ -405,7 +406,7 @@ traits:
           example: 4
 
 /otus:
-  is: [ secured, project_tokenized ]
+  is: [ secured, project_tokenized, notes ]
   description: See Overview at http://rdoc.taxonworks.org/Otu.html
                 extend[]= available for [parents]
   type: collection
