@@ -94,7 +94,10 @@ traits:
   project_tokenized: !include /traits/project_tokenized.raml
   user_tokenized: !include /traits/user_tokenized.raml
   pageable: !include /traits/pageable.raml
+  citations: !include /traits/notes.raml
+  data_attributes: !include /traits/notes.raml
   notes: !include /traits/notes.raml
+  tags: !include /traits/notes.raml
 
 / New special parameters for model data requests:
   description: |
@@ -406,7 +409,7 @@ traits:
           example: 4
 
 /otus:
-  is: [ notes, secured, project_tokenized ]
+  is: [ citations, data_attributes, notes, tags, users, secured, project_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/Otu.html
                 extend[]= available for [parents]
   type: collection

@@ -1,39 +1,19 @@
 #%RAML 1.0 Trait
 
 queryParameters:
-  note_id:
+  note_exact:
     description: |
-      Single ID for the note object to be found.
+      Search for the exact text matching the note object to be found.
     type: integer
     required: false
-  note_id[]:
+  note_text:
     description: |
       Array of IDs for the notes to be found.
     type: integer
     required: false
-  note_object_id:
+  notes:
     description: |
       Find all notes that reference any objects that have a note_object_id.
       This param should only be used in tandem with note_object_type.
     type: integer
-    required: false
-  note_object_id[]:
-    description: |
-      Array of global identifiers for the note objects#, e.g., note_object_id[]=3254&note_object_id[]=197.
-    type: integer
-    required: false
-  note_object_type:
-    description: |
-      Object type for the note, such as TaxonDetermination, TaxonName, Otu, etc.
-    type: string
-    required: false
-  note_object_type[]:
-    description: |
-      Array of object types for the notes, note_object_type[]=TaxonDetermination&note_object_type[]=Otu.
-    type: string
-    required: false
-  text:
-    description: |
-      Text segment to be searched for in notes.
-    type: string
     required: false
