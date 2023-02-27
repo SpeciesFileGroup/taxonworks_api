@@ -8,12 +8,11 @@ queryParameters:
     required: false
   note_text:
     description: |
-      Array of IDs for the notes to be found.
+      Search for the exact text matching notes.
     type: integer
     required: false
   notes:
     description: |
       Find all notes that reference any objects that have a note_object_id.
-      This param should only be used in tandem with note_object_type.
-    type: integer
+    type: boolean
     required: false

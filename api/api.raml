@@ -94,10 +94,14 @@ traits:
   project_tokenized: !include /traits/project_tokenized.raml
   user_tokenized: !include /traits/user_tokenized.raml
   pageable: !include /traits/pageable.raml
-  citations: !include /traits/notes.raml
-  data_attributes: !include /traits/notes.raml
+  citations: !include /traits/citations.raml
+  data_attributes: !include /traits/data_attributes.raml
+  depictions: !include /traits/depictions.raml
+  identifiers: !include /traits/identifiers.raml
   notes: !include /traits/notes.raml
-  tags: !include /traits/notes.raml
+  polymorphic: !include /traits/polymorphic.raml
+  tags: !include /traits/tags.raml
+  users: !include /traits/users/raml
 
 / New special parameters for model data requests:
   description: |
