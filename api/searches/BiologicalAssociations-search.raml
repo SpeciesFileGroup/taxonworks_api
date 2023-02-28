@@ -1,40 +1,121 @@
-is: [pageable: { default_per: 50, max_per: 1000 }]
+is: [citations, identifiers, notes, tags, users, pageable: { default_per: 50, max_per: 1000 }]
 queryParameters:
-  any_global_id:
+  biological_association_id:
     description: |
-      Any global identifier for the relationship.
-    type: string
+      Search by ID for the association.
+    type: integer
     required: false
-  biological_association_object_type:
+  biological_association_id[]:
     description: |
-      Object part of the association triple
-    type: string
+      Search by IDs for associations.
+    type: integer array
     required: false
-    example: "Otu"
-  biological_association_subject_type:
+  biological_associations_graph_id:
     description: |
-      Subject part of the association triple
-    type: string
+      Search by ID of graph for the association.
+    type: integer
     required: false
-    example: "Otu"
+  biological_associations_graph_id[]:
+    description: |
+      Search by IDs of graphs for associations.
+    type: integer array
+    required: false
   biological_relationship_id:
     description: |
       Identifier for the relationship.
     type: integer
     required: false
-    example:  1
-  object_global_id:
+  collecting_event_id:
     description: |
-      Identifier for the object.
+      All BiologicalAssociations with CollectionObjects linked to a CollectingEvent.
+    type: integer
+    required: false
+  collecting_event_id[]:
+    description: |
+      All BiologicalAssociations with CollectionObjects linked to one or more CollectingEvents.
+    type: integer array
+    required: false
+  collection_object_id:
+    description: |
+      Search by collection object ID.
+    type: integer
+    required: false
+  collection_object_id[]:
+    description: |
+      Search by collection object IDs.
+    type: integer array
+    required: false
+  descendants:
+    description: |
+      Include descendant OTUs.
+    type: boolean
+    required: false
+  exclude_taxon_name_relationship:
+    description: |
+       True: return relationships *excluding* those linked by biological_relationship_id.
+    type: boolean
+    required: false
+  geo_json:
+    description: |
+      Flag to return result as geoJSON
+    type: boolean
+    required: false
+  geographic_area_id:
+    description: |
+      Identifier for the geographic area.
+    type: integer
+    required: false
+    example: 33609
+  geographic_area_id[]:
+    description: |
+      Identifiers for specific geographic areas.
+    type: integer array
+    required: false
+  geographic_area_mode:
+    description:
+      Flag to set area mode, in conjunction with geographic_area_id/geographic_area_id[]
+    type: boolean, nil
+    required: false
+  object_biological_property_id:
+  object_biological_property_id[]:
+  object_object_global_id:
+  object_object_global_id[]:
+  object_taxon_name_id:
+  object_taxon_name_id[]:
+  object_type:
+  otu_id:
+    description: |
+      Identifier for the otu in search.
+    type: integer array
+    required: false
+  otu_id[]:
+    description: |
+      Array of identifier IDs for otus in search.
+    type: integer array
+    required: false
+  subject_biological_property_id:
+  subject_biological_property_id[]:
+  subject_object_global_id:
+  subject_object_global_id[]:
+  subject_taxon_name_id:
+  subject_taxon_name_id[]:
+  subject_type:
+  taxon_name_id:
+    description: |
+      Return results for all OTUs corresponding to this taxon_name_id.
+    type: integer
+    required: false
+  taxon_name_id[]:
+    description: |
+      Return results for all OTUs corresponding to these IDs.
+    type: integer array
+    required: false
+  taxon_name_id_mode:
+  wkt:
+    description: |
+      WKT shape to search for biological associations.
     type: string
     required: false
-    example: "gid://taxon-works/Otu/130025"
-  subject_global_id:
-    description: |
-      Identifier for the subject.
-    type: string
-    required: false
-    example: "gid://taxon-works/Otu/23068"
 
 responses:
   200:
