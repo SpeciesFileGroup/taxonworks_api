@@ -34,6 +34,9 @@ queryParameters:
   geographic_area_mode:
     description:
       Flag to set area mode, in conjunction with geographic_area_id/geographic_area_id[]
+        nil - non-spatial match by only those records matching the geographic_area_id exactly
+        true - spatial match
+        false - non-spatial match (descendants)
     type: boolean, nil
     required: false
   otu_id:

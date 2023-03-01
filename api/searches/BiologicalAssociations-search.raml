@@ -2,17 +2,17 @@ is: [citations, identifiers, notes, tags, users, pageable: { default_per: 50, ma
 queryParameters:
   biological_association_id:
     description: |
-      Search by ID for the association.
+      Search for a BiologicalAssociation by ID.
     type: integer
     required: false
   biological_association_id[]:
     description: |
-      Search by IDs for associations.
+      Search for BiologicalAssociations by IDs.
     type: integer array
     required: false
   biological_associations_graph_id:
     description: |
-      Search by ID of graph for the association.
+      Search by BiologicalAssociations graph ID for the associations.
     type: integer
     required: false
   biological_associations_graph_id[]:
@@ -22,12 +22,12 @@ queryParameters:
     required: false
   biological_relationship_id:
     description: |
-      Identifier for the relationship.
+      Search for a BiologicalRelationship by ID.
     type: integer
     required: false
   biological_relationship_id[]:
     description: |
-      Identifiers for relationships.
+      Search for a BiologicalRelationships by IDs.
     type: integer array
     required: false
   collecting_event_id:
@@ -42,7 +42,7 @@ queryParameters:
     required: false
   collection_object_id:
     description: |
-      Find biological relationships with CollectionObject (only) matching subject OR object.
+      Find BiologicalRelationships with CollectionObject (only) matching subject OR object.
     type: integer
     required: false
   collection_object_id[]:
@@ -52,7 +52,7 @@ queryParameters:
     required: false
   descendants:
     description: |
-      Include descendant OTUs.
+      True: include descendant OTUs.
     type: boolean
     required: false
   exclude_taxon_name_relationship:
@@ -78,6 +78,9 @@ queryParameters:
   geographic_area_mode:
     description:
       Flag to set area mode, in conjunction with geographic_area_id/geographic_area_id[]
+        nil - non-spatial match by only those records matching the geographic_area_id exactly
+        true - spatial match
+        false - non-spatial match (descendants)
     type: boolean, nil
     required: false
   object_biological_property_id:
@@ -162,12 +165,12 @@ queryParameters:
     required: false
   taxon_name_id:
     description: |
-      Return results for all OTUs corresponding to this taxon_name_id.
+      Find all BiologicalAssociations matching this name or its children linked to this taxon_name_id.
     type: integer
     required: false
   taxon_name_id[]:
     description: |
-      Return results for all OTUs corresponding to these IDs.
+      Find all BiologicalAssociations matching these names or their children linked to these taxon_name_id.
     type: integer array
     required: false
   taxon_name_id_mode:
