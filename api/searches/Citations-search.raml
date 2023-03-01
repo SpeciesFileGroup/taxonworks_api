@@ -1,29 +1,53 @@
-is: [pageable: { default_per: 50, max_per: 1000 }]
+is: [polymorphic, users, pageable: { default_per: 50, max_per: 1000 }]
 queryParameters:
+  citation_id:
+    description: |
+      Find Citation by its ID.
+    type: integer
+    required: false
+  citation_id[]:
+    description: |
+      Find Citations by their IDs.
+    type: integer
+    required: false
   citation_object_id:
     description: |
-      Identifier for the citation object.
+      Find by the ID for the object cited.
     type: integer
     required: false
-    example: 42463
+  citation_object_id[]:
+    description: |
+      Find by the IDs for the objects cited.
+    type: integer
+    required: false
   citation_object_type:
     description: |
-      object type for the citation, such as TaxonDetermination, TaxonName, etc.
+      Find with object type for the citation, such as TaxonDetermination, TaxonName, etc.
     type: string
     required: false
-    example: "TaxonName"
+  citation_object_type[]:
+    description: |
+      Find with object types for the citations, such as TaxonDetermination, TaxonName, etc.
+    type: string
+    required: false
   is_original:
     description: |
-      Is the citation of the original description.
+      Find where the citation is the original description.
     type: string boolean
     required: false
-    example: "false"
   source_id:
     description: |
-      Identifier for the citation's source.
+      ID for the citation source.
     type: integer
     required: false
-    example: 1
+  _id_parameters:
+    description:  |
+      asserted_distribution_id, biological_association_id, biological_associations_graph_id,
+      biological_relationship_id, character_state_id, collecting_event_id, collection_object_id,
+      common_name_id, confidence_id, content_id,  data_attribute_id, descriptor_id, georeference_id,
+      image_id, observation_id, observation_matrix_id, observation_matrix_row_id, observation_matrix_row_item_id,
+      otu_id, protocol_id, taxon_determination_id, taxon_name_classification_id,
+      taxon_name_id, taxon_name_relationship_id, type_material_id
 
 responses:
   200:
