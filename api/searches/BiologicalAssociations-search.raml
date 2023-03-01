@@ -25,6 +25,11 @@ queryParameters:
       Identifier for the relationship.
     type: integer
     required: false
+  biological_relationship_id[]:
+    description: |
+      Identifiers for relationships.
+    type: integer array
+    required: false
   collecting_event_id:
     description: |
       All BiologicalAssociations with CollectionObjects linked to a CollectingEvent.
@@ -37,7 +42,7 @@ queryParameters:
     required: false
   collection_object_id:
     description: |
-      Search by collection object ID.
+      Find biological relationships with CollectionObject (only) matching subject OR object.
     type: integer
     required: false
   collection_object_id[]:
@@ -65,7 +70,6 @@ queryParameters:
       Identifier for the geographic area.
     type: integer
     required: false
-    example: 33609
   geographic_area_id[]:
     description: |
       Identifiers for specific geographic areas.
@@ -77,29 +81,85 @@ queryParameters:
     type: boolean, nil
     required: false
   object_biological_property_id:
+    description: |
+      Find all BiologicalAssociations with object having this property ID.
+    type: integer array
+    required: false
   object_biological_property_id[]:
+    description: |
+      Find all BiologicalAssociations with object having these property IDs.
+    type: integer array
+    required: false
   object_object_global_id:
+    description: |
+      Find all BiologicalAssociations with object having this global ID.
+    type: integer array
+    required: false
   object_object_global_id[]:
+    description: |
+      Find all BiologicalAssociations with object having these global IDs.
+    type: integer array
+    required: false
   object_taxon_name_id:
+    description: |
+      Find all BiologicalAssociations matching this (valid !) TaxonName or its children.
+    type: integer array
+    required: false
   object_taxon_name_id[]:
+    description: |
+      Find all BiologicalAssociations matching these (valid !) TaxonNames or their children.
+    type: integer array
+    required: false
   object_type:
+    description: |
+      Limit search to a specific subject type: Otu, CollectionObject; nil or not present means any.
+    type: string
+    required: false
   otu_id:
     description: |
-      Identifier for the otu in search.
+      Find BiologicalAssociations with OTU (only) matching subject OR object.
     type: integer array
     required: false
   otu_id[]:
     description: |
-      Array of identifier IDs for otus in search.
+      Array of OTU IDs for BiologicalAssociations with OTUs (only) matching subject OR object.
     type: integer array
     required: false
   subject_biological_property_id:
+    description: |
+      Find all BiologicalAssociations with subject having this property ID.
+    type: integer array
+    required: false
   subject_biological_property_id[]:
+    description: |
+      Find all BiologicalAssociations with subject having these property IDs.
+    type: integer array
+    required: false
   subject_object_global_id:
+    description: |
+      Find all BiologicalAssociations with subject having this global ID.
+    type: integer array
+    required: false
   subject_object_global_id[]:
+    description: |
+      Find all BiologicalAssociations with subject having these global IDs.
+    type: integer array
+    required: false
   subject_taxon_name_id:
+    description: |
+      Find all BiologicalAssociations matching this (valid !) TaxonName or its children.
+    type: integer
+    required: false
   subject_taxon_name_id[]:
+    description: |
+      Find all BiologicalAssociations matching these (valid !) TaxonNames or their children.
+    type: integer array
+    required: false
   subject_type:
+    description: |
+      Limit search to a specific subject type: Otu, CollectionObject; nil or not present means any.
+    type: string
+    required: false
   taxon_name_id:
     description: |
       Return results for all OTUs corresponding to this taxon_name_id.
