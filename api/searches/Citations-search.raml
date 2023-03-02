@@ -40,7 +40,7 @@ queryParameters:
       ID for the citation source.
     type: integer
     required: false
-  _id_parameters:
+  _optional_parameters:
     description:  |
       asserted_distribution_id, biological_association_id, biological_associations_graph_id,
       biological_relationship_id, character_state_id, collecting_event_id, collection_object_id,
@@ -48,6 +48,7 @@ queryParameters:
       image_id, observation_id, observation_matrix_id, observation_matrix_row_id, observation_matrix_row_item_id,
       otu_id, protocol_id, taxon_determination_id, taxon_name_classification_id,
       taxon_name_id, taxon_name_relationship_id, type_material_id
+    required: false
 
 responses:
   200:

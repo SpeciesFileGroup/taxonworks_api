@@ -1,4 +1,4 @@
-is: [pageable: { default_per: 50, max_per: 1000 }]
+is: [citations, data_attributes, depictions, identifiers, notes, tags, users, pageable: { default_per: 50, max_per: 1000 }]
 queryParameters:
   collecting_events_wildcards[]:
     description: |
@@ -7,25 +7,52 @@ queryParameters:
       Instance Attribute Summary, which details columns of the collecting_events table.
     type: string array
     required: false
+  collection_objects:
+    description:  |
+      true: match only CollectingEvents with associated CollectionObjects
+      false: match only CollectingEvents without associated CollectionObjects
+      nil: not applied
+    type: boolean
+    required: false
   collector_id:
     description:  |
       A single collector ID
-    type: string integer
+    type: integer
     required: false
   collector_id[]:
     description:  |
       List of collector IDs
-    type: string integer array
+    type: integer array
     required: false
   collector_ids_or:
     description:  |
-      Find collecting events with ANY one of these collectors (true) or ALL of these collectors (false)
+      Find collecting events with ANY one of these collectors (true) or ALL of these collectors (false/nil)
+    type: boolean
+    required: false
+  collector_ids_or[]:
+    description:  |
+      Find collecting events with ANY one of these collectors (true) or ALL of these collectors (false/nil)
+    type: boolean
+    required: false
+  collectors:
+    description:  |
+      Find collecting events when true: a collector role exists, false: a collector role doesn't exist, nil: not applied.
     type: string boolean
+    required: false
+  end_date:
+    description: |
+      Find CollectingEvents with this end date or earlier.
+    type: string
     required: false
   geo_json:
     description:
       geoJSON of the search area
     type: string
+    required: false
+  geographic_area:
+    description: |
+      true: where CollectingEvent has geographic_area; false: where not geographic_area; nil: not applied.
+    type: integer
     required: false
   geographic_area_id:
     description: |
@@ -37,6 +64,18 @@ queryParameters:
       List of geographic area IDs for search
     type: integer
     required: false
+  geographic_area_mode:
+    description:
+      Flag to set area mode, in conjunction with geographic_area_id/geographic_area_id[]
+        nil - non-spatial match by only those records matching the geographic_area_id exactly
+        true - spatial match
+        false - non-spatial match (descendants)
+    type: boolean, nil
+    required: false
+  georeferences:
+    description: |
+      true: where CollectingEvent has georeferences; false: where not georeferenced; nil: not applied.
+    type: boolean
   in_labels:
     description: |
       Wildcard wrapped match against any label
@@ -71,26 +110,42 @@ queryParameters:
       Include metadata for verbatim labels.
     type: string boolean
     required: false
+  partial_overlap_dates:
+    description: |
+      Find CollectingEvents allowing overlap of dates.
+    type: string
+    required: false
   radius:
     description: |
       Search area radius in meters.
     type: integer
     required: false
   recent:
+  start_date:
     description: |
-      Include metadata for recent searches
-    type: string boolean
+      Find CollectingEvents with this start date or later.
+    type: string
     required: false
-    example: "false"
-  spatial_geographic_areas:
+  use_max:
     description: |
-      Find CollectingEvents having spatial geographic areas
-    type: string boolean
-    required: false
+     The maximum number of CollectionObjects linked to CollectingEvent.
+  use_min:
+    description: |
+      The minimum number of CollectionObjects linked to CollectingEvent.
   wkt:
     description: |
-      Well Known Text describing the search area
+      Well Known Text describing the search area.
     type: string
+    required: false
+  _optional_parameters:
+    description:  |
+      meta_prioritize_geographic_area, min_ma, max_ma, lithology, member, formation,
+      group, end_date_month, start_date_month, verbatim_date, time_end_second, time_end_minute, time_end_hour,
+      time_start_second, time_start_minute, time_start_hour, verbatim_datum, verbatim_elevation, verbatim_habitat,
+      end_date_day, start_date_day, end_date_year, start_date_year,
+      md5_of_verbatim_label, field_notes, elevation_precision, maximum_elevation, minimum_elevation,
+      verbatim_method, verbatim_collectors, verbatim_trip_identifier, verbatim_geolocation_uncertainty,
+      verbatim_latitude, verbatim_longitude, verbatim_locality, document_label, print_label, verbatim_label
     required: false
 
 responses:
