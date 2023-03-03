@@ -1,26 +1,45 @@
 is: [pageable: { default_per: 50, max_per: 1000 }]
 queryParameters:
-  ancestor_id:
+  biocuration_class_id:
     description: |
-      Include OTU ancestor in search.
+      Include results for biocuration classes for this ID.
     type: integer
     required: false
-  biocuration_class_ids[]:
+  biocuration_class_id[]:
     description: |
-      Include metadata for biocuration classes by id.
+      Include results for biocuration classes for these IDs.
+    type: integer
+    required: false
+  biological_association_id:
+    description: |
+      Include results for biological associations for this ID.
+    type: integer
+    required: false
+  biological_association_id[]:
+    description: |
+      Include results for biological associations for these IDs.
+    type: integer
+    required: false
+  biological_associations:
+    description: |
+      ?? Include biological associations.
     type: string boolean
     required: false
-  biological_relationship_ids[]:
+  biological_relationship_id:
     description: |
-      Include metadata biological relationships by id.
-    type: string boolean
+      Include results for biological relationships for this ID.
+    type: integer
+    required: false
+  biological_relationship_id[]:
+    description: |
+      Include results for biological relationships for these IDs.
+    type: integer
     required: false
   buffered_collecting_event:
     description: |
       Include data where collecting event information contains this text value.
     type: string
     required: false
-    example:  colorado
   buffered_determinations:
     description: |
       Include data where determination contains this text value.
@@ -36,7 +55,22 @@ queryParameters:
       Return data if associated collecting event; true / false has/not, if param not present ignore.
     type: string boolean
     required: false
-  collecting_event_ids[]:
+  collecting_event_id:
+    description: |
+      ID for associated collecting event.
+    type: integer array
+    required: false
+  collecting_event_id[]:
+    description: |
+      List of IDs for associated collecting events.
+    type: integer array
+    required: false
+  collecting_object_id:
+    description: |
+      List of IDs for associated collecting events.
+    type: integer array
+    required: false
+  collecting_object_id[]:
     description: |
       List of IDs for associated collecting events.
     type: integer array
