@@ -65,12 +65,12 @@ queryParameters:
       List of IDs for associated collecting events.
     type: integer array
     required: false
-  collecting_object_id:
+  collection_object_id:
     description: |
       List of IDs for associated collecting events.
     type: integer array
     required: false
-  collecting_object_id[]:
+  collection_object_id[]:
     description: |
       List of IDs for associated collecting events.
     type: integer array
@@ -80,20 +80,16 @@ queryParameters:
       Type of collection object, e.g., "Specimen".
     type: string
     required: false
-  collector_ids[]:
+  collectors:
     description:  |
-      IDs for collectors to be included in the search.
-    type: string integer
-    required: false
-  collector_ids_or:
-    description:  |
-      IDs for any of the collectors are to be included in the search.
-    type: string boolean
+      true: a collector role exists; false: no collector role exists; nil - not applied
+    type: boolean
     required: false
   current_determinations:
     description: |
-      Include metadata for current determinations.
-    type: string boolean
+      true: TaxonDetermination must be .current; false: TaxonDetermination must be .historical.
+      nil = TaxonDeterminations match regardless of current or historical
+    type: boolean
     required: false
   depictions:
     description: |
