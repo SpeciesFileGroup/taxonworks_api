@@ -23,7 +23,7 @@ queryParameters:
   biological_associations:
     description: |
       ?? Include biological associations.
-    type: string boolean
+    type: boolean
     required: false
   biological_relationship_id:
     description: |
@@ -53,7 +53,7 @@ queryParameters:
   collecting_event:
     description: |
       Return data if associated collecting event; true / false has/not, if param not present ignore.
-    type: string boolean
+    type: boolean
     required: false
   collecting_event_id:
     description: |
@@ -88,29 +88,49 @@ queryParameters:
   current_determinations:
     description: |
       true: TaxonDetermination must be .current; false: TaxonDetermination must be .historical.
-      nil = TaxonDeterminations match regardless of current or historical
+      nil: TaxonDeterminations match regardless of current or historical
     type: boolean
     required: false
-  depictions:
+  current_repository:
     description: |
-      Include metadata for depicted objects; true / false index is/not built, if not present ignore.
-    type: string boolean
+      true: has current_repository_id; false: does not have current_repository_id; nil: not applied.
+    type: boolean
     required: false
+  current_repository_id:
+    description: |
+      Find collection_objects in this repository by this ID.
+    type: integer
+    required: false
+  current_repository_id[]:
+    description: |
+      Find collection_objects in these repositories by these IDs.
+    type: integer array
+    required: false
+#  depictions:
+#    description: |
+#      Include metadata for depicted objects; true / false index is/not built, if not present ignore.
+#    type: boolean
+#    required: false
+  determiner_id:
+    description: |
+      Include results which are related to this determiner (person by ID),
+    type: integer
   determiner_id[]:
     description: |
-      Include results which are related to any of these determiners (by ID),
+      Include results which are related to any of these determiners (people by IDs),
       e.g., determiner_id[]=325&determiner_id[]=9032
-    type: string integer array
+    type: integer array
     required: false
   determiner_id_or:
     description: |
-      Include results which are related to any of these determiners (by ID),
-    type: string boolean
+      true: treat iIDs as "and" (only collection objects with all and only all will match)
+      fasle or nil: treat Ids as "or".
+    type: boolean
     required: false
   dwc_indexed:
     description: |
       Include metadata for Darwin Core indexed objects; true / false index is/not built, if not present ignore.
-    type: string boolean
+    type: boolean
     required: false
   end_date:
     description:
@@ -140,7 +160,7 @@ queryParameters:
   geographic_area:
     description: |
       Find if associated collecting event has/not a geographic area.  Ignored if param not present.
-    type: string boolean
+    type: boolean
     required: false
   geographic_area_ids[]:
      description: |
@@ -150,7 +170,7 @@ queryParameters:
   georeferences:
     description:  |
       Include metadata for associated collecting event georeferences.
-    type: string boolean
+    type: boolean
     required: false
   identifier:
     description: |
@@ -175,22 +195,22 @@ queryParameters:
   identifiers:
     description:  |
       Include metadata for associated collecting event identifiers.
-    type: string boolean
+    type: boolean
     required: false
   in_labels:
     description: |
       Search wildcard in all related collecting event labels.
-    type: string boolean
+    type: boolean
     required: false
   in_verbatim_locality:
     description: |
       Search in verbatim locality in related collecting events.
-    type: string boolean
+    type: boolean
     required: false
   is_type[]:
     description: |
       Include metadata for primary types by IDs
-    type: string integer array
+    type: integer array
     required: false
   keyword_id_and[]:
     description:  |
@@ -205,7 +225,7 @@ queryParameters:
   loaned:
     description: |
       Include metadata for loaned (borrowed) objects
-    type: string boolean
+    type: boolean
     required: false
   md5_verbatim_label:
     description: |
@@ -220,12 +240,12 @@ queryParameters:
   never_loaned:
      description: |
        Include metadata for collection objects never loaned.
-     type: string boolean
+     type: boolean
      required: false
   on_loan:
     description: |
       Include metadata for collection objects on loan.
-    type: string boolean
+    type: boolean
     required: false
   otu_ids[]:
     description: |
@@ -235,7 +255,7 @@ queryParameters:
   partial_overlap_dates:
     description: |
       Allow date overlap.
-    type: string boolean
+    type: boolean
     required: false
   preparation_type_id:
     description: |
@@ -276,7 +296,7 @@ queryParameters:
   spatial_geographic_areas:
     description: |
       Find if associated collecting event has/not a geographic area.  Ignored if param not present.
-    type: string boolean
+    type: boolean
     required: false
   start_date:
     description:
@@ -286,12 +306,12 @@ queryParameters:
   taxon_determinations:
     description:
       Include taxon determinations.
-    type: string boolean
+    type: boolean
     required: false
   type_material:
     description:
       Include type material.
-    type: string boolean
+    type: boolean
     required: false
   type_specimen_taxon_name_id:
     description: |
@@ -321,22 +341,22 @@ queryParameters:
   validity:
     description: |
       Include metadata for valid/invalid or ignore.  Used only in conjunction with ancestor_id.
-    type: string boolean
+    type: boolean
     required: false
   with_buffered_collecting_event:
     description: |
       Return collection object with/without buffered collecting event.
-    type: string boolean
+    type: boolean
     required: false
   with_buffered_determinations:
     description: |
       Return collection object with/without buffered determinations.
-    type: string boolean
+    type: boolean
     required: false
   with_buffered_other_labels:
     description: |
       Return collection object with/without buffered other labels.
-    type: string boolean
+    type: boolean
     required: false
   wkt:
     description: |

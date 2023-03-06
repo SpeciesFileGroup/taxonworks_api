@@ -3,17 +3,17 @@ queryParameters:
   citations:
     description: |
       Include associated citations in results.
-    type: string boolean
+    type: boolean
     required: false
   depictions:
     description: |
       Include associated depictions in results.
-    type: string boolean
+    type: boolean
     required: false
   exact:
     description: |
       The string in the content should match exactly.
-    type: string boolean
+    type: boolean
     required: false
   otu_id:
     description: |
@@ -23,7 +23,7 @@ queryParameters:
   otu_id[]:
     description: |
       IDs of OTUs to be included in the search.
-    type: string integer array
+    type: integer array
     required: false
   text:
     description: |
@@ -39,7 +39,7 @@ queryParameters:
   topic_id[]:
     description: |
       IDs of topics to be included in the search.
-    type: string integer array
+    type: integer array
     required: false
   user_date_end:
     description: |

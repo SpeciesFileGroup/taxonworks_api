@@ -37,7 +37,7 @@ queryParameters:
   collectors:
     description:  |
       Find collecting events when true: a collector role exists, false: a collector role doesn't exist, nil: not applied.
-    type: string boolean
+    type: boolean
     required: false
   end_date:
     description: |
@@ -89,12 +89,12 @@ queryParameters:
   keyword_id_and[]:
     description: |
       List of keyword IDs for associated collecting events where all enumerated keywords are present.
-    type: string integer array
+    type: integer array
     required: false
   keyword_id_or[]:
     description: |
       List of keyword IDs for associated collecting events where any of the enumerated keywords are present.
-    type: string integer array
+    type: integer array
     required: false
   otu_ids:
     description: |
@@ -104,11 +104,11 @@ queryParameters:
   otu_id[]:
     description: |
       List of OTU IDs to all match.
-    type: string integer array
+    type: integer array
     required: false
   md5_verbatim_labels: |
       Include metadata for verbatim labels.
-    type: string boolean
+    type: boolean
     required: false
   partial_overlap_dates:
     description: |

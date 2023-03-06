@@ -6,11 +6,23 @@ queryParameters:
     type: string
     required: false
     example: "Rehn Hebard"
-  author_ids[]:
+  author_id:
+    description: |
+        Filter by this author ID.
+      type: integer
+      required: false
+  author_id[]:
     description: |
         Filter by author IDs
-      type: string integer array
-      required: false
+    type: integer array
+    required: false
+  author_id_or:
+    description: |
+      ?? similar to collection_object
+    type: boolean
+    required: false
+  bibtex_type:
+  bibtex_type[]:
   citation_object_type[]:
     description: |
       Get source metadata associated with these types (Source::verbatim, Source::human, Source::Bibtex)
@@ -21,11 +33,15 @@ queryParameters:
       Get source metadata associated with these citation IDs
     type: integer
     required: false
+  citations_on_otus:
+  descendants:
   documents:
     description: |
       get sources matching documents
-    type: string boolean
+    type: boolean
     required: false
+  empty:
+  empty[]:
   exact_author:
     description: |
       Metadata for only the exact author string provided (inside author property). Matching is case insensitive.
@@ -34,7 +50,7 @@ queryParameters:
   exact_title:
     description: |
       Metadata selected for only exact title match
-    type: string boolean
+    type: boolean
     required: false
   identifier:
     description: |
@@ -59,33 +75,44 @@ queryParameters:
   ids[]:
      description: |
        Filter by source IDs
-     type: string integer array
+     type: integer array
      required: false
   in_project:
     description: |
       Search only this project for the source metadata
-    type: string boolean
+    type: boolean
     required: false
     example: true
+  keyword_id_and:
+    description: |
+      List of keyword IDs for sources where all enumerated keywords are present.
+    type: integer array
+    required: false
   keyword_id_and[]:
     description: |
       List of keyword IDs for sources where all enumerated keywords are present.
-    type: string integer array
+    type: integer array
+    required: false
+  keyword_id_or:
+    description: |
+      List of keyword IDs for sources where all enumerated keywords are present.
+    type: integer array
     required: false
   keyword_id_or[]:
     description: |
       List of keyword IDs for sources where any of the enumerated keywords are present.
-    type: string integer array
+    type: integer array
     required: false
   nomenclature:
     description: |
       include nomenclature metadata
-    type: string boolean
+    type: boolean
     required: false
+  not_empty:
   notes:
     description: |
       include notes metadata
-    type: string boolean
+    type: boolean
     required: false
   project_id:
     description: |
@@ -93,36 +120,43 @@ queryParameters:
     type: integer
     required: true
     example: 2
-  recent:
+  query_term:
     description: |
-      include metadata for recently accessed sources
-    type: string boolean
+      ??
+    type: boolean
     required: false
   roles:
     description: |
       include metadata for roles
-    type: string boolean
+    type: boolean
     required: false
     example: false
+  serial:
+  serial_id:
+  serial_id[]:
+  source_id:
+  source_id[]:
   source_type:
     description: |
       type of source, e.g., Source::BibTex, Source::verbatim, Source::human
     type: string
     required: false
+  taxon_name_id:
+  taxon_name_id[]:
   title:
     description: |
       title of the source, e.g., "Studies in American Tettigoniidae"
     type: string
     required: false
-  topic_ids[]:
+  topic_id:
     description: |
       Get source metadata associated with these topic IDs
     type: integer
     required: false
-  with_doi:
+  topic_id[]:
     description: |
-      include metadata for sources having Digital Object Identifier
-    type: string boolean
+      Get source metadata associated with these topic IDs
+    type: integer
     required: false
   user_date_end:
     description:
@@ -133,6 +167,16 @@ queryParameters:
     description:
       Limit search to user dates later
     type: string
+    required: false
+  with_doi:
+    description: |
+      include metadata for sources having Digital Object Identifier
+    type: boolean
+    required: false
+  with_title:
+    description: |
+      include metadata for sources having Digital Object Identifier
+    type: boolean
     required: false
   year_end:
     description: |

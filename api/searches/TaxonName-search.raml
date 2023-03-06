@@ -21,21 +21,21 @@ queryParameters:
   descendants:
     description: |
       Filter by parenthood. When set to true and one or more taxon_name_id values are provided then the request matches taxa which are children of at least one of the taxa specified by the taxon_name_ids. Has no effect if taxon_name_id is not provided.
-    type: string boolean:
+    type: boolean:
     required: false
     default: false
     example: true
   exact:
     description: |
       True if filter matching must be exact, false if partial matches are allowed.
-    type: string boolean:
+    type: boolean:
     required: false
     default: false
     example: true
   leaves:
     description: |
       If 'true' filters by names having no descendents or with descendants if 'false'.
-    type: string boolean: | nil
+    type: boolean: | nil
     required: false
     default: nil
     example: true

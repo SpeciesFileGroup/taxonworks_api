@@ -13,7 +13,7 @@ queryParameters:
   biocuration_class_id[]:
     description: |
       Include metadata for biocuration classes by id array
-    type: string integer array
+    type: integer array
     required: false
   collection_object_id:
     description: |
@@ -23,12 +23,12 @@ queryParameters:
   collection_object_id[]:
     description: |
       Identifier associated with collection object
-    type: string integer array
+    type: integer array
     required: false
   depiction:
     description: |
       Include depiction in result
-    type: string boolean
+    type: boolean
     required: false
   identifier:
     description: |
@@ -59,17 +59,17 @@ queryParameters:
   image_id[]:
     description: |
       List of IDs for images e.g., image_id[]=34&image_id[]=398&image_id[]=726
-    type: string integer array
+    type: integer array
     required: false
   keyword_id_and[]:
     description: |
       List of keyword IDs for images where all enumerated keywords are present.
-    type: string integer array
+    type: integer array
     required: false
   keyword_id_or[]:
     description: |
       List of keyword IDs for images where any of the enumerated keywords are present.
-    type: string integer array
+    type: integer array
     required: false
   otu_id:
     description: |
@@ -79,7 +79,7 @@ queryParameters:
   otu_id[]:
     description: |
       List of OTU IDs e.g., otu_id[]=768&otu_id[]=1024&otu_id[]=2047
-    type: string integer array
+    type: integer array
     required: false
   sled_image_id:
     description: |
@@ -99,7 +99,7 @@ queryParameters:
   taxon_name_id[]:
     description: |
       List of IDs for specific taxon names
-    type: string integer array
+    type: integer array
     required: false
   user_date_end:
     description:
