@@ -5,12 +5,11 @@ queryParameters:
       Filter by author (inside author property). Matching is case insensitive. Use " " for "and". See also `exact`.
     type: string
     required: false
-    example: "Rehn Hebard"
   author_id:
     description: |
         Filter by this author ID.
-      type: integer
-      required: false
+    type: integer
+    required: false
   author_id[]:
     description: |
         Filter by author IDs
@@ -18,30 +17,61 @@ queryParameters:
     required: false
   author_id_or:
     description: |
-      ?? similar to collection_object
+      Find collecting events with ANY one of these authors (true) or ALL of these collectors (false/nil)
     type: boolean
     required: false
   bibtex_type:
+    description: |
+      one of the allowed BibTeX types
+    type: string
+    required: false
   bibtex_type[]:
+    description: |
+      one of the allowed BibTeX types
+    type: string array
+    required: false
+  citation_object_type:
+    description: |
+      Get sources with one of these types {TaxonDetermination, Image, Confidence, Otu, AssertedDistribution,
+      DataAttribute, ImportAttribute, TaxonNameRelationship, TaxonName, CollectionObject, TypeMaterial}
+    type: string
+    required: false
   citation_object_type[]:
     description: |
-      Get source metadata associated with these types (Source::verbatim, Source::human, Source::Bibtex)
-    type: string
+      Get sources with these types {TaxonDetermination, Image, Confidence, Otu, AssertedDistribution,
+      DataAttribute, ImportAttribute, TaxonNameRelationship, TaxonName, CollectionObject, TypeMaterial}
+    type: string array
     required: false
   citations:
     description: |
-      Get source metadata associated with these citation IDs
-    type: integer
+      true: sources with citations; false: sources without citations; nil: not applied.
+    type: boolean
     required: false
   citations_on_otus:
+    description: |
+      ignored if taxon_name_id is not provided; if true then also include sources linked to OTUs that are in the scope of taxon_name_id
+    type: boolean
+    required: false
   descendants:
+    description: |
+      return all sources in Citations linked to this TaxonNameID or its descendants.
+    type:
+    required: false
   documents:
     description: |
       get sources matching documents
     type: boolean
     required: false
   empty:
+    description: |
+      A source core attribute (author, bibtex_type, title) must have no value.
+    type: string
+    required: false
   empty[]:
+    description: |
+      the provided source core attributes (author, bibtex_type, title) must have no value.
+    type: string array
+    required: false
   exact_author:
     description: |
       Metadata for only the exact author string provided (inside author property). Matching is case insensitive.
@@ -79,10 +109,9 @@ queryParameters:
      required: false
   in_project:
     description: |
-      Search only this project for the source metadata
+      Use requires project_id; true: results for project_id; false: results not in project_id; nil: nat applied.
     type: boolean
     required: false
-    example: true
   keyword_id_and:
     description: |
       List of keyword IDs for sources where all enumerated keywords are present.
@@ -109,6 +138,15 @@ queryParameters:
     type: boolean
     required: false
   not_empty:
+    description: |
+      a source core attributes (author, bibtex_type, title) must have a value.
+    type: string array
+    required: false
+  not_empty[]:
+    description: |
+      the provided source core attributes (author, bibtex_type, title) must have a value.
+    type: string array
+    required: false
   notes:
     description: |
       include notes metadata
@@ -116,33 +154,57 @@ queryParameters:
     required: false
   project_id:
     description: |
-      The project for the source search
+      The project for the source search, must be used with in_project.
     type: integer
     required: true
-    example: 2
   query_term:
     description: |
-      ??
-    type: boolean
+      obsolescent query item
+    type: string
     required: false
   roles:
     description: |
       include metadata for roles
     type: boolean
     required: false
-    example: false
   serial:
+    description: |
+      true: with serial_id; false: without_serial_id; nil: both
   serial_id:
+    description: |
+      The serial ID associated with the source.
+    type: integer
+    required: false
   serial_id[]:
+    description: |
+      The serial IDs associated with the source.
+    type: integer array
+    required: false
   source_id:
+    description: |
+      get data for a source by ID
+    type: integer
+    required: false
   source_id[]:
+    description: |
+      get data for sources by IDs
+    type: integer array
+    required: false
   source_type:
     description: |
-      type of source, e.g., Source::BibTex, Source::verbatim, Source::human
+      type of source, e.g., Source::BibTex, Source::verbatim, Source::human.
     type: string
     required: false
   taxon_name_id:
+    description: |
+      return all sources in Citations linked to this TaxonNameID (or descendants option to this TaxonName)
+    type:
+    required: false
   taxon_name_id[]:
+    description: |
+      return all sources in Citations linked to these TaxonNameIDs (or descendants option to this TaxonName)
+    type:
+    required: false
   title:
     description: |
       title of the source, e.g., "Studies in American Tettigoniidae"
@@ -175,7 +237,7 @@ queryParameters:
     required: false
   with_title:
     description: |
-      include metadata for sources having Digital Object Identifier
+      true: with a title; false: without a title; nil: both
     type: boolean
     required: false
   year_end:
