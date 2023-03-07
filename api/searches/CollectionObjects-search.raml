@@ -22,7 +22,9 @@ queryParameters:
     required: false
   biological_associations:
     description: |
-      ?? Include biological associations.
+      true: get collecting event that has BiologicalAssociation ?!?
+      false - get collecting event that does not have BiologicalAssociation
+      nil: not applied.
     type: boolean
     required: false
   biological_relationship_id:
@@ -57,12 +59,12 @@ queryParameters:
     required: false
   collecting_event_id:
     description: |
-      ID for associated collecting event.
+      Ionly return CollectingEvent with this collecting event ID.
     type: integer array
     required: false
   collecting_event_id[]:
     description: |
-      List of IDs for associated collecting events.
+      only return CollectingEvents with these collecting event IDs.
     type: integer array
     required: false
   collection_object_id:
@@ -106,11 +108,20 @@ queryParameters:
       Find collection_objects in these repositories by these IDs.
     type: integer array
     required: false
-#  depictions:
-#    description: |
-#      Include metadata for depicted objects; true / false index is/not built, if not present ignore.
-#    type: boolean
-#    required: false
+  descendants:
+    description: |
+      true: provide collection objects for OTU descendants linked to TaxonNameIDs
+      false: do not return descendant data.  See also taxon_name_id.
+      nil: ignored
+    type: boolean
+    required: false
+  dates:
+    description: |
+      true: any of start/end date or verbatim date are populated
+      false: none of start/end date or verbatim date are populated
+      nil: ignored
+    type: boolean
+    required: false
   determiner_id:
     description: |
       Include results which are related to this determiner (person by ID),
@@ -125,6 +136,9 @@ queryParameters:
     description: |
       true: treat iIDs as "and" (only collection objects with all and only all will match)
       false or nil: treat Ids as "or".
+  determiners:
+    description: |
+      true: a determiner role exists; false: no determiner role exists. nil: not applied.
     type: boolean
     required: false
   dwc_indexed:
@@ -152,6 +166,16 @@ queryParameters:
       Include data where other labels information contains this exact text value.
     type: string
     required: false
+  extract_id:
+    description:
+      ??.
+    type: integer
+    required: false
+  extract_id[]:
+    description:
+      ??.
+    type: integer
+    required: false
   geo_json:
     description:
       geoJSON of the search area.
@@ -169,7 +193,7 @@ queryParameters:
      required: false
   georeferences:
     description:  |
-      Include metadata for associated collecting event georeferences.
+      true: collecting event has one ore more georeferences; false: does not have any georeferences;  nil: not applied.
     type: boolean
     required: false
   identifier:
@@ -224,7 +248,7 @@ queryParameters:
     required: false
   loaned:
     description: |
-      Include metadata for loaned (borrowed) objects
+      true: the CollectionObject has been loaned at least once,  false - is not now loaned; nil: not applied
     type: boolean
     required: false
   md5_verbatim_label:
@@ -239,12 +263,12 @@ queryParameters:
     required: false
   never_loaned:
      description: |
-       Include metadata for collection objects never loaned.
+       true: Return data for CollectionObjects never loaned.
      type: boolean
      required: false
   on_loan:
     description: |
-      Include metadata for collection objects on loan.
+      true: the CollectionObject *currently* on loan.
     type: boolean
     required: false
   otu_ids[]:
@@ -257,6 +281,11 @@ queryParameters:
       Allow date overlap.
     type: boolean
     required: false
+  preparation_type:
+    description: |
+      true: has preparation_type; false: does not have preparation_type; nil: not applied.
+    type: boolean
+    required: false
   preparation_type_id:
     description: |
       The ID for a single preparation type in the search.
@@ -265,14 +294,8 @@ queryParameters:
   preparation_type_id[]:
     description: |
       The IDs for preparation types in the search.
-    type: integer
+    type: integer array
     required: false
-  project_id:
-    description: |
-      The id for the project for the search.
-    type: integer
-    required: true
-    example: 4
   radius:
     description: |
       Radius around location
@@ -280,22 +303,22 @@ queryParameters:
     required: false
   repository:
     description: |
-      Include metadata for repository.
+      true: has repository_id;false: does not have repository_id; nil: not applied.
     type: integer
     required: false
   repository_id:
     description: |
-      Include metadata for repository by id.
+      return CollectionObjects for repository by id.
     type: integer
     required: false
   sled_image_id:
     description: |
-      Include metadata for SLED images by id.
+      return CollectionObjects for SLED images by id.
     type: integer
     required: false
   spatial_geographic_areas:
     description: |
-      Find if associated collecting event has/not a geographic area.  Ignored if param not present.
+      ?? Find if associated collecting event has/not a geographic area.  Ignored if param not present.
     type: boolean
     required: false
   start_date:
@@ -303,10 +326,25 @@ queryParameters:
       Limit search to dates later
     type: string
     required: false
-  taxon_determinations:
+  taxon_determination_id:
     description:
       Include taxon determinations.
     type: boolean
+    required: false
+  taxon_determinations:
+    description:
+      true: has one ore more taxon_determinations; false: does not have any taxon_determinations; nil: not applied.
+    type: boolean
+    required: false
+  taxon_name_id:
+    description:
+      return collection objects associated with OTUs associated with this taxon name by its ID.
+    type: integer
+    required: false
+  taxon_name_id[]:
+    description:
+      return collection objects associated with OTUs associated  with these taxon name by their ID.
+    type: integer
     required: false
   type_material:
     description:
@@ -345,17 +383,17 @@ queryParameters:
     required: false
   with_buffered_collecting_event:
     description: |
-      Return collection object with/without buffered collecting event.
+      Return collection object true: with / false|nil: without buffered collecting event.
     type: boolean
     required: false
   with_buffered_determinations:
     description: |
-      Return collection object with/without buffered determinations.
+      Return collection object true: with / false|nil: without buffered determinations.
     type: boolean
     required: false
   with_buffered_other_labels:
     description: |
-      Return collection object with/without buffered other labels.
+      Return collection object true: with / false|nil: without buffered other labels.
     type: boolean
     required: false
   wkt:
