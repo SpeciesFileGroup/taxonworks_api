@@ -32,15 +32,17 @@ queryParameters:
     required: false
   citation_object_type:
     description: |
-      Get sources with one of these types {TaxonDetermination, Image, Confidence, Otu, AssertedDistribution,
-      DataAttribute, ImportAttribute, TaxonNameRelationship, TaxonName, CollectionObject, TypeMaterial}
+      Get sources with one of these enumerated types:
     type: string
+    enum: [TaxonDetermination, Image, Confidence, Otu, AssertedDistribution,
+                 DataAttribute, ImportAttribute, TaxonNameRelationship, TaxonName, CollectionObject, TypeMaterial]
     required: false
   citation_object_type[]:
     description: |
-      Get sources with these types {TaxonDetermination, Image, Confidence, Otu, AssertedDistribution,
-      DataAttribute, ImportAttribute, TaxonNameRelationship, TaxonName, CollectionObject, TypeMaterial}
+      Get sources with these enumerated types:
     type: string array
+    enum: [TaxonDetermination, Image, Confidence, Otu, AssertedDistribution,
+                 DataAttribute, ImportAttribute, TaxonNameRelationship, TaxonName, CollectionObject, TypeMaterial]
     required: false
   citations:
     description: |

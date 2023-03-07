@@ -67,8 +67,8 @@ queryParameters:
     required: false
   collection_object_id:
     description: |
-      List of IDs for associated collecting events.
-    type: integer array
+      ID for associated collecting event.
+    type: integer
     required: false
   collection_object_id[]:
     description: |
@@ -124,7 +124,7 @@ queryParameters:
   determiner_id_or:
     description: |
       true: treat iIDs as "and" (only collection objects with all and only all will match)
-      fasle or nil: treat Ids as "or".
+      false or nil: treat Ids as "or".
     type: boolean
     required: false
   dwc_indexed:

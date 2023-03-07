@@ -1,119 +1,213 @@
 is: [pageable: { default_per: 50, max_per: 1000 }]
 queryParameters:
+  ancestors:
+    description: |
+      taxon_name_id must be supplied. Works as AND clause with descendants
+    type: boolean
+    required: false
   author:
     description: |
-      Filter by authors (inside `cached_author_year` property). Matching is case insensitive. Use "&" for "and". See also `exact`.
+      Filter by authors (inside `cached_author_year` property). Matching is case insensitive. Use "&" for "and". See also `author_exact`.
     type: string
     required: false
-    example: "Smith & Johnson, 2019"
+  author_exact:
+    description: |
+      Filter by authors (inside `cached_author_year` property). Matching is case insensitive. Use "&" for "and". See also `exact`.
+    type: boolean
+    required: false
   authors:
     description: |
       When `true` then only return taxon names that have an author string present.
     type: boolean:
     required: false
     enum: [true, false]
-  citations:
+  collecting_event_id:
     description: |
-      When `true` then only return taxon names that have citations attached to them.
-    type: boolean:
+      ID for associated collecting event.
+    type: integer array
     required: false
-    enum: [true, false]
+  collecting_event_id[]:
+    description: |
+      List of IDs for associated collecting events.
+    type: integer array
+    required: false
+  collection_object_id:
+    description: |
+      ID for associated collection object.
+    type: integer
+    required: false
+  collection_object_id[]:
+    description: |
+      List of IDs for associated collection objects.
+    type: integer array
+    required: false
+  combination_taxon_name_id[]:
+    description: |
+      List of taxon_name_ids for which all Combinations will be returned.
+    type: integer array
+    required: false
   descendants:
     description: |
-      Filter by parenthood. When set to true and one or more taxon_name_id values are provided then the request matches taxa which are children of at least one of the taxa specified by the taxon_name_ids. Has no effect if taxon_name_id is not provided.
+      Filter by parenthood. When set to true and one or more taxon_name_id values are provided then the request
+      matches taxa which are children of at least one of the taxa specified by the taxon_name_ids.
+      Has no effect if taxon_name_id is not provided.
     type: boolean:
     required: false
-    default: false
-    example: true
+  descendants_max_depth:
+    description: |
+      A positive integer indicating how many levels deep of descendants to retrieve. Ignored when descendants is false/unspecified.
+    type: boolean:
+    required: false
+  etymology:
+    description: |
+      true: result if the name has etymology; false: result for no etymologu.
+    type: boolean:
+    required: false
   exact:
     description: |
-      True if filter matching must be exact, false if partial matches are allowed.
+      true: filter matching must be exact; false/nil: partial matches are allowed.
     type: boolean:
     required: false
     default: false
-    example: true
   leaves:
     description: |
-      If 'true' filters by names having no descendents or with descendants if 'false'.
-    type: boolean: | nil
+      true: filters by names having no descendents; false: with descendants; nil: not applied.
+    type: boolean
     required: false
     default: nil
-    example: true
   name:
     description: |
-      Filter to apply on full taxon name (`cached` property). Matching is case insensitive. See also `exact`.
+      Filter to apply on full taxon name (`cached` property). Matching is case insensitive. See also `name_exact`.
     type: string
     required: false
-    example: "Aus"
-  nomenclature_code[]:
+  name[]:
+    description: |
+      Filter to apply on full taxon name (`cached` property). Matching is case insensitive. See also `name_exact`.
+    type: string array
+    required: false
+  name_exact:
+    description: |
+      true: apply on full taxon name (`cached` property). Matching is case insensitive. See also `name`.
+    type: boolean
+    required: false
+  nomenclature_code:
     description: |
       Filter by nomenclature code.
     type: string
     enum: [ICZN, ICBN, ICN, ICTV]
     required: false
-    example: ICZN
-  nomenclature_group[]:
+  nomenclature_group:
     description: |
       Filter by nomenclature group.
     type: string
     enum: [Higher, Family, Genus, Species]
     required: false
-    example: Genus
+  not_specified:
+    description: |
+      Filter by whether the name has 'NOT SPECIFIED' in one of the cache values.
+      true - 'NOT SPECIFIED' is present in any value; false: text is absent; nil: either present or absent.
+    type: boolean
+    required: false
+  original_combination:
+    description: |
+      true: name has at least one element of original combination
+      false: name has no element of original combination
+      nil: ignored
+    type: boolean:
+    required: false
   otus:
     description: |
       When `true` then only return taxon names that are linked to one or more Otus.
     type: boolean:
     enum: [true, false]
     required: false
-  project_id:
+  parent_id:
     description: |
-      Project identifier. In the absence of a project token you must provide this parameter.
+      Return the taxon names with this parent_id (as taxon_name_id).
     type: integer
     required: false
-    example: 1
+  parent_id[]:
+    description: |
+      Return the taxon names with these parent_ids (as taxon_name_id).
+    type: integer array
+    required: false
+  rank:
+    description: |
+      The full rank class, or any base, like NomenclaturalRank::Iczn::SpeciesGroup::Species, Iczn::SpeciesGroup::Species.
+    type: string
+    required: false
+  rank[]:
+    description: |
+      The full rank class, or any base, like NomenclaturalRank::Iczn::SpeciesGroup::Species, Iczn::SpeciesGroup::Species.
+    type: string array
+    required: false
+  taxon_name_author_id_or:
+    description: |
+      true: treat IDs as "and" (only collection objects with all and only all will match)
+      false or nil: treat Ids as "or".
+  taxon_name_id:
+    description: |
+      Return only the taxon name with this ID. To also return children see `descendants`.
+    type: integer array
+    required: false
   taxon_name_id[]:
     description: |
-      Return only taxon names with these ids. E.g., "?taxon_name_id[]=5&taxon_name_id[]=194".  To also return children see `descendants`.
+      Return only taxon names with these ids. E.g., "?taxon_name_id[]=5&taxon_name_id[]=194".
+      To also return children see `descendants`.
     type: integer array
+    required: false
+  taxon_name_relationship[]:
+    description: |
+      :subject_taxon_name_id, :object_taxon_name_id, :type
+    type: string array
     required: false
   taxon_name_relationship_type[]:
     description: |
-      Filter by names having relationships of these types
-    type: array
+      Filter by names having relationships of these types, e.g., TaxonNameRelationship::Iczn::Invalidating
+    type: string array
     required: false
-    example: TaxonNameRelationship::Iczn::Invalidating
   taxon_name_type[]:
     description: |
-      Return only taxon names of the provided class. Case sensitive. Only `Protonym`, `Combination`, and `Hybrid` are supported.
+      Return only taxon names of the provided class. Case sensitive.
     type: string
+    enum: [Protonym, Combination, Hybrid]
     required: false
     example: Protonym
   type_metadata:
     description: |
-      Boolean. When `true` then only return taxon names that are linked to a type specimen (collection object).
+      Boolean. When `true` then only return taxon names that are linked to type specimen material (collection object).
     type: boolean
     required: false
     enum: [true, false]
-  updated_since:
+  validify:
     description: |
-      Names updated (modified_at property) since this datetime.
-    type: datetime
+      if true then for each name in the result its valid name is returned
+    type: boolean
     required: false
-    example: 2019-05-20T13:30:00
   validity:
     description: |
       Filter by validity. True if only valid, false if only invalid, nil if both
-    type: string | nil
+    type: boolean
     required: false
     default: nil
-    example: true
   year:
     description: |
       Filter by authority year (inside `cached_author_year` property). Format is 'YYYY'.
     type: string
     pattern: "[0-9]{4}"
     required: false
-    example: "2019"
+  year_end:
+    description: |
+      Filter by authority year (inside `cached_nomenclature_date` property). Format is 'YYYY'.
+    type: string
+    pattern: "[0-9]{4}"
+    required: false
+  year_start:
+    description: |
+      Filter by authority year (inside `cached_nomenclature_date` property). Format is 'YYYY'.
+    type: string
+    pattern: "[0-9]{4}"
+    required: false
 responses:
   200:
     body:
