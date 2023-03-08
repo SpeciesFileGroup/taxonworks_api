@@ -51,8 +51,9 @@ queryParameters:
     required: false
   presence:
     description: |
-      true: return AssertedDistribution if not is_absent;
-      false: retrun data if is_absent;  nil: not applied.
+      true: return AssertedDistribution where the OTU is asserted as present according to the Sourcet;
+      false: return data where the OTU is asserted as absent according to the Source;
+      nil: not applied.
     type: boolean
     required: false
   radius:

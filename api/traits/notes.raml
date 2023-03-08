@@ -3,16 +3,16 @@
 queryParameters:
   note_exact:
     description: |
-      Search for the exact text matching the note object to be found.
-    type: integer
+      return Note if the exact text matches the note object.
+    type: boolean
     required: false
   note_text:
     description: |
       Search for the exact text matching notes.
-    type: integer
+    type: string
     required: false
   notes:
     description: |
-      Find all notes that reference any objects that have a note_object_id.
+      True: only return objects with notes.
     type: boolean
     required: false

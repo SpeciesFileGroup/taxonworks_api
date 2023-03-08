@@ -3,58 +3,67 @@
 queryParameters:
   identifier:
     description:  |
-      ??
-    type: ??
+      Matches on cached
+    type: string
     required: false
   identifier_end:
     description:  |
-      ??
-    type: ??
+      matches .identifier
+    type: string
     required: false
   identifier_exact:
     description:  |
-      ??
-    type: ??
+      Match like or exact on cached
+    type: string
     required: false
   identifier_start:
     description:  |
-      ??
-    type: ??
+      matches .identifier
+    type: string
     required: false
   identifier_type:
     description:  |
-      Include metadata for a specific type, e.g, "Identifier::Local::CatalogNumber"
+      Include Identifier data for a specific type, e.g, "Identifier::Local::CatalogNumber"
     type: string
     required: false
   identifier_type[]:
     description:  |
-      ??
-    type: ??
+      Include Identifier data for specific types.
+    type: string array
     required: false
   identifiers:
     description:  |
-      ??
-    type: ??
+      true - has an identifier
+      false - does not have an identifier
+      nil - not applied
+    type: boolean
     required: false
   local_identifiers:
     description:  |
-      ??
-    type: ??
+      true - has an local identifier
+      false - does not have an local identifier
+     nil - not applied
+    type: boolean
     required: false
   match_identifiers:
     description:  |
-      ??
-    type: ??
+      a list of delimited identifiers
+      !! Requires match_identifiers_delimiter to be present
+    type: string array
     required: false
   match_identifiers_delimiter:
     description:  |
-      ??
-    type: ??
+      A list delimiter, defaults to ','.  Is applied to `match_identifiers` to build an Array.
+      Any reference is possible.
+      '\t' is translated to "\t"
+      '\n' is translated to "\n"
+    type: string
     required: false
   match_identifiers_type:
     description:  |
-      ??
-    type: ??
+      one of 'internal' or 'identifier'
+      if 'internal' then references the internal id of the object
+    type: string
     required: false
   namespace_id:
     description:  |

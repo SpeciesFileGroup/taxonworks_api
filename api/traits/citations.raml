@@ -3,11 +3,22 @@
 queryParameters:
   citations:
     description:  |
-      Citations ??
-    type: integer
+      true: with Citations
+      false: without Citations
+      nil: ignored
+    type: boolean
+    required: false
+  citation_documents:
+    description:  |
+      true: has Citations, sources have documents
+      false: has Citations, sources don't have documents
+      nil: ignored
+    type: boolean
     required: false
   origin_citation:
     description:  |
-      Origin citatation ??
-    type: integer
+      true: with Origin Citation
+      false: without Origin Citations
+      nil: ignored
+    type: boolean
     required: false
