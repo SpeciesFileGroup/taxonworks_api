@@ -51,7 +51,8 @@ queryParameters:
     required: false
   presence:
     description: |
-      ?? description needed
+      true: return AssertedDistribution if not is_absent;
+      false: retrun data if is_absent;  nil: not applied.
     type: boolean
     required: false
   radius:

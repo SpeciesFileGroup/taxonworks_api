@@ -54,33 +54,35 @@ queryParameters:
     required: false
   collecting_event:
     description: |
-      Return data if associated collecting event; true / false has/not, if param not present ignore.
+      true: return CollectionObject if there is an associated collecting event (has a collecting_event_id);
+      false: return CollectionObject if it has no collecting_event_id; nil: not applied.
     type: boolean
     required: false
   collecting_event_id:
     description: |
-      Ionly return CollectingEvent with this collecting event ID.
+      only return CollectingObject with this collecting event ID.
     type: integer array
     required: false
   collecting_event_id[]:
     description: |
-      only return CollectingEvents with these collecting event IDs.
+      only return CollectingObjects with these collecting event IDs.
     type: integer array
     required: false
   collection_object_id:
     description: |
-      ID for associated collecting event.
+      return CollectingObject with this ID.
     type: integer
     required: false
   collection_object_id[]:
     description: |
-      List of IDs for associated collecting events.
+      return CollectingObjects with these IDs.
     type: integer array
     required: false
   collection_object_type:
     description: |
       Type of collection object, e.g., "Specimen".
     type: string
+    enum: [Lot, RangedLot, Specimen]
     required: false
   collectors:
     description:  |
@@ -303,7 +305,7 @@ queryParameters:
     required: false
   repository:
     description: |
-      true: has repository_id;false: does not have repository_id; nil: not applied.
+      true: has repository_id; false: does not have repository_id; nil: not applied.
     type: integer
     required: false
   repository_id:
@@ -316,11 +318,11 @@ queryParameters:
       return CollectionObjects for SLED images by id.
     type: integer
     required: false
-  spatial_geographic_areas:
-    description: |
-      ?? Find if associated collecting event has/not a geographic area.  Ignored if param not present.
-    type: boolean
-    required: false
+#  spatial_geographic_areas:
+#    description: |
+#      ?? Find if associated collecting event has/not a geographic area.  Ignored if param not present.
+#    type: boolean
+#    required: false
   start_date:
     description:
       Limit search to dates later
@@ -333,7 +335,7 @@ queryParameters:
     required: false
   taxon_determinations:
     description:
-      true: has one ore more taxon_determinations; false: does not have any taxon_determinations; nil: not applied.
+      true: has one or more taxon_determinations; false: does not have any taxon_determinations; nil: not applied.
     type: boolean
     required: false
   taxon_name_id:
@@ -348,12 +350,14 @@ queryParameters:
     required: false
   type_material:
     description:
-      Include type material.
+      true: return CollectionObjects that have type material;
+      false: return CollectionObjects that have no type material;
+      nil: not applied.
     type: boolean
     required: false
   type_specimen_taxon_name_id:
     description: |
-      Include metadata for specific type taxon by id.
+      Include data for specific type taxon by id.
     type: integer
     required: false
   user_date_end:
@@ -378,22 +382,25 @@ queryParameters:
     required:  false
   validity:
     description: |
-      Include metadata for valid/invalid or ignore.  Used only in conjunction with ancestor_id.
+      true: match against only valid ancestors; false: match against only invalid ancestors; nil: not applied.
     type: boolean
     required: false
   with_buffered_collecting_event:
     description: |
-      Return collection object true: with / false|nil: without buffered collecting event.
+      true: return collection objects with buffered collecting event field value.
+      false | nil: return collection objects without buffered collecting event field value.
     type: boolean
     required: false
   with_buffered_determinations:
     description: |
-      Return collection object true: with / false|nil: without buffered determinations.
+      true: return collection objects with buffered determination field value.
+      false | nil: return collection objects without buffered determination field value.
     type: boolean
     required: false
   with_buffered_other_labels:
     description: |
-      Return collection object true: with / false|nil: without buffered other labels.
+      true: return collection objects with buffered other labels field value.
+      false | nil: return collection objects without buffered other labels field value.
     type: boolean
     required: false
   wkt:
