@@ -1,18 +1,18 @@
-is: [pageable: { default_per: 50, max_per: 1000 }]
+is: [citations, depictions, pageable: { default_per: 50, max_per: 1000 }]
 queryParameters:
-  citations:
-    description: |
-      Include associated citations in results.
-    type: boolean
-    required: false
-  depictions:
-    description: |
-      Include associated depictions in results.
-    type: boolean
-    required: false
+#  citations:
+#    description: |
+#      Include associated citations in results.
+#    type: boolean
+#    required: false
+#  depictions:
+#    description: |
+#      Include associated depictions in results.
+#    type: boolean
+#    required: false
   exact:
     description: |
-      The string in the content should match exactly.
+      Return string in the content should match exactly.
     type: boolean
     required: false
   otu_id:
@@ -41,26 +41,26 @@ queryParameters:
       IDs of topics to be included in the search.
     type: integer array
     required: false
-  user_date_end:
-    description: |
-      Update date for this content.
-    type: string date
-    required: false
-  user_date_start:
-    description: |
-      Creation date for this content.
-    type: string date
-    required: false
-  user_id:
-    description: |
-      ID for the user who created or updated this content.
-    type: integer
-    required: false
-  user_target:
-    description: |
-      One of "created" or "updated"; if absent, both are searched.
-    type: string
-    required: false
+#  user_date_end:
+#    description: |
+#      Update date for this content.
+#    type: string date
+#    required: false
+#  user_date_start:
+#    description: |
+#      Creation date for this content.
+#    type: string date
+#    required: false
+#  user_id:
+#    description: |
+#      ID for the user who created or updated this content.
+#    type: integer
+#    required: false
+#  user_target:
+#    description: |
+#      One of "created" or "updated"; if absent, both are searched.
+#    type: string
+#    required: false
 
 responses:
   200:

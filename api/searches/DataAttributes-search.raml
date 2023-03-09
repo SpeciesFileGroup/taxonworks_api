@@ -1,11 +1,50 @@
-is: [pageable: { default_per: 50, max_per: 1000 }]
+is: [polymorphic, pageable: { default_per: 50, max_per: 1000 }]
 queryParameters:
-  project_id:
+  attribute_subject_id:
     description: |
-      The project for the data attribute search
+      ??
     type: integer
-    required: true
-    example: 2
+    required: false
+  attribute_subject_type:
+    description: |
+      ??
+    type: string
+    required: false
+  data_attribute_id:
+    description: |
+      ??
+    type: integer
+    required: false
+  data_attribute_id[]:
+    description: |
+      ??
+    type: integer array
+    required: false
+  controlled_vocabulary_term_id:
+    description: |
+      ??
+    type: integer
+    required: false
+  controlled_vocabulary_term_id[]:
+    description: |
+      ??
+    type: integer array
+    required: false
+  import_predicate:
+    description: |
+      ??
+    type: string
+    required: false
+  type:
+    description: |
+      ??
+    type: string
+    required: false
+ value:
+    description: |
+      ??
+    type: string
+    required: false
 
 responses:
   200:
