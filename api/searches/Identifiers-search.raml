@@ -2,34 +2,54 @@ is: [pageable: { default_per: 50, max_per: 1000 }]
 queryParameters:
   identifier:
     description: |
-      Search for
+      Search for this string.
     type: string
+    required: false
+  identifier[]:
+    description: |
+      Search for these strings.
+    type: string array
+    required: false
+  identifier_id:
+    description: |
+      Return identifier with this ID.
+    type: integer
+    required: false
+  identifier_id[]:
+    description: |
+      Return identifiers with these IDs.
+    type: integer array
     required: false
   identifier_object_id:
     description: |
-      Metadata for an ID of an object.
+      Return identifier for an ID of an object.
     type: integer
     required: false
   identifier_object_id[]:
     description: |
-      Metadata for an array of IDs of objects
+      Return identifiers for an array of IDs of objects
       identifier_object_id[]=47&identifier_object_id[]=2232.
-    type: integer
+    type: integer array
     required: false
   identifier_object_type:
     description: |
-      Metadata for an object type, case sensitive.
+      Return identifier for an object type, case sensitive.
     type: string
     required: false
   identifier_object_type[]:
     description: |
-      Metadata for an array of object types.
+      Return identifiers for an array of object types.
       ?identifier_object_type[]=CollectionObject&identifier_object_type[]=Serial
-    type: string
+    type: string array
     required: false
   namespace_id:
     description: |
-      The ID for the namespace name.
+      Return identifier with this ID for the namespace.
+    type: integer
+    required: false
+  namespace_id[]:
+    description: |
+      Return identifier with these IDs for namespaces.
     type: integer
     required: false
   namespace_name:
@@ -47,9 +67,15 @@ queryParameters:
       Filter by object global ID
     type: integer
     required: false
+  query_string:
+    description: |
+      A fully qualified identifier, matches cached.
+      !! This is the only wildcarded value !!
+    type: string
+    required: false
   type:
     description: |
-      Include metadata for a specific type, e.g, "Identifier::Local::CatalogNumber"
+      Return identifier(s) for a specific type, e.g, "Identifier::Local::CatalogNumber"
     type: string
     required: false
 
