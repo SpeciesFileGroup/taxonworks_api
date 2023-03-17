@@ -1,10 +1,5 @@
-is: [pageable: { default_per: 50, max_per: 1000 }]
+is: [citations, tags, pageable: { default_per: 50, max_per: 1000 }]
 queryParameters:
-  ancestor_id_target:
-    description:  |
-      The object class of the ancestor, e.g., otu
-    type: string
-    require:  false
   biocuration_class_id:
     description: |
       Include metadata for biocuration classes by id
@@ -25,29 +20,20 @@ queryParameters:
       Identifier associated with collection object
     type: integer array
     required: false
-  depiction:
+  collection_object_scope:
     description: |
-      Include depiction in result
+      Return Images associated with one or more of below:
+    type: string
+    enum: [all:, :collection_objects, :observations, :collecting_events]
+    required: false
+  depictions:
+    description: |
+      Return image(s) true: imahe is used in a depiction; false: not used; nil: not applied.
     type: boolean
     required: false
-  identifier:
+  depiction_object_type:
     description: |
-      Identifier associated with collection object
-    type: string
-    required: false
-  identifier_end:
-    description: |
-      Last part of identifier associated with collection object
-    type: string
-    required: false
-  identifier_exact:
-    description: |
-      Exact identifier associated with collection object
-    type: string
-    required: false
-  identifier_start:
-    description: |
-      First part of identifier associated with collection object
+      Restricts Images to those that depict one or more names of classes.
     type: string
     required: false
   image_id:
@@ -61,16 +47,6 @@ queryParameters:
       List of IDs for images e.g., image_id[]=34&image_id[]=398&image_id[]=726
     type: integer array
     required: false
-  keyword_id_and[]:
-    description: |
-      List of keyword IDs for images where all enumerated keywords are present.
-    type: integer array
-    required: false
-  keyword_id_or[]:
-    description: |
-      List of keyword IDs for images where any of the enumerated keywords are present.
-    type: integer array
-    required: false
   otu_id:
     description: |
       ID for a specific OTU
@@ -81,15 +57,55 @@ queryParameters:
       List of OTU IDs e.g., otu_id[]=768&otu_id[]=1024&otu_id[]=2047
     type: integer array
     required: false
+otu_scope:
+    description: |
+      One or more of:
+
+        :all (default, includes all below)
+        :otu (those on the OTU)
+        :otu_observations (those on just the OTU)
+        :collection_object_observations (those on just those determined as the OTU)
+        :collection_objects (those on just those on the collection objects)
+        :type_material (those on CollectionObjects that have TaxonName used in OTU)
+        :type_material_observations (those on CollectionObjects that have TaxonName used in OTU)
+        :coordinate_otus  If present adds both.  Use downstream substraction to do diffs of with/out?
+
+    type: string array
+    enum: [:all, :otu, :otu_observations, :collection_object_observations, :collection_objects, :type_material, :type_material_observations, :coordinate_otus]
+    required: false
+  otu_scope[]:
+    description: |
+      One or more of:
+
+        :all (default, includes all below)
+        :otu (those on the OTU)
+        :otu_observations (those on just the OTU)
+        :collection_object_observations (those on just those determined as the OTU)
+        :collection_objects (those on just those on the collection objects)
+        :type_material (those on CollectionObjects that have TaxonName used in OTU)
+        :type_material_observations (those on CollectionObjects that have TaxonName used in OTU)
+        :coordinate_otus  If present adds both.  Use downstream substraction to do diffs of with/out?
+    type: string array
+    enum: [:all, :otu, :otu_observations, :collection_object_observations, :collection_objects, :type_material, :type_material_observations, :coordinate_otus]
+    required: false
   sled_image_id:
     description: |
       ID for a specific SLED image
-    type: string integer
+    type: integer
     required: false
   sled_image_id[]:
     description: |
       List of IDs for specific SLED images
-    type: string
+    type: integer array
+    required: false
+  source_id:
+    description: |
+      ID of a specific image source.
+    type: integer
+  source_id[]:
+    description: |
+      List of IDs for specific image sources.
+    type: integer array
     required: false
   taxon_name_id:
     description: |
@@ -101,25 +117,10 @@ queryParameters:
       List of IDs for specific taxon names
     type: integer array
     required: false
-  user_date_end:
-    description:
-      Limit search to user dates prior
-    type: string
-    required: false
-  user_date_start:
-    description:
-      Limit search to user dates later
-    type: string
-    required: false
-  user_id: # user
+  taxon_name_id_target:
     description: |
-      ID for a user
+      ID for a specific taxon name
     type: string integer
-    required: false
-  user_target:
-    description: |
-      one of "created" or "updated"; if absent, both are searched
-    type: string
     required: false
 
 responses:
