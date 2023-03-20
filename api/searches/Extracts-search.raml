@@ -1,0 +1,30 @@
+is: [citations, containable, identifiers, protocols, tags, users, pageable]
+queryParameters:
+  collection_object_id:
+  collection_object_id[]:
+  descendants:
+  exact_verbatim_anatomical_origin:
+  extract_end_date_range:
+  extract_id:
+  extract_id[]:
+  extract_origin:
+  extract_start_date_range:
+  otu_id:
+  otu_id[]:
+  protocol_id:
+  repository_id:
+  repository_id[]:
+  sequences:
+  taxon_name_id:
+  taxon_name_id[]:
+  verbatim_anatomical_origin:
+
+responses:
+  200:
+    body:
+      application/json:
+        type: Extract[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/extracts-result-example.json
+

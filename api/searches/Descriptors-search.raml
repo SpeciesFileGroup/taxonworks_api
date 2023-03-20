@@ -1,0 +1,22 @@
+is: [citations, depictions, identifiers, notes, tags, users, pageable]
+queryParameters:
+  descriptor_id:
+  descriptor_id[]:
+  descriptor_type:
+  descriptor_type[]:
+  observation_matrix_id:
+  observation_matrix_id[]:
+  observations:
+  term:
+  term_exact:
+  term_target:
+
+responses:
+  200:
+    body:
+      application/json:
+        type: Extract[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/descriptors-result-example.json
+
