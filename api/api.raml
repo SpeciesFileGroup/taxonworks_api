@@ -286,6 +286,12 @@ traits:
     is: [ secured, project_tokenized ]
     get: !include /searches/DataAttributesID-search.raml
 
+/depictions:
+  is: [ secured, project_tokenized ]
+  description: See Overview at http://rdoc.taxonworks.org/Depiction.html
+  type: collection
+  get: !include /searches/Depictions-search.raml
+
 /downloads:
   is: [ secured, project_tokenized ]
   description: See Overview at http://rdoc.taxonworks.org/Download.html
@@ -317,6 +323,12 @@ traits:
   description: See Overview at https://rdoc.taxonworks.org/DwcOccurrence.html
   type: collection
   get: !include /searches/DWCOccurrences-search.raml
+
+/extracts:
+  is: [ secured, project_tokenized ]
+  description: See Overview at https://rdoc.taxonworks.org/Extract.html
+  type: collection
+  get: !include /searches/Extracts-search.raml
 
 /identifers:
   is: [ secured, user_tokenized ]
