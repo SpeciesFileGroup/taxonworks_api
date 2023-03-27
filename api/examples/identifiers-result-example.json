@@ -1,32 +1,38 @@
 [
   {
-    "id": 138763,
-    "identifier_object_id": 1,
+    "id": 142827,
+    "identifier_object_id": 38,
     "identifier_object_type": "CollectionObject",
-    "identifier": "http://orthoptera.speciesfile.org/Common/specimen/ShowSpecimen.aspx?SpecimenID=3#_1",
-    "type": "Identifier::Global",
-    "cached": "http://orthoptera.speciesfile.org/Common/specimen/ShowSpecimen.aspx?SpecimenID=3#_1",
-    "namespace_id": null,
+    "identifier": "10463",
+    "type": "Identifier::Local::CatalogNumber",
+    "cached": "NHMUK 10463",
+    "namespace_id": 37,
     "created_by_id": 1,
-    "updated_by_id": 3,
-    "identifier_object": {
-      "id": 1,
-      "type": "gid://taxon-works/Specimen/1"
-    }
+    "updated_by_id": 1,
+    "identifier_object_global_id": "gid://taxon-works/Specimen/38"
   },
   {
-    "id": 138765,
-    "identifier_object_id": 3,
+    "id": 142828,
+    "identifier_object_id": 196,
     "identifier_object_type": "CollectionObject",
-    "identifier": "http://orthoptera.speciesfile.org/Common/specimen/ShowSpecimen.aspx?SpecimenID=5#_1",
-    "type": "Identifier::Global",
-    "cached": "http://orthoptera.speciesfile.org/Common/specimen/ShowSpecimen.aspx?SpecimenID=5#_1",
-    "namespace_id": null,
+    "identifier": "AMNZ21862",
+    "type": "Identifier::Local::CatalogNumber",
+    "cached": "AIM AMNZ21862",
+    "namespace_id": 412,
     "created_by_id": 1,
-    "updated_by_id": 3,
-    "identifier_object": {
-      "id": 3,
-      "type": "gid://taxon-works/Specimen/3"
-    }
+    "updated_by_id": 1,
+    "identifier_object_global_id": "gid://taxon-works/Specimen/196"
+  },
+  {
+    "id": 142829,
+    "identifier_object_id": 914,
+    "identifier_object_type": "CollectionObject",
+    "identifier": "8819",
+    "type": "Identifier::Local::CatalogNumber",
+    "cached": "NMW 8819",
+    "namespace_id": 496,
+    "created_by_id": 1,
+    "updated_by_id": 1,
+    "identifier_object_global_id": "gid://taxon-works/Specimen/914"
   }
 ]
