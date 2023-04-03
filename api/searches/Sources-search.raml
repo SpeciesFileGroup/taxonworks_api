@@ -1,0 +1,263 @@
+is: [attributes, notes, tags, pageable: { default_per: 50, max_per: 1000 }]
+queryParameters:
+  author:
+    description: |
+      Filter by author (inside author property). Matching is case insensitive. Use " " for "and". See also `exact`.
+    type: string
+    required: false
+  author_id:
+    description: |
+        Filter by this author ID.
+    type: integer
+    required: false
+  author_id[]:
+    description: |
+        Filter by author IDs
+    type: integer array
+    required: false
+  author_id_or:
+    description: |
+      Find collecting events with ANY one of these authors (true) or ALL of these collectors (false/nil)
+    type: boolean
+    required: false
+  bibtex_type:
+    description: |
+      one of the allowed BibTeX types
+    type: string
+    required: false
+  bibtex_type[]:
+    description: |
+      one of the allowed BibTeX types
+    type: string array
+    required: false
+  citation_object_type:
+    description: |
+      Get sources with one of these enumerated types:
+    type: string
+    enum: [TaxonDetermination, Image, Confidence, Otu, AssertedDistribution,
+                 DataAttribute, ImportAttribute, TaxonNameRelationship, TaxonName, CollectionObject, TypeMaterial]
+    required: false
+  citation_object_type[]:
+    description: |
+      Get sources with these enumerated types:
+    type: string array
+    enum: [TaxonDetermination, Image, Confidence, Otu, AssertedDistribution,
+                 DataAttribute, ImportAttribute, TaxonNameRelationship, TaxonName, CollectionObject, TypeMaterial]
+    required: false
+  citations:
+    description: |
+      true: sources with citations; false: sources without citations; nil: not applied.
+    type: boolean
+    required: false
+  citations_on_otus:
+    description: |
+      ignored if taxon_name_id is not provided; if true then also include sources linked to OTUs that are in the scope of taxon_name_id
+    type: boolean
+    required: false
+  descendants:
+    description: |
+      return all sources in Citations linked to this TaxonNameID or its descendants.
+    type:
+    required: false
+  documents:
+    description: |
+      get sources matching documents
+    type: boolean
+    required: false
+  empty:
+    description: |
+      A source core attribute (author, bibtex_type, title) must have no value.
+    type: string
+    required: false
+  empty[]:
+    description: |
+      the provided source core attributes (author, bibtex_type, title) must have no value.
+    type: string array
+    required: false
+  exact_author:
+    description: |
+      Metadata for only the exact author string provided (inside author property). Matching is case insensitive.
+    type: string
+    required: false
+  exact_title:
+    description: |
+      Metadata selected for only exact title match
+    type: boolean
+    required: false
+  identifier:
+    description: |
+      Identifier associated with source
+    type: string
+    required: false
+  identifier_end:
+    description: |
+      Last part of identifier associated with source
+    type: string
+    required: false
+  identifier_exact:
+    description: |
+      Exact identifier associated with source
+    type: string
+    required: false
+  identifier_start:
+    description: |
+      First part of identifier associated with source
+    type: string
+    required: false
+  ids[]:
+     description: |
+       Filter by source IDs
+     type: integer array
+     required: false
+  in_project:
+    description: |
+      Use requires project_id; true: results for project_id; false: results not in project_id; nil: nat applied.
+    type: boolean
+    required: false
+  keyword_id_and:
+    description: |
+      List of keyword IDs for sources where all enumerated keywords are present.
+    type: integer array
+    required: false
+  keyword_id_and[]:
+    description: |
+      List of keyword IDs for sources where all enumerated keywords are present.
+    type: integer array
+    required: false
+  keyword_id_or:
+    description: |
+      List of keyword IDs for sources where all enumerated keywords are present.
+    type: integer array
+    required: false
+  keyword_id_or[]:
+    description: |
+      List of keyword IDs for sources where any of the enumerated keywords are present.
+    type: integer array
+    required: false
+  nomenclature:
+    description: |
+      include nomenclature metadata
+    type: boolean
+    required: false
+  not_empty:
+    description: |
+      a source core attributes (author, bibtex_type, title) must have a value.
+    type: string array
+    required: false
+  not_empty[]:
+    description: |
+      the provided source core attributes (author, bibtex_type, title) must have a value.
+    type: string array
+    required: false
+  notes:
+    description: |
+      include notes metadata
+    type: boolean
+    required: false
+  project_id:
+    description: |
+      The project for the source search, must be used with in_project.
+    type: integer
+    required: true
+  query_term:
+    description: |
+      obsolescent query item
+    type: string
+    required: false
+  roles:
+    description: |
+      include metadata for roles
+    type: boolean
+    required: false
+  serial:
+    description: |
+      true: with serial_id; false: without_serial_id; nil: both
+  serial_id:
+    description: |
+      The serial ID associated with the source.
+    type: integer
+    required: false
+  serial_id[]:
+    description: |
+      The serial IDs associated with the source.
+    type: integer array
+    required: false
+  source_id:
+    description: |
+      get data for a source by ID
+    type: integer
+    required: false
+  source_id[]:
+    description: |
+      get data for sources by IDs
+    type: integer array
+    required: false
+  source_type:
+    description: |
+      type of source, e.g., Source::BibTex, Source::verbatim, Source::human.
+    type: string
+    required: false
+  taxon_name_id:
+    description: |
+      return all sources in Citations linked to this TaxonNameID (or descendants option to this TaxonName)
+    type:
+    required: false
+  taxon_name_id[]:
+    description: |
+      return all sources in Citations linked to these TaxonNameIDs (or descendants option to this TaxonName)
+    type:
+    required: false
+  title:
+    description: |
+      title of the source, e.g., "Studies in American Tettigoniidae"
+    type: string
+    required: false
+  topic_id:
+    description: |
+      Get source metadata associated with these topic IDs
+    type: integer
+    required: false
+  topic_id[]:
+    description: |
+      Get source metadata associated with these topic IDs
+    type: integer
+    required: false
+  user_date_end:
+    description:
+      Limit search to user dates prior
+    type: string
+    required: false
+  user_date_start:
+    description:
+      Limit search to user dates later
+    type: string
+    required: false
+  with_doi:
+    description: |
+      include metadata for sources having Digital Object Identifier
+    type: boolean
+    required: false
+  with_title:
+    description: |
+      true: with a title; false: without a title; nil: both
+    type: boolean
+    required: false
+  year_end:
+    description: |
+      end year of the source date range
+    type: integer
+    required: false
+  year_start:
+    description: |
+      start year of the source date range
+    type: integer
+    required: false
+
+responses:
+  200:
+    body:
+      application/json:
+        type: Source[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/sources-result-example.json

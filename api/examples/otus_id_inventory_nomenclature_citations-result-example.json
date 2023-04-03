@@ -1,35 +1,22 @@
 [
   {
-    "id":66,"citation_object_id":153,
-    "citation_object_type":"TaxonName",
-    "source_id":192,"pages":"226","is_original":true,
-    "created_by_id":1,
-    "updated_by_id":1,
-    "project_id":2,
-    "citation_source_body":"Hebard, 1924:226"
+    "source": {
+      "id": 3811,
+      "name": "Günther, K.K. (1969) Revision der Familie Rhipipterygidae Chopard, 1949 (Saltatoria, Insecta). <i>Mitteilungen aus dem Zoologischen Museum in Berlin</i>, 45(2), 259–425.",
+      "short_name": "Günther, 1969"
+    },
+    "names": [
+      "<i>Ripipteryx crassicornis</i> Günther, 1969"
+    ]
   },
   {
-    "id":437956,
-    "citation_object_id":153,
-    "citation_object_type":"TaxonName",
-    "source_id":9758,
-    "pages":"40",
-    "is_original":false,
-    "created_by_id":1,
-    "updated_by_id":19,
-    "project_id":2,
-    "citation_source_body":"Buzzetti \u0026 Carotti, 2008:40"
-  },
-  {
-    "id":437957,
-    "citation_object_id":153,
-    "citation_object_type":"TaxonName",
-    "source_id":9978,
-    "pages":"29",
-    "is_original":false,
-    "created_by_id":1,
-    "updated_by_id":19,
-    "project_id":2,
-    "citation_source_body":"Heads, 2010:29"
+    "source": {
+      "id": 6900,
+      "name": "Günther, K.K. (1980) Katalog der Caelifera-Unterordnung Tridactyloidea (Insecta). <i>Deutsche entomologische Zeitschrift</i>, 27(1-3), 149–178.",
+      "short_name": "Günther, 1980"
+    },
+    "names": [
+      "<i>Ripipteryx crassicornis</i> Günther, 1969"
+    ]
   }
 ]

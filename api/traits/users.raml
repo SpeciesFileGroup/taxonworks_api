@@ -1,0 +1,28 @@
+#%RAML 1.0 Trait
+
+queryParameters:
+  user_date_end:
+    description:
+      Limit search to user dates prior.
+    type: string
+    required: false
+  user_date_start:
+    description:
+      Limit search to user dates later.
+    type: string
+    required: false
+  user_id:
+    description:  |
+      ID of the user for date ranges.
+    type: integer
+    required:  false
+  user_target:
+    description:  |
+      One of "created" or "updated"; if absent, both are searched.
+    type: string
+    required:  false
+  updated_since:
+    description:  |
+      Limit search to dates after this date.
+    type: date-only
+    required: false

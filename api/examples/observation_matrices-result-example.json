@@ -9,7 +9,8 @@
     "object_tag":"matrix1",
     "object_label":null,
     "global_id":"gid://taxon-works/ObservationMatrix/8",
-    "base_class":"ObservationMatrix","url_for":"https://sandbox.taxonworks.org/api/v1/observation_matrices",
+    "base_class":"ObservationMatrix",
+    "url_for":"https://sandbox.taxonworks.org/api/v1/observation_matrices",
     "object_url":"/observation_matrices/8",
     "is_media_matrix":true
   }
