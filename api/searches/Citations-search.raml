@@ -1,0 +1,62 @@
+is: [polymorphic, pageable: { default_per: 50, max_per: 1000 }]
+queryParameters:
+  citation_id:
+    description: |
+      Find Citation by its ID.
+    type: integer
+    required: false
+  citation_id[]:
+    description: |
+      Find Citations by their IDs.
+    type: integer
+    required: false
+  citation_object_id:
+    description: |
+      Find by the ID for the object cited.
+    type: integer
+    required: false
+  citation_object_id[]:
+    description: |
+      Find by the IDs for the objects cited.
+    type: integer
+    required: false
+  citation_object_type:
+    description: |
+      Find with object type for the citation, such as TaxonDetermination, TaxonName, etc.
+    type: string
+    required: false
+  citation_object_type[]:
+    description: |
+      Find with object types for the citations, such as TaxonDetermination, TaxonName, etc.
+    type: string
+    required: false
+  is_original:
+    description: |
+      Find where the citation is the original description.
+    type: boolean
+    required: false
+  source_id:
+    description: |
+      ID for the citation source.
+    type: integer
+    required: false
+  model_id:
+    description:  |
+      Get all the citations on the single object referenced by the parameter. E.g.: all citations on `GET /otus/1`.
+      One of- asserted_distribution_id, biological_association_id, biological_associations_graph_id,
+      biological_relationship_id, character_state_id, collecting_event_id, collection_object_id,
+      common_name_id, confidence_id, content_id,  data_attribute_id, descriptor_id, georeference_id,
+      image_id, observation_id, observation_matrix_id, observation_matrix_row_id, observation_matrix_row_item_id,
+      otu_id, protocol_id, taxon_determination_id, taxon_name_classification_id,
+      taxon_name_id, taxon_name_relationship_id, type_material_id
+    type: integer
+    required: false
+
+responses:
+  200:
+    body:
+      application/json:
+        type: Citation[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/citations-result-example.json

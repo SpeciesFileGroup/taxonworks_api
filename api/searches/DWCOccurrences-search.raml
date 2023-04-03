@@ -1,25 +1,36 @@
-is: [ pageable: { default_per: 50, max_per: 1000 } ]
+is: [users, pageable: { default_per: 50, max_per: 1000 } ]
 queryParameters:
+  dwc_occurrence_id:
+    description: |
+      ID of Occurrance
+    type: integer
+    required: false
   dwc_occurrence_id[]:
     description: |
       Array of IDs of Occurrances
-    type: integer string array
+    type: integer array
+    required: false
+  dwc_occurrence_object_id:
+    description: |
+      ID of Occurrances object
+    type: integer
     required: false
   dwc_occurrence_object_id[]:
     description: |
       Array of IDs of Occurrances object IDs
-    type: integer string array
+    type: integer array
+    required: false
+  dwc_occurrence_object_type:
+    description: |
+      Single ID of Occurrances object types
+    type: integer
     required: false
   dwc_occurrence_object_type[]:
     description: |
       Array of IDs of Occurrances object types
-    type: string array
+    type: integer array
     required: false
-  project_token:
-    description: |
-      Security token for the project.  Implicitly set project ID.
-    type: token
-    required: true
+
 responses:
   200:
     body:

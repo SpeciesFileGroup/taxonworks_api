@@ -1,0 +1,419 @@
+is: [citations, containable, data_Attributes, depictions, notes, tags, pageable: { default_per: 50, max_per: 1000 }]
+queryParameters:
+  biocuration_class_id:
+    description: |
+      Include results for biocuration classes for this ID.
+    type: integer
+    required: false
+  biocuration_class_id[]:
+    description: |
+      Include results for biocuration classes for these IDs.
+    type: integer
+    required: false
+  biological_association_id:
+    description: |
+      Include results for biological associations for this ID.
+    type: integer
+    required: false
+  biological_association_id[]:
+    description: |
+      Include results for biological associations for these IDs.
+    type: integer
+    required: false
+  biological_associations:
+    description: |
+      true: get collecting event that has BiologicalAssociation ?!?
+      false - get collecting event that does not have BiologicalAssociation
+      nil: not applied.
+    type: boolean
+    required: false
+  biological_relationship_id:
+    description: |
+      Include results for biological relationships for this ID.
+    type: integer
+    required: false
+  biological_relationship_id[]:
+    description: |
+      Include results for biological relationships for these IDs.
+    type: integer
+    required: false
+  buffered_collecting_event:
+    description: |
+      Include data where collecting event information contains this text value.
+    type: string
+    required: false
+  buffered_determinations:
+    description: |
+      Include data where determination contains this text value.
+    type: string
+    required: false
+  buffered_other_labels:
+    description: |
+      Include data where other labels information contains this text value.
+    type: string
+    required: false
+  collecting_event:
+    description: |
+      true: return CollectionObject if there is an associated collecting event (has a collecting_event_id);
+      false: return CollectionObject if it has no collecting_event_id; nil: not applied.
+    type: boolean
+    required: false
+  collecting_event_id:
+    description: |
+      only return CollectingObject with this collecting event ID.
+    type: integer array
+    required: false
+  collecting_event_id[]:
+    description: |
+      only return CollectingObjects with these collecting event IDs.
+    type: integer array
+    required: false
+  collection_object_id:
+    description: |
+      return CollectingObject with this ID.
+    type: integer
+    required: false
+  collection_object_id[]:
+    description: |
+      return CollectingObjects with these IDs.
+    type: integer array
+    required: false
+  collection_object_type:
+    description: |
+      Type of collection object, e.g., "Specimen".
+    type: string
+    enum: [Lot, RangedLot, Specimen]
+    required: false
+  collectors:
+    description:  |
+      true: a collector role exists; false: no collector role exists; nil - not applied
+    type: boolean
+    required: false
+  current_determinations:
+    description: |
+      true: TaxonDetermination must be .current; false: TaxonDetermination must be .historical.
+      nil: TaxonDeterminations match regardless of current or historical
+    type: boolean
+    required: false
+  current_repository:
+    description: |
+      true: has current_repository_id; false: does not have current_repository_id; nil: not applied.
+    type: boolean
+    required: false
+  current_repository_id:
+    description: |
+      Find collection_objects in this repository by this ID.
+    type: integer
+    required: false
+  current_repository_id[]:
+    description: |
+      Find collection_objects in these repositories by these IDs.
+    type: integer array
+    required: false
+  descendants:
+    description: |
+      true: provide collection objects for OTU descendants linked to TaxonNameIDs
+      false: do not return descendant data.  See also taxon_name_id.
+      nil: ignored
+    type: boolean
+    required: false
+  dates:
+    description: |
+      true: any of start/end date or verbatim date are populated
+      false: none of start/end date or verbatim date are populated
+      nil: ignored
+    type: boolean
+    required: false
+  determiner_id:
+    description: |
+      Include results which are related to this determiner (person by ID),
+    type: integer
+  determiner_id[]:
+    description: |
+      Include results which are related to any of these determiners (people by IDs),
+      e.g., determiner_id[]=325&determiner_id[]=9032
+    type: integer array
+    required: false
+  determiner_id_or:
+    description: |
+      true: treat iIDs as "and" (only collection objects with all and only all will match)
+      false or nil: treat Ids as "or".
+  determiners:
+    description: |
+      true: a determiner role exists; false: no determiner role exists. nil: not applied.
+    type: boolean
+    required: false
+  dwc_indexed:
+    description: |
+      Include metadata for Darwin Core indexed objects; true / false index is/not built, if not present ignore.
+    type: boolean
+    required: false
+  end_date:
+    description:
+      Limit search to dates prior to this value.
+    type: string
+    required: false
+  exact_buffered_collecting_event:
+    description: |
+      Include data where collecting event information contains this exact text value.
+    type: string
+    required: false
+  exact_buffered_determinations:
+    description: |
+      Include data where determinations information contains this exact text value.
+    type: string
+    required: false
+  exact_buffered_other_labels:
+    description: |
+      Include data where other labels information contains this exact text value.
+    type: string
+    required: false
+  extract_id:
+    description:
+       match all CollectionObjects that are the origin of this Extract.
+    type: integer
+    required: false
+  extract_id[]:
+    description:
+       match all CollectionObjects that are the origin of these Extracts.
+    type: integer
+    required: false
+  geo_json:
+    description:
+      geoJSON of the search area.
+    type: string
+    required: false
+  geographic_area:
+    description: |
+      Find if associated collecting event has/not a geographic area.  Ignored if param not present.
+    type: boolean
+    required: false
+  geographic_area_ids[]:
+     description: |
+       List of IDs for associated geographic areas.
+     type: integer
+     required: false
+  georeferences:
+    description:  |
+      true: collecting event has one ore more georeferences; false: does not have any georeferences;  nil: not applied.
+    type: boolean
+    required: false
+  identifier:
+    description: |
+      Identifier associated with collection object.
+    type: string
+    required: false
+  identifier_end:
+    description: |
+      Last part of identifier associated with collection object
+    type: string
+    required: false
+  identifier_exact:
+    description: |
+      Exact identifier associated with collection object
+    type: string
+    required: false
+  identifier_start:
+    description: |
+      First part of identifier associated with collection object
+    type: string
+    required: false
+  identifiers:
+    description:  |
+      Include metadata for associated collecting event identifiers.
+    type: boolean
+    required: false
+  in_labels:
+    description: |
+      Search wildcard in all related collecting event labels.
+    type: boolean
+    required: false
+  in_verbatim_locality:
+    description: |
+      Search in verbatim locality in related collecting events.
+    type: boolean
+    required: false
+  is_type[]:
+    description: |
+      Include metadata for primary types by IDs
+    type: integer array
+    required: false
+  keyword_id_and[]:
+    description:  |
+      Search must include all keyword IDs
+    type: string integer
+    required: false
+  keyword_id_or[]:
+    description:  |
+      Search may include any of these keyword IDs
+    type: string integer
+    required: false
+  loaned:
+    description: |
+      true: the CollectionObject has been loaned at least once,  false - is not now loaned; nil: not applied
+    type: boolean
+    required: false
+  md5_verbatim_label:
+    description: |
+      Match md5 verbatim label if in_labels is true
+    type: string
+    required: false
+  namespace_id:
+    description: |
+      Include metadata for associated identifier namespace by id.
+    type: integer
+    required: false
+  never_loaned:
+     description: |
+       true: Return data for CollectionObjects never loaned.
+     type: boolean
+     required: false
+  on_loan:
+    description: |
+      true: the CollectionObject *currently* on loan.
+    type: boolean
+    required: false
+  otu_ids[]:
+    description: |
+      Filter by OTU IDs.
+    type: integer
+    required: false
+  partial_overlap_dates:
+    description: |
+      Allow date overlap.
+    type: boolean
+    required: false
+  preparation_type:
+    description: |
+      true: has preparation_type; false: does not have preparation_type; nil: not applied.
+    type: boolean
+    required: false
+  preparation_type_id:
+    description: |
+      The ID for a single preparation type in the search.
+    type: integer
+    required: false
+  preparation_type_id[]:
+    description: |
+      The IDs for preparation types in the search.
+    type: integer array
+    required: false
+  radius:
+    description: |
+      Radius around location
+    type: string
+    required: false
+  repository:
+    description: |
+      true: has repository_id; false: does not have repository_id; nil: not applied.
+    type: integer
+    required: false
+  repository_id:
+    description: |
+      return CollectionObjects for repository by id.
+    type: integer
+    required: false
+  sled_image_id:
+    description: |
+      return CollectionObjects for SLED images by id.
+    type: integer
+    required: false
+#  spatial_geographic_areas:
+#    description: |
+#      ?? Find if associated collecting event has/not a geographic area.  Ignored if param not present.
+#    type: boolean
+#    required: false
+  start_date:
+    description:
+      Limit search to dates later
+    type: string
+    required: false
+  taxon_determination_id:
+    description:
+      Include taxon determinations.
+    type: boolean
+    required: false
+  taxon_determinations:
+    description:
+      true: has one or more taxon_determinations; false: does not have any taxon_determinations; nil: not applied.
+    type: boolean
+    required: false
+  taxon_name_id:
+    description:
+      return collection objects associated with OTUs associated with this taxon name by its ID.
+    type: integer
+    required: false
+  taxon_name_id[]:
+    description:
+      return collection objects associated with OTUs associated  with these taxon name by their ID.
+    type: integer
+    required: false
+  type_material:
+    description:
+      true: return CollectionObjects that have type material;
+      false: return CollectionObjects that have no type material;
+      nil: not applied.
+    type: boolean
+    required: false
+  type_specimen_taxon_name_id:
+    description: |
+      Include data for specific type taxon by id.
+    type: integer
+    required: false
+  user_date_end:
+    description:
+      Limit search to user dates prior.
+    type: string
+    required: false
+  user_date_start:
+    description:
+      Limit search to user dates later.
+    type: string
+    required: false
+  user_id:
+    description:  |
+      ID of the user for date ranges.
+    type: string integer
+    required:  false
+  user_target:
+    description:  |
+      One of "created" or "updated"; if absent, both are searched.
+    type: string
+    required:  false
+  validity:
+    description: |
+      true: match against only valid ancestors; false: match against only invalid ancestors; nil: not applied.
+    type: boolean
+    required: false
+  with_buffered_collecting_event:
+    description: |
+      true: return collection objects with buffered collecting event field value.
+      false | nil: return collection objects without buffered collecting event field value.
+    type: boolean
+    required: false
+  with_buffered_determinations:
+    description: |
+      true: return collection objects with buffered determination field value.
+      false | nil: return collection objects without buffered determination field value.
+    type: boolean
+    required: false
+  with_buffered_other_labels:
+    description: |
+      true: return collection objects with buffered other labels field value.
+      false | nil: return collection objects without buffered other labels field value.
+    type: boolean
+    required: false
+  wkt:
+    description: |
+      Well Known Text describing the search area.
+    type: string
+    required: false
+
+responses:
+  200:
+    body:
+      application/json:
+        type: CollectionObject[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/collection_objects-result-example.json

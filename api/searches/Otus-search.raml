@@ -1,14 +1,14 @@
-is: [pageable: { default_per: 50, max_per: 1000 }]
+is: [citations, data_attributes, depictions, notes, tags, pageable: { default_per: 50, max_per: 1000 }]
 queryParameters:
   asserted_distribution_ids[]:
     description: |
       List of asserted distribution IDs.
-    type: string integer array
+    type: integer array
     required: false
   biological_association_ids[]:
     description: |
       List of biological_association IDs (via &extend[]=biological_association_ids).
-    type: string integer array
+    type: integer array
     required: false
   data_attributes_attributes:
     description: |
@@ -28,12 +28,12 @@ queryParameters:
   otu_ids[]:
     description: |
       List of OTU IDs.
-    type: string integer array
+    type: integer array
     required: false
   taxon_name_classification_ids[]:
     description: |
       List of classification IDs.
-    type: string integer array
+    type: integer array
     required: false
   taxon_name_id:
     description: |
@@ -43,12 +43,12 @@ queryParameters:
   taxon_name_ids[]:
     description: |
       List of taxon name IDs.
-    type: string integer array
+    type: integer array
     required: false
   taxon_name_relationships_ids[]:
     description: |
       List of relationship IDs
-    type: string integer array
+    type: integer array
     required: false
 
 responses:

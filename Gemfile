@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'travis', '~> 1.10'
+# gem 'travis', '~> 1.10'
 
-ruby '2.7.3'
+ruby '3.2.1'
 

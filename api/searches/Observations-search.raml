@@ -1,0 +1,91 @@
+is: [citations, depictions, notes, tags, pageable: { default_per: 50, max_per: 1000 }]
+queryParameters:
+  character_state_id:
+    description: |
+      Identifier for the character state.
+    type: integer
+    required: false
+  character_state_id[]:
+    description: |
+      Identifiers for the character stated.
+    type: integer array
+    required: false
+  collection_object_id:
+    description: |
+      Identifier for the collection object for which the observation is made.
+    type: integer
+    required: false
+  collection_object_id[]:
+    description: |
+      Identifiers for the collection objects for which the observations are made.
+    type: integer array
+    required: false
+  descrendants:
+    description: |
+      Include results for descendant OTUs if true.
+    type: boolean
+    required: false
+  descriptor_id:
+    description: |
+      Identifier for the descriptor.
+    type: integer array
+    required: false
+  descriptor_id[]:
+    description: |
+      Identifiers for these descriptors.
+    type: integer array
+    required: false
+  observation_object_global_id:
+    description: |
+      Identifier for the observation object global id for which the observation is made.
+    type: integer
+    required: false
+  observation_object_type:
+    description: |
+      Observation object type.
+    type: integer
+    required: false
+  observation_object_type[]:
+    description: |
+      Observation object types.
+    type: integer array
+    required: false
+  observation_type:
+    description: |
+      Observation type.
+    type: string
+    required: false
+  observation_type[]:
+    description: |
+      Observation types.
+    type: string array
+    required: false
+  otu_id:
+    description: |
+      ID for the OTU for which the observation is made.
+    type: integer
+    required: false
+  otu_id[]:
+    description: |
+      IDs for the OTUs for which the observation is made.
+    type: integer array
+    required: false
+  taxon_name_id:
+    description: |
+      ID for the taxon for which the observation is made.
+    type: integer
+    required: false
+  taxon_name_id[]:
+    description: |
+      IDs for the taxa for which the observation is made.
+    type: integer array
+    required: false
+
+responses:
+  200:
+    body:
+      application/json:
+        type: Observation[]
+        maxItems: 100
+        uniqueItems: true
+        example: !include /examples/observations-result-example.json

@@ -1,0 +1,33 @@
+#%RAML 1.0 Trait
+
+queryParameters:
+  data_attribute_exact_value:
+    description:  |
+      Whether or not to match on exact value:
+    type: boolean
+    required: false
+  data_attribute_predicate_id:
+    description:  |
+      ID of controlled vocabulary term predicate.
+    type: integer
+    required: false
+  data_attribute_predicate_id[]:
+    description:  |
+      Array of IDs of controlled vocabulary term predicates.
+    type: integer
+    required: false
+  data_attribute_value:
+    description:  |
+      Value to match against.
+    type: string
+    required: false
+  data_attribute_value[]:
+    description:  |
+      Array of values to match against.
+    type: string
+    required: false
+  data_attributes:
+    description:  |
+      True: result has a data_attribute; False: does not have a data_attribute; nil: not applied.
+    type: boolean
+    required: false
