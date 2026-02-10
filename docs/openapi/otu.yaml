@@ -1,0 +1,1365 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – Otu Resource
+  description: |
+    OpenAPI 3.0 specification for the **Otu** (Operational Taxonomic Unit)
+    resource of the TaxonWorks external API.
+
+    An Otu can be thought of as a unit of study. In most cases an OTU
+    represents a taxon concept. OTUs are labelled either with an arbitrary
+    `name`, a linked `taxon_name_id`, or both. They are a primary unit of
+    work in TaxonWorks: rows in matrices, taxon pages, individuals or
+    populations, or arbitrary clusters of organisms.
+
+    ## Authentication
+    All endpoints require **either** a valid `project_token` **or** a valid
+    `user_token` + `project_id` pair, passed as query parameters.
+
+    ## Pagination
+    List endpoints return paginated results. Use `page` and `per` query
+    parameters. Pagination metadata is returned in response headers
+    (`X-Page`, `X-Per-Page`, `X-Total`, `X-Total-Pages`).
+
+    ## Response extensions
+    Some endpoints support `extend[]` and `embed[]` query parameters to
+    include additional nested data in the response.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: Otus – REST
+    description: Standard REST (CRUD-style) read endpoints for Otus.
+  - name: Otus – Autocomplete
+    description: Autocomplete / typeahead search across OTU names, taxon names, and common names.
+  - name: Otus – Inventory
+    description: Extended resource-specific inventory endpoints that aggregate related data for a single OTU.
+
+# ─────────────────────────────────────────────
+# Security
+# ─────────────────────────────────────────────
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  # ── Security Schemes ──
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+      description: User API token. When used, `project_id` must also be provided.
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+      description: Project-level API token. Provides read-only access scoped to the project.
+
+  # ── Reusable Parameters ──
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      description: Project ID (required when authenticating with a user `token`).
+      schema:
+        type: integer
+
+    pageParam:
+      name: page
+      in: query
+      description: Page number for paginated results.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+
+    perParam:
+      name: per
+      in: query
+      description: Number of items per page.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 10000
+        default: 500
+
+    otuIdPath:
+      name: id
+      in: path
+      required: true
+      description: OTU id.
+      schema:
+        type: integer
+
+    extendParam:
+      name: extend[]
+      in: query
+      description: |
+        Include additional nested data in the response. Supported values
+        vary by endpoint. Common values: `taxon_name`, `notes`, `common_names`.
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+    embedParam:
+      name: embed[]
+      in: query
+      description: |
+        Embed related collections inside the response. Supported values
+        vary by endpoint (e.g. `depictions`).
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  # ── Schemas ──
+  schemas:
+    Otu:
+      type: object
+      description: An Operational Taxonomic Unit.
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          description: Unique identifier.
+          example: 12345
+        name:
+          type: string
+          nullable: true
+          description: An arbitrary label for the OTU. At least one of `name` or `taxon_name_id` must be present.
+          example: "Aus bus"
+        taxon_name_id:
+          type: integer
+          nullable: true
+          description: The id of the linked nomenclatural TaxonName record.
+          example: 6789
+        created_by_id:
+          type: integer
+          description: User id that created the record.
+        updated_by_id:
+          type: integer
+          description: User id that last updated the record.
+        project_id:
+          type: integer
+          description: The project this OTU belongs to.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp of record creation.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp of last update.
+        global_id:
+          type: string
+          description: A Rails GlobalID URI for the record.
+          example: "gid://taxon-works/Otu/12345"
+        object_tag:
+          type: string
+          description: An HTML-formatted display tag for the OTU.
+          example: "<i>Aus bus</i> Author, 2000"
+
+    OtuWithExtensions:
+      description: Otu with optional `extend[]` fields.
+      allOf:
+        - $ref: '#/components/schemas/Otu'
+        - type: object
+          properties:
+            notes:
+              type: array
+              description: Present when `extend[]=notes`.
+              items:
+                type: object
+                properties:
+                  text:
+                    type: string
+            taxon_name:
+              description: Present when `extend[]=taxon_name`. Full TaxonName attributes.
+              type: object
+
+    OtuShowResponse:
+      description: Response for `GET /otus/:id`. Includes base attributes and optional `parents` when `extend[]=parents`.
+      allOf:
+        - $ref: '#/components/schemas/OtuWithExtensions'
+        - type: object
+          properties:
+            parents:
+              type: object
+              description: Present when `extend[]=parents`. Keyed by nomenclatural rank; values are arrays of OTU objects.
+              additionalProperties:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Otu'
+
+    OtuAutocompleteItem:
+      type: object
+      description: A single autocomplete result.
+      properties:
+        id:
+          type: integer
+          description: OTU id.
+        gid:
+          type: string
+          description: Rails GlobalID.
+        otu_valid_id:
+          type: integer
+          description: The id of the OTU linked to the valid/accepted taxon name.
+        label:
+          type: string
+          description: Plain-text label for the OTU.
+        label_html:
+          type: string
+          description: HTML-formatted label for display, highlighting matched terms.
+
+    ContentItem:
+      type: object
+      properties:
+        content_id:
+          type: integer
+          description: ID of the Content record.
+        public_content_id:
+          type: integer
+          description: ID of the PublicContent record.
+        name:
+          type: string
+          description: Topic name.
+        text:
+          type: string
+          description: Rendered content text (HTML or plain depending on `mode` param).
+        depictions:
+          type: array
+          description: Present when `embed[]=depictions`.
+          items:
+            type: object
+            description: Depiction attributes.
+
+    DistributionResponse:
+      type: object
+      properties:
+        otu_id:
+          type: integer
+        cached_map:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: CachedMap record id.
+            geo_json:
+              type: string
+              description: GeoJSON string of the distribution.
+
+    TaxonomyInventoryResponse:
+      type: object
+      description: |
+        Hierarchical taxonomy data for the OTU. Structure returned by
+        `otu_descendants_and_synonyms` helper. Optionally includes common names.
+      properties:
+        # Dynamic keys from the helper; documenting known top-level
+        common_names:
+          type: array
+          description: Present when `extend[]=common_names`.
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              language:
+                type: string
+                nullable: true
+                description: ISO 639-1 alpha-2 language code.
+
+    TypeMaterialInventoryResponse:
+      type: object
+      properties:
+        type_materials_catalog_labels:
+          type: array
+          items:
+            type: object
+            properties:
+              type_type:
+                type: string
+                description: E.g. "holotype", "paratype".
+              label:
+                type: string
+                description: Catalog label text.
+
+    NomenclatureCitationsItem:
+      type: object
+      properties:
+        source:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+              description: Full cached source citation.
+            short_name:
+              type: string
+              description: Author + year short form.
+        names:
+          type: array
+          items:
+            type: string
+          description: Formatted taxon name strings cited in this source.
+
+    DwcGalleryItem:
+      type: object
+      properties:
+        dwc_occurrence_id:
+          type: integer
+        images:
+          type: array
+          items:
+            type: object
+            description: Image attributes.
+            properties:
+              id:
+                type: integer
+
+    DeterminedToRankResponse:
+      type: object
+      description: Counts of specimens determined to various taxonomic ranks.
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  # ── Reusable Responses ──
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "no map available"
+    UnprocessableEntity:
+      description: Unprocessable entity (e.g. OTU has no taxon name for nomenclature citations).
+      content:
+        application/json:
+          schema:
+            type: object
+
+# ─────────────────────────────────────────────
+# Paths
+# ─────────────────────────────────────────────
+paths:
+
+  # ═══════════════════════════════════════════
+  #  REST endpoints
+  # ═══════════════════════════════════════════
+
+  /otus:
+    get:
+      operationId: getOtus
+      summary: List / filter OTUs
+      description: |
+        Returns a paginated, filterable list of OTUs for the authenticated
+        project. Results are ordered by `otus.id`.
+
+        **Route:** `GET /api/v1/otus`
+        **Controller:** `OtusController#api_index`
+        **View:** `otus/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - Otus – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        # ── Otu-specific filter params ──
+        - name: otu_id[]
+          in: query
+          description: One or more OTU ids to return.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: name
+          in: query
+          description: |
+            Filter by OTU `name`. Supports partial match by default
+            (case-insensitive LIKE with wildcards around spaces). Pass as
+            array for multiple values.
+          schema:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+
+        - name: name_exact
+          in: query
+          description: If `true`, match `name` exactly instead of partial LIKE.
+          schema:
+            type: boolean
+
+        - name: with_name
+          in: query
+          description: |
+            `true` – only OTUs that have a `name` value.
+            `false` – only OTUs where `name` is NULL.
+          schema:
+            type: boolean
+
+        - name: taxon_name_id[]
+          in: query
+          description: Filter to OTUs linked to one or more TaxonName ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: taxon_name
+          in: query
+          description: |
+            `true` – only OTUs with a linked TaxonName.
+            `false` – only OTUs without a linked TaxonName.
+          schema:
+            type: boolean
+
+        - name: descendants
+          in: query
+          description: |
+            When `true` and `taxon_name_id` is provided, also return OTUs
+            whose TaxonName is a descendant of the given taxon_name_id(s).
+          schema:
+            type: boolean
+
+        - name: ancestrify
+          in: query
+          description: |
+            When `true`, additionally include all coordinate OTUs for all
+            inferred ancestors of matched OTUs. Expands results upward to
+            the root, then outward.
+          schema:
+            type: boolean
+
+        - name: coordinatify
+          in: query
+          description: |
+            When `true`, additionally include all coordinate OTUs (same
+            valid taxon name) for the matched result set.
+          schema:
+            type: boolean
+
+        - name: collecting_event_id[]
+          in: query
+          description: |
+            Return OTUs that are the current determination of a
+            CollectionObject collected in the given CollectingEvent(s).
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: biological_association_id[]
+          in: query
+          description: Return OTUs involved in the given BiologicalAssociation(s).
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: descriptor_id[]
+          in: query
+          description: Return OTUs observed with the given Descriptor(s).
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: asserted_distributions
+          in: query
+          description: |
+            `true` – OTUs with at least one AssertedDistribution.
+            `false` – OTUs with no AssertedDistributions.
+          schema:
+            type: boolean
+
+        - name: biological_associations
+          in: query
+          description: |
+            `true` – OTUs with at least one BiologicalAssociation (subject or object).
+            `false` – OTUs without BiologicalAssociations.
+          schema:
+            type: boolean
+
+        - name: collection_objects
+          in: query
+          description: |
+            `true` – OTUs with at least one CollectionObject.
+            `false` – OTUs without CollectionObjects.
+          schema:
+            type: boolean
+
+        - name: common_names
+          in: query
+          description: |
+            `true` – OTUs with common names.
+            `false` – OTUs without common names.
+          schema:
+            type: boolean
+
+        - name: contents
+          in: query
+          description: |
+            `true` – OTUs with Content records.
+            `false` – OTUs without Content records.
+          schema:
+            type: boolean
+
+        - name: observations
+          in: query
+          description: |
+            `true` – OTUs with Observation records.
+            `false` – OTUs without Observations.
+          schema:
+            type: boolean
+
+        - name: wkt
+          in: query
+          description: A WKT (Well-Known Text) string defining a spatial area to filter OTUs by geographic occurrence.
+          schema:
+            type: string
+
+        - name: geo_json
+          in: query
+          description: A GeoJSON geometry (not Feature) to filter OTUs by geographic occurrence.
+          schema:
+            type: object
+
+        - name: radius
+          in: query
+          description: Buffer radius in meters applied to `geo_json` searches. Defaults to `100`.
+          schema:
+            type: number
+            default: 100
+
+        # ── Geo concern params ──
+        - name: geo_shape_id[]
+          in: query
+          description: Array of geographic shape ids (GeographicArea or Gazetteer). Must pair 1:1 with `geo_shape_type[]`.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: geo_shape_type[]
+          in: query
+          description: Array of shape types corresponding to `geo_shape_id[]`. Values `GeographicArea` or `Gazetteer`.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - GeographicArea
+                - Gazetteer
+          style: form
+          explode: true
+
+        - name: geo_mode
+          in: query
+          description: |
+            How to interpret geographic shapes:
+            - omit/`null` – exact match
+            - `true` – spatial (covered-by) match
+            - `false` – descendants match
+          schema:
+            type: boolean
+
+        # ── Tags concern ──
+        - name: keyword_id_and[]
+          in: query
+          description: Return OTUs tagged with ALL of the given Keyword ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: keyword_id_or[]
+          in: query
+          description: Return OTUs tagged with ANY of the given Keyword ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: tags
+          in: query
+          description: |
+            `true` – only OTUs with tags.
+            `false` – only OTUs without tags.
+          schema:
+            type: boolean
+
+        # ── Citations concern ──
+        - name: citations
+          in: query
+          description: |
+            `true` – only OTUs with citations.
+            `false` – only OTUs without citations.
+          schema:
+            type: boolean
+
+        - name: citation_documents
+          in: query
+          description: |
+            `true` – OTUs with citations that link to documents.
+            `false` – OTUs with citations lacking documents.
+          schema:
+            type: boolean
+
+        - name: origin_citation
+          in: query
+          description: |
+            `true` – OTUs with an origin citation.
+            `false` – OTUs without an origin citation.
+          schema:
+            type: boolean
+
+        # ── Notes concern ──
+        - name: notes
+          in: query
+          description: |
+            `true` – only OTUs with notes.
+            `false` – only OTUs without notes.
+          schema:
+            type: boolean
+
+        - name: note_text
+          in: query
+          description: Filter by note text content.
+          schema:
+            type: string
+
+        - name: note_exact
+          in: query
+          description: If `true`, match `note_text` exactly.
+          schema:
+            type: boolean
+
+        # ── Confidences concern ──
+        - name: confidences
+          in: query
+          description: |
+            `true` – OTUs with confidence levels.
+            `false` – OTUs without confidence levels.
+          schema:
+            type: boolean
+
+        - name: confidence_level_id[]
+          in: query
+          description: Return OTUs with one or more of these ConfidenceLevel ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        # ── DataAttributes concern ──
+        - name: data_attributes
+          in: query
+          description: |
+            `true` – OTUs with data attributes.
+            `false` – OTUs without data attributes.
+          schema:
+            type: boolean
+
+        - name: data_attribute_predicate_id[]
+          in: query
+          description: Return OTUs having data attributes with these predicate ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: data_attribute_exact_value[]
+          in: query
+          description: Return OTUs having data attributes with exact values.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: data_attribute_wildcard_value[]
+          in: query
+          description: Return OTUs having data attributes with wildcard-matched values.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        # ── Depictions concern ──
+        - name: depictions
+          in: query
+          description: |
+            `true` – OTUs with depictions/images.
+            `false` – OTUs without depictions/images.
+          schema:
+            type: boolean
+
+        - name: image_id[]
+          in: query
+          description: Return OTUs depicted in the given Image ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        # ── Conveyances concern ──
+        - name: conveyances
+          in: query
+          description: |
+            `true` – OTUs with sounds/conveyances.
+            `false` – OTUs without sounds/conveyances.
+          schema:
+            type: boolean
+
+        - name: sound_id[]
+          in: query
+          description: Return OTUs conveyed by the given Sound ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+      responses:
+        '200':
+          description: A paginated array of OTU objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+              description: Total number of matching records.
+            X-Total-Pages:
+              schema:
+                type: integer
+              description: Total number of pages.
+            X-Page:
+              schema:
+                type: integer
+              description: Current page number.
+            X-Per-Page:
+              schema:
+                type: integer
+              description: Number of records per page.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OtuWithExtensions'
+              example:
+                - id: 12345
+                  name: null
+                  taxon_name_id: 6789
+                  created_by_id: 1
+                  updated_by_id: 1
+                  project_id: 42
+                  created_at: "2024-01-15T10:30:00.000Z"
+                  updated_at: "2024-06-20T14:00:00.000Z"
+                  global_id: "gid://taxon-works/Otu/12345"
+                  object_tag: "<i>Aus bus</i> Author, 2000"
+        '401':
+          description: Unauthorized – invalid or missing token.
+
+  /otus/{id}:
+    get:
+      operationId: getOtu
+      summary: Get a single OTU
+      description: |
+        Returns a single OTU by id.
+
+        **Route:** `GET /api/v1/otus/:id`
+        **Controller:** `OtusController#api_show`
+        **View:** `otus/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+
+        Supports `extend[]=parents` to include ancestor OTUs keyed by nomenclatural rank,
+        `extend[]=notes`, and `extend[]=taxon_name`.
+      tags:
+        - Otus – REST
+      parameters:
+        - $ref: '#/components/parameters/otuIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single OTU object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OtuShowResponse'
+              example:
+                id: 12345
+                name: null
+                taxon_name_id: 6789
+                created_by_id: 1
+                updated_by_id: 1
+                project_id: 42
+                created_at: "2024-01-15T10:30:00.000Z"
+                updated_at: "2024-06-20T14:00:00.000Z"
+                global_id: "gid://taxon-works/Otu/12345"
+                object_tag: "<i>Aus bus</i> Author, 2000"
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /otus/inventory/alphabetical:
+    get:
+      operationId: getOtusAlphabetical
+      summary: List OTUs sorted alphabetically
+      description: |
+        Returns a paginated, filterable list of OTUs ordered alphabetically
+        by the cached TaxonName, then by `otus.name`.
+
+        Accepts all the same filter parameters as `GET /otus`.
+
+        **Route:** `GET /api/v1/otus/inventory/alphabetical`
+        **Controller:** `OtusController#api_alphabetical_index`
+        **View:** `otus/api/v1/index.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - Otus – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+        # All filter params from GET /otus also apply (see getOtus)
+      responses:
+        '200':
+          description: A paginated array of OTU objects in alphabetical order.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OtuWithExtensions'
+
+  # ═══════════════════════════════════════════
+  #  Autocomplete
+  # ═══════════════════════════════════════════
+
+  /otus/autocomplete:
+    get:
+      operationId: autocompleteOtus
+      summary: Autocomplete OTUs
+      description: |
+        Performs a priority-ranked autocomplete search across OTU names,
+        TaxonNames (including combinations and synonyms), and CommonNames.
+
+        Returns results with `otu_valid_id` pointing to the OTU linked to
+        the accepted/valid taxon name, enabling redirect-to-valid behavior.
+
+        **Route:** `GET /api/v1/otus/autocomplete`
+        **Controller:** `OtusController#api_autocomplete`
+        **View:** `otus/api/v1/autocomplete.json.jbuilder`
+        **Query class:** `Queries::Otu::Autocomplete#api_autocomplete_extended`
+        **Type:** Extended resource endpoint
+      tags:
+        - Otus – Autocomplete
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - name: term
+          in: query
+          required: true
+          description: The search string.
+          schema:
+            type: string
+            minLength: 1
+          example: "Aus bus"
+
+        - name: having_taxon_name_only
+          in: query
+          description: |
+            `true` – only return OTUs where `name` is NULL (i.e. the OTU
+            is identified solely by its linked TaxonName).
+          schema:
+            type: boolean
+
+        - name: with_taxon_name
+          in: query
+          description: |
+            `true` – OTU must have a linked TaxonName.
+            `false` – OTU must NOT have a linked TaxonName.
+          schema:
+            type: boolean
+
+        - name: include_common_names
+          in: query
+          description: When present (any value), include common names for each result.
+          schema:
+            type: boolean
+
+      responses:
+        '200':
+          description: An array of autocomplete results ordered by match priority.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OtuAutocompleteItem'
+              example:
+                - id: 12345
+                  gid: "gid://taxon-works/Otu/12345"
+                  otu_valid_id: 12345
+                  label: "Aus bus Author, 2000"
+                  label_html: "<i>Aus bus</i> Author, 2000"
+
+  # ═══════════════════════════════════════════
+  #  Inventory endpoints
+  # ═══════════════════════════════════════════
+
+  /otus/{id}/inventory/content:
+    get:
+      operationId: getOtuContent
+      summary: Content inventory for an OTU
+      description: |
+        Returns public content (topic-based text) for the given OTU.
+        Optionally filter by `topic_id` and embed depictions.
+
+        **Route:** `GET /api/v1/otus/:id/inventory/content`
+        **Controller:** `OtusController#api_content`
+        **View:** `otus/api/v1/inventory/content.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - Otus – Inventory
+      parameters:
+        - $ref: '#/components/parameters/otuIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/embedParam'
+        - $ref: '#/components/parameters/extendParam'
+        - name: topic_id
+          in: query
+          description: One or more Topic ids to filter content by.
+          schema:
+            oneOf:
+              - type: integer
+              - type: array
+                items:
+                  type: integer
+        - name: mode
+          in: query
+          description: Rendering mode for the content text.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Array of content items.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContentItem'
+              example:
+                - content_id: 100
+                  public_content_id: 200
+                  name: "Biology"
+                  text: "<p>This species is found in…</p>"
+
+  /otus/{id}/inventory/distribution:
+    get:
+      operationId: getOtuDistribution
+      summary: Distribution map for an OTU
+      description: |
+        Returns a cached distribution map (CachedMap) for the OTU.
+        Responds to both `.json` and `.geojson` formats.
+
+        **Route:** `GET /api/v1/otus/:id/inventory/distribution`
+        **Controller:** `OtusController#api_distribution`
+        **Views:**
+        - `otus/api/v1/inventory/distribution.json.jbuilder`
+        - `otus/api/v1/inventory/distribution.geojson.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - Otus – Inventory
+      parameters:
+        - $ref: '#/components/parameters/otuIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - name: cached_map_type
+          in: query
+          description: The CachedMapItem type to use. Defaults to `CachedMapItem::WebLevel1`.
+          schema:
+            type: string
+            default: "CachedMapItem::WebLevel1"
+      responses:
+        '200':
+          description: Distribution data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributionResponse'
+              example:
+                otu_id: 12345
+                cached_map:
+                  id: 999
+                  geo_json: '{"type":"MultiPolygon","coordinates":[...]}'
+            application/geo+json:
+              schema:
+                type: object
+                description: Full GeoJSON distribution (via `otu_distribution` helper).
+        '404':
+          description: No map available.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "no map available"
+
+  /otus/{id}/inventory/taxonomy:
+    get:
+      operationId: getOtuTaxonomy
+      summary: Taxonomy inventory for an OTU
+      description: |
+        Returns a hierarchical taxonomy structure (descendants and synonyms)
+        for the OTU.
+
+        **Route:** `GET /api/v1/otus/:id/inventory/taxonomy`
+        **Controller:** `OtusController#api_taxonomy_inventory`
+        **View:** `otus/api/v1/inventory/taxonomy.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - Otus – Inventory
+      parameters:
+        - $ref: '#/components/parameters/otuIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+        - name: max_descendants_depth
+          in: query
+          description: Maximum depth of descendant traversal. Defaults to unlimited.
+          schema:
+            type: integer
+        - name: common_name_language
+          in: query
+          description: ISO 639-1 alpha-2 language code to filter common names (only applies when `extend[]=common_names`).
+          schema:
+            type: string
+            example: "en"
+      responses:
+        '200':
+          description: Taxonomy inventory.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxonomyInventoryResponse'
+
+  /otus/{id}/inventory/keys:
+    get:
+      operationId: getOtuKeyInventory
+      summary: Key inventory for an OTU
+      description: |
+        Returns identification keys associated with the OTU.
+
+        **Route:** `GET /api/v1/otus/:id/inventory/keys`
+        **Controller:** `OtusController#api_key_inventory`
+        **Type:** Extended resource endpoint
+      tags:
+        - Otus – Inventory
+      parameters:
+        - $ref: '#/components/parameters/otuIdPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: Key inventory data.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Structure returned by `otu_key_inventory` helper.
+
+  /otus/{id}/inventory/type_material:
+    get:
+      operationId: getOtuTypeMaterial
+      summary: Type material inventory for an OTU
+      description: |
+        Returns type material catalog labels associated with the OTU's
+        protonym.
+
+        **Route:** `GET /api/v1/otus/:id/inventory/type_material`
+        **Controller:** `OtusController#api_type_material_inventory`
+        **View:** `otus/api/v1/inventory/type_material.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - Otus – Inventory
+      parameters:
+        - $ref: '#/components/parameters/otuIdPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: Type material inventory.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TypeMaterialInventoryResponse'
+              example:
+                type_materials_catalog_labels:
+                  - type_type: "holotype"
+                    label: "Holotype ♂, USNM 12345, USA, California…"
+
+  /otus/{id}/inventory/nomenclature_citations:
+    get:
+      operationId: getOtuNomenclatureCitations
+      summary: Nomenclature citations for an OTU
+      description: |
+        Returns a catalog of nomenclatural citations for the OTU's taxon
+        name, grouped by source.
+
+        Returns `422 Unprocessable Entity` if the OTU has no linked TaxonName.
+
+        **Route:** `GET /api/v1/otus/:id/inventory/nomenclature_citations`
+        **Controller:** `OtusController#api_nomenclature_citations`
+        **View:** `otus/api/v1/inventory/nomenclature_citations.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - Otus – Inventory
+      parameters:
+        - $ref: '#/components/parameters/otuIdPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: Array of source + names citation entries.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NomenclatureCitationsItem'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+
+  /otus/{id}/inventory/dwc:
+    get:
+      operationId: getOtuDwcInventory
+      summary: DwC occurrence inventory for an OTU
+      description: |
+        Returns Darwin Core (DwC) occurrence records scoped to the OTU.
+        Supports `.json` and `.csv` response formats. Pagination is
+        only applied when `page`/`per` params are provided; otherwise
+        all records are returned.
+
+        **Route:** `GET /api/v1/otus/:id/inventory/dwc`
+        **Controller:** `OtusController#api_dwc_inventory`
+        **Type:** Extended resource endpoint
+      tags:
+        - Otus – Inventory
+      parameters:
+        - $ref: '#/components/parameters/otuIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+      responses:
+        '200':
+          description: DwC occurrence records.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  description: DwcOccurrence record attributes.
+            text/csv:
+              schema:
+                type: string
+                description: Tab-separated DwC occurrence data.
+
+  /otus/{id}/inventory/dwc_gallery:
+    get:
+      operationId: getOtuDwcGallery
+      summary: DwC gallery for an OTU
+      description: |
+        Returns images grouped by DwC occurrence for the OTU.
+
+        **Route:** `GET /api/v1/otus/:id/inventory/dwc_gallery`
+        **Controller:** `OtusController#api_dwc_gallery`
+        **View:** `otus/api/v1/inventory/dwc_gallery.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - Otus – Inventory
+      parameters:
+        - $ref: '#/components/parameters/otuIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - name: dwc_occurrence_id
+          in: query
+          description: Optionally scope to a specific DwcOccurrence id.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Array of DwC occurrence image groups.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DwcGalleryItem'
+
+  /otus/{otu_id}/inventory/images:
+    get:
+      operationId: getOtuImageInventory
+      summary: Image inventory for an OTU
+      description: |
+        Returns depictions (images) associated with the OTU, including
+        images from observations and other sources. Results are paginated
+        and ordered by depiction object type and position.
+
+        **Route:** `GET /api/v1/otus/:otu_id/inventory/images`
+        **Controller:** `OtusController#api_image_inventory`
+        **View:** `otus/api/v1/inventory/images.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - Otus – Inventory
+      parameters:
+        - name: otu_id
+          in: path
+          required: true
+          description: OTU id.
+          schema:
+            type: integer
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - name: otu_scope
+          in: query
+          description: Scope for OTU depiction query. Defaults to `all`.
+          schema:
+            type: string
+            default: "all"
+        - name: sort_order[]
+          in: query
+          description: Custom sort order for depiction object types.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+      responses:
+        '200':
+          description: Paginated image inventory.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Image inventory structure from `image_inventory` helper.
+
+  /otus/{id}/inventory/determined_to_rank:
+    get:
+      operationId: getOtuDeterminedToRank
+      summary: Determined-to-rank summary for an OTU
+      description: |
+        Returns a summary of specimens determined to various taxonomic ranks
+        for the given OTU.
+
+        **Route:** `GET /api/v1/otus/:id/inventory/determined_to_rank`
+        **Controller:** `OtusController#api_determined_to_rank`
+        **Type:** Extended resource endpoint
+      tags:
+        - Otus – Inventory
+      parameters:
+        - $ref: '#/components/parameters/otuIdPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: Determined-to-rank data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeterminedToRankResponse'
+
+# ─────────────────────────────────────────────
+# Notes
+# ─────────────────────────────────────────────
+# CONSISTENCY REPORT
+#
+# All OTU routes from config/routes/api_v1.rb are documented:
+#
+#   Route                                              | Endpoint           | Status
+#   ---------------------------------------------------|--------------------|---------
+#   GET /otus                                          | api_index          | ✅ Documented
+#   GET /otus/autocomplete                             | api_autocomplete   | ✅ Documented
+#   GET /otus/inventory/alphabetical                   | api_alphabetical   | ✅ Documented
+#   GET /otus/:id/inventory/content                    | api_content        | ✅ Documented
+#   GET /otus/:id/inventory/distribution               | api_distribution   | ✅ Documented
+#   GET /otus/:id/inventory/keys                       | api_key_inventory  | ✅ Documented
+#   GET /otus/:id/inventory/taxonomy                   | api_taxonomy_inv   | ✅ Documented
+#   GET /otus/:otu_id/inventory/images                 | api_image_inv      | ✅ Documented
+#   GET /otus/:id/inventory/dwc_gallery                | api_dwc_gallery    | ✅ Documented
+#   GET /otus/:id/inventory/dwc                        | api_dwc_inventory  | ✅ Documented
+#   GET /otus/:id/inventory/type_material              | api_type_material  | ✅ Documented
+#   GET /otus/:id/inventory/nomenclature_citations     | api_nomenclature   | ✅ Documented
+#   GET /otus/:id/inventory/determined_to_rank         | api_determined     | ✅ Documented
+#   GET /otus/:id                                      | api_show           | ✅ Documented
+#
+# OBSERVATIONS & INCONSISTENCIES:
+#
+# 1. The routes file has duplicate /downloads routes at lines 50-53 and 73-75.
+#    This does not affect OTU documentation but is worth noting.
+#
+# 2. The Otu filter includes many nested sub-query parameters
+#    (e.g. taxon_name_query, collection_object_query, etc.) which are
+#    technically available on the API but are complex and less commonly
+#    used. They are not individually documented here to keep the spec
+#    manageable; they can be added on request.
+#
+# 3. The `api_index` action also supports CSV output via `.csv` format
+#    suffix (content-type text/csv). This is noted but not separately
+#    documented as a distinct path.
+#
+# 4. No POST/PATCH/DELETE endpoints are exposed on the external API
+#    (read-only), consistent with the authentication section.

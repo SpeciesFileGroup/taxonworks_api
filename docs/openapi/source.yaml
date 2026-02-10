@@ -1,0 +1,1005 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – Source Resource
+  description: |
+    OpenAPI 3.0 specification for the **Source** resource of the
+    TaxonWorks external API.
+
+    A Source is the metadata that identifies the origin of some
+    information/data. The primary purpose is to allow the user to find the
+    source. Attributes largely follow BibTeX conventions
+    (see https://en.wikipedia.org/wiki/BibTeX).
+
+    Source types: `Source::Bibtex`, `Source::Human`, `Source::Verbatim`.
+
+    ## Authentication
+    **Sources are unique: all endpoints are unauthenticated (public).**
+    No `token` or `project_token` is required. However, some response
+    fields (e.g. `source_in_project`, `project_source_id`) are
+    project-context-dependent and will be populated when a project token
+    is provided.
+
+    ## Pagination
+    List endpoints return paginated results. Use `page` and `per` query
+    parameters. Pagination metadata is returned in response headers.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: Sources – REST
+    description: Standard REST read endpoints for Sources. **Unauthenticated.**
+  - name: Sources – Autocomplete
+    description: Autocomplete / typeahead search for Sources. **Unauthenticated.**
+  - name: Sources – Extended
+    description: Extended resource-specific endpoints. **Unauthenticated.**
+
+# No global security — Sources endpoints are public
+security: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+      description: User API token (optional for Sources — provides project context).
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+      description: Project-level API token (optional for Sources — provides project context).
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      description: Project ID (optional for Sources — provides project context for `source_in_project` etc.).
+      schema:
+        type: integer
+
+    pageParam:
+      name: page
+      in: query
+      description: Page number for paginated results.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+
+    perParam:
+      name: per
+      in: query
+      description: Number of items per page.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 10000
+        default: 500
+
+    sourceIdPath:
+      name: id
+      in: path
+      required: true
+      description: Source id.
+      schema:
+        type: integer
+
+    extendParam:
+      name: extend[]
+      in: query
+      description: |
+        Include additional nested data. Supported values:
+        `roles`, `bibtex`, `identifiers`, `notes`, `origin_citation`,
+        `citations`, `pinboard_item`.
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  schemas:
+    SourceBase:
+      type: object
+      description: |
+        Core Source attributes. Rendered by `_base_attributes.json.jbuilder`.
+        Fields follow BibTeX conventions.
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          description: Unique identifier.
+          example: 1001
+        serial_id:
+          type: integer
+          nullable: true
+          description: TaxonWorks Serial (journal) id.
+        address:
+          type: string
+          nullable: true
+          description: BibTeX address field.
+        annote:
+          type: string
+          nullable: true
+          description: BibTeX annote field.
+        author:
+          type: string
+          nullable: true
+          description: BibTeX author string.
+          example: "Smith, J. and Jones, K."
+        booktitle:
+          type: string
+          nullable: true
+          description: BibTeX booktitle field.
+        chapter:
+          type: string
+          nullable: true
+        crossref:
+          type: string
+          nullable: true
+        edition:
+          type: string
+          nullable: true
+        editor:
+          type: string
+          nullable: true
+          description: BibTeX editor string.
+        howpublished:
+          type: string
+          nullable: true
+        institution:
+          type: string
+          nullable: true
+        journal:
+          type: string
+          nullable: true
+          description: Journal name.
+        key:
+          type: string
+          nullable: true
+        month:
+          type: string
+          nullable: true
+        note:
+          type: string
+          nullable: true
+        number:
+          type: string
+          nullable: true
+          description: Issue number.
+        organization:
+          type: string
+          nullable: true
+        pages:
+          type: string
+          nullable: true
+          description: Page range.
+          example: "1-100"
+        publisher:
+          type: string
+          nullable: true
+        school:
+          type: string
+          nullable: true
+        series:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+          description: Title of the work.
+          example: "A revision of the genus Aus"
+        type:
+          type: string
+          description: Source subclass (`Source::Bibtex`, `Source::Human`, `Source::Verbatim`).
+          example: "Source::Bibtex"
+        volume:
+          type: string
+          nullable: true
+        doi:
+          type: string
+          nullable: true
+          description: Digital Object Identifier.
+          example: "10.1234/example.2000"
+        abstract:
+          type: string
+          nullable: true
+        copyright:
+          type: string
+          nullable: true
+        language:
+          type: string
+          nullable: true
+          description: Language of the source.
+        stated_year:
+          type: string
+          nullable: true
+          description: Year as stated on the publication.
+        verbatim:
+          type: string
+          nullable: true
+          description: Verbatim citation string.
+        cached:
+          type: string
+          nullable: true
+          description: Auto-generated full citation string.
+          example: "Smith, J. & Jones, K. (2000) A revision of the genus Aus. Journal, 1: 1-100."
+        cached_author_string:
+          type: string
+          nullable: true
+          description: Auto-generated author string.
+        bibtex_type:
+          type: string
+          nullable: true
+          description: BibTeX entry type (e.g. "article", "book", "inproceedings").
+          example: "article"
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        cached_nomenclature_date:
+          type: string
+          format: date
+          nullable: true
+          description: Cached date used for nomenclatural priority.
+        day:
+          type: integer
+          nullable: true
+        year:
+          type: integer
+          nullable: true
+          description: Publication year.
+          example: 2000
+        isbn:
+          type: string
+          nullable: true
+        issn:
+          type: string
+          nullable: true
+        verbatim_contents:
+          type: string
+          nullable: true
+        verbatim_keywords:
+          type: string
+          nullable: true
+        language_id:
+          type: integer
+          nullable: true
+        translator:
+          type: string
+          nullable: true
+        year_suffix:
+          type: string
+          nullable: true
+        url:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    Source:
+      description: |
+        Full Source with metadata and optional extensions.
+        Rendered by `_attributes.json.jbuilder`.
+      allOf:
+        - $ref: '#/components/schemas/SourceBase'
+        - type: object
+          properties:
+            # From shared/data/all/_metadata.json.jbuilder
+            object_tag:
+              type: string
+              description: HTML-formatted display tag.
+            object_label:
+              type: string
+              description: Plain-text display label.
+            global_id:
+              type: string
+              description: Rails GlobalID URI.
+              example: "gid://taxon-works/Source/1001"
+            base_class:
+              type: string
+              description: Base class name.
+              example: "Source"
+            url_for:
+              type: string
+              description: JSON resource URL.
+            object_url:
+              type: string
+              description: Canonical URL for this object.
+
+            # Source-specific
+            source_in_project:
+              type: boolean
+              nullable: true
+              description: Whether this source is in the current project (null if no project context).
+            project_source_id:
+              type: integer
+              nullable: true
+              description: ProjectSource join record id (null if not in project or no project context).
+
+            # extend[]=roles
+            author_roles:
+              type: array
+              description: Present when `extend[]=roles` and type is `Source::Bibtex`.
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  position:
+                    type: integer
+                  type:
+                    type: string
+                  person:
+                    type: object
+                    description: Person brief attributes.
+            editor_roles:
+              type: array
+              description: Present when `extend[]=roles` and type is `Source::Bibtex`.
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  position:
+                    type: integer
+                  type:
+                    type: string
+                  person:
+                    type: object
+
+            # extend[]=bibtex
+            bibtex:
+              type: string
+              description: Present when `extend[]=bibtex`. Full BibTeX string representation.
+
+            # extend[]=identifiers
+            identifiers:
+              type: object
+              description: Present when `extend[]=identifiers`. Identifier data.
+
+            # extend[]=notes
+            notes:
+              type: array
+              description: Present when `extend[]=notes`.
+              items:
+                type: object
+                properties:
+                  text:
+                    type: string
+
+            # extend[]=origin_citation
+            origin_citation:
+              type: object
+              description: Present when `extend[]=origin_citation`. The origin citation with source details.
+
+            # extend[]=citations
+            citations:
+              type: array
+              description: Present when `extend[]=citations`. All citations on this source.
+              items:
+                type: object
+
+    BibliographyItem:
+      type: object
+      description: Minimal source for bibliography listing (id + cached only).
+      properties:
+        id:
+          type: integer
+        cached:
+          type: string
+          description: Full cached citation string.
+
+    SourceAutocompleteItem:
+      type: object
+      description: A single source autocomplete result.
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+          description: Plain-text label.
+        label_html:
+          type: string
+          description: HTML-formatted label.
+        is_in_project:
+          type: boolean
+          description: Whether this source is in the current project.
+        response_values:
+          type: object
+          description: Dynamic key-value pair where key is the `method` param value.
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+# ─────────────────────────────────────────────
+# Paths
+# ─────────────────────────────────────────────
+paths:
+
+  # ═══════════════════════════════════════════
+  #  REST endpoints (unauthenticated)
+  # ═══════════════════════════════════════════
+
+  /sources:
+    get:
+      operationId: getSources
+      summary: List / filter Sources
+      description: |
+        Returns a paginated, filterable list of Sources ordered by `cached`.
+
+        **This endpoint is unauthenticated (public).** No token required.
+
+        **Route:** `GET /api/v1/sources`
+        **Controller:** `SourcesController#api_index`
+        **View:** `sources/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+        **Authentication:** None (public)
+      tags:
+        - Sources – REST
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        # ── Source-specific filter params ──
+        - name: source_id[]
+          in: query
+          description: Return specific Source(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: query_term
+          in: query
+          description: Free-text search term matched against cached fields.
+          schema:
+            type: string
+
+        - name: title
+          in: query
+          description: Filter by title.
+          schema:
+            type: string
+
+        - name: exact_title
+          in: query
+          description: If `true`, match `title` exactly.
+          schema:
+            type: boolean
+
+        - name: with_title
+          in: query
+          description: |
+            `true` – only sources with a title.
+            `false` – only sources without a title.
+          schema:
+            type: boolean
+
+        - name: author
+          in: query
+          description: Filter by author string (matches against `cached_author_string`).
+          schema:
+            type: string
+
+        - name: exact_author
+          in: query
+          description: If `true`, match `author` exactly.
+          schema:
+            type: boolean
+
+        - name: author_id[]
+          in: query
+          description: Filter by author Person ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: author_id_or
+          in: query
+          description: |
+            `true` – match ANY of the `author_id[]` values (OR).
+            `false`/nil – match ALL (AND, only sources with all and only these authors).
+          schema:
+            type: boolean
+
+        - name: editor
+          in: query
+          description: Filter by editor string.
+          schema:
+            type: string
+
+        - name: exact_editor
+          in: query
+          description: If `true`, match `editor` exactly.
+          schema:
+            type: boolean
+
+        - name: editor_id[]
+          in: query
+          description: Filter by editor Person ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: editor_id_or
+          in: query
+          description: |
+            `true` – match ANY of the `editor_id[]` values (OR).
+            `false`/nil – match ALL (AND).
+          schema:
+            type: boolean
+
+        - name: year_start
+          in: query
+          description: Start year for range filter.
+          schema:
+            type: integer
+
+        - name: year_end
+          in: query
+          description: End year for range filter.
+          schema:
+            type: integer
+
+        - name: source_type
+          in: query
+          description: Filter by Source subclass type.
+          schema:
+            type: string
+            enum:
+              - Source::Bibtex
+              - Source::Human
+              - Source::Verbatim
+
+        - name: bibtex_type[]
+          in: query
+          description: Filter by BibTeX entry type (e.g. "article", "book").
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: serial_id[]
+          in: query
+          description: Filter by Serial (journal) ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: serial
+          in: query
+          description: |
+            `true` – only sources with a serial.
+            `false` – only sources without a serial.
+          schema:
+            type: boolean
+
+        - name: in_project
+          in: query
+          description: |
+            `true` – only sources in the current project.
+            `false` – only sources NOT in the current project.
+            Requires `project_id`.
+          schema:
+            type: boolean
+
+        - name: citations
+          in: query
+          description: |
+            `true` – only sources with citations.
+            `false` – only sources without citations.
+          schema:
+            type: boolean
+
+        - name: citation_object_type[]
+          in: query
+          description: Filter to sources cited on specific object types (e.g. "TaxonName", "Otu").
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: citations_on_otus
+          in: query
+          description: |
+            When `taxon_name_id` is provided and this is `true`, also include
+            sources linked to OTUs in scope of the taxon_name_id.
+          schema:
+            type: boolean
+
+        - name: taxon_name_id[]
+          in: query
+          description: Return sources cited on this TaxonName (or its descendants).
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: descendants
+          in: query
+          description: When `true` with `taxon_name_id`, include descendants.
+          schema:
+            type: boolean
+
+        - name: nomenclature
+          in: query
+          description: |
+            `true` – only sources used in nomenclature.
+            `false` – only sources not used in nomenclature.
+          schema:
+            type: boolean
+
+        - name: roles
+          in: query
+          description: |
+            `true` – only sources with roles (author/editor persons).
+            `false` – only sources without roles.
+          schema:
+            type: boolean
+
+        - name: documents
+          in: query
+          description: |
+            `true` – only sources with attached documents.
+            `false` – only sources without documents.
+          schema:
+            type: boolean
+
+        - name: with_doi
+          in: query
+          description: |
+            `true` – only sources with a DOI.
+            `false` – only sources without a DOI.
+          schema:
+            type: boolean
+
+        - name: with_pages
+          in: query
+          description: |
+            `true` – only sources with pages.
+            `false` – only sources without pages.
+          schema:
+            type: boolean
+
+        - name: topic_id[]
+          in: query
+          description: Filter by Topic ids (via citations).
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: empty[]
+          in: query
+          description: Filter to sources where these BibTeX fields are empty.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: not_empty[]
+          in: query
+          description: Filter to sources where these BibTeX fields are not empty.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        # ── Tags concern ──
+        - name: keyword_id_and[]
+          in: query
+          description: Return sources tagged with ALL of the given Keyword ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: keyword_id_or[]
+          in: query
+          description: Return sources tagged with ANY of the given Keyword ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: tags
+          in: query
+          description: |
+            `true` – only sources with tags.
+            `false` – only sources without tags.
+          schema:
+            type: boolean
+
+        # ── Notes concern ──
+        - name: notes
+          in: query
+          description: |
+            `true` – only sources with notes.
+            `false` – only sources without notes.
+          schema:
+            type: boolean
+
+        # ── DataAttributes concern ──
+        - name: data_attributes
+          in: query
+          description: |
+            `true` – only sources with data attributes.
+            `false` – only sources without data attributes.
+          schema:
+            type: boolean
+
+      responses:
+        '200':
+          description: A paginated array of Source objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Source'
+              example:
+                - id: 1001
+                  title: "A revision of the genus Aus"
+                  author: "Smith, J. and Jones, K."
+                  year: 2000
+                  type: "Source::Bibtex"
+                  bibtex_type: "article"
+                  cached: "Smith, J. & Jones, K. (2000) A revision of the genus Aus. Journal, 1: 1-100."
+                  object_tag: "Smith & Jones (2000)"
+                  global_id: "gid://taxon-works/Source/1001"
+                  source_in_project: true
+                  project_source_id: 500
+
+  /sources/{id}:
+    get:
+      operationId: getSource
+      summary: Get a single Source
+      description: |
+        Returns a single Source by id with full attributes and metadata.
+
+        Supports `extend[]` values: `roles`, `bibtex`, `identifiers`,
+        `notes`, `origin_citation`, `citations`, `pinboard_item`.
+
+        **Route:** `GET /api/v1/sources/:id`
+        **Controller:** `SourcesController#api_show`
+        **View:** `sources/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+        **Authentication:** None (public)
+      tags:
+        - Sources – REST
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/sourceIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single Source object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Source'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ═══════════════════════════════════════════
+  #  Autocomplete (unauthenticated)
+  # ═══════════════════════════════════════════
+
+  /sources/autocomplete:
+    get:
+      operationId: autocompleteSources
+      summary: Autocomplete Sources
+      description: |
+        Searches sources by a term string. Returns results with labels
+        and project membership info.
+
+        **Route:** `GET /api/v1/sources/autocomplete`
+        **Controller:** `SourcesController#autocomplete`
+        **View:** `sources/api/v1/autocomplete.json.jbuilder`
+        **Type:** Extended resource endpoint
+        **Authentication:** None (public)
+      tags:
+        - Sources – Autocomplete
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - name: term
+          in: query
+          required: true
+          description: The search string.
+          schema:
+            type: string
+            minLength: 1
+
+        - name: limit_to_project
+          in: query
+          description: If `true`, only return sources that are in the current project.
+          schema:
+            type: boolean
+
+        - name: method
+          in: query
+          description: |
+            When provided, the response `response_values` object will include
+            a key with this name mapped to the source id. Used for form
+            integration.
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Array of autocomplete results.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SourceAutocompleteItem'
+              example:
+                - id: 1001
+                  label: "Smith & Jones (2000) A revision of the genus Aus"
+                  label_html: "Smith & Jones (2000) A revision of the genus Aus"
+                  is_in_project: true
+                  response_values:
+                    source_id: 1001
+
+  # ═══════════════════════════════════════════
+  #  Extended endpoints (unauthenticated)
+  # ═══════════════════════════════════════════
+
+  /sources/bibliography:
+    get:
+      operationId: getSourcesBibliography
+      summary: Bibliography listing
+      description: |
+        Returns a minimal paginated list of sources (id + cached citation
+        only) suitable for rendering a bibliography. Accepts all the same
+        filter parameters as `GET /sources`.
+
+        **Route:** `GET /api/v1/sources/bibliography`
+        **Controller:** `SourcesController#api_bibliography`
+        **Type:** Extended resource endpoint
+        **Authentication:** None (public)
+      tags:
+        - Sources – Extended
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        # All filter params from GET /sources also apply
+      responses:
+        '200':
+          description: A paginated array of minimal source objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BibliographyItem'
+              example:
+                - id: 1001
+                  cached: "Smith, J. & Jones, K. (2000) A revision of the genus Aus. Journal, 1: 1-100."
+                - id: 1002
+                  cached: "Brown, A. (2005) Notes on Aus. Proceedings, 5: 50-55."
+
+# ─────────────────────────────────────────────
+# Notes
+# ─────────────────────────────────────────────
+# CONSISTENCY REPORT
+#
+# All Source routes from config/routes/api_v1.rb are documented:
+#
+#   Route                              | Endpoint          | Status
+#   -----------------------------------|-------------------|---------
+#   GET /sources/bibliography          | api_bibliography  | ✅ Documented
+#   GET /sources                       | api_index         | ✅ Documented
+#   GET /sources/autocomplete          | autocomplete      | ✅ Documented
+#   GET /sources/:id                   | api_show          | ✅ Documented
+#
+# OBSERVATIONS & INCONSISTENCIES:
+#
+# 1. Sources are in the `authenticate_project: false, authenticate_user: false`
+#    block in routes — they are fully public/unauthenticated. This is unique
+#    among most API resources.
+#
+# 2. The `_attributes.json.jbuilder` includes the shared metadata partial
+#    (`shared/data/all/_metadata`) which adds `object_tag`, `object_label`,
+#    `global_id`, `base_class`, `url_for`, and `object_url` fields to every
+#    Source response. These metadata fields support additional `extend[]`
+#    values: `origin_citation`, `citations`, `pinboard_item`.
+#
+# 3. The filter has a `query_term` parameter (mapped from `params[:query_term]`
+#    to `@query_string` internally) for free-text search, separate from the
+#    `title` and `author` specific filters.
+#
+# 4. The filter supports BibTeX field-level empty/not_empty filtering via
+#    `empty[]` and `not_empty[]` array params (e.g. `empty[]=doi` to find
+#    sources missing a DOI).
+#
+# 5. The filter includes `ATTRIBUTES` constant (BibTeX field names) merged
+#    into PARAMS for direct attribute filtering. These are standard BibTeX
+#    fields that can be passed as individual query parameters.
+#
+# 6. No POST/PATCH/DELETE endpoints are exposed on the external API
+#    (read-only).
