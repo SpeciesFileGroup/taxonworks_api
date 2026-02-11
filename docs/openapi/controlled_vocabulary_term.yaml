@@ -1,0 +1,193 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – ControlledVocabularyTerm Resource
+  description: |
+    OpenAPI 3.0 specification for the **ControlledVocabularyTerm** resource.
+
+    ControlledVocabularyTerms are project-scoped vocabulary entries used
+    as Keywords (for tagging), Topics (for content), Predicates (for
+    data attributes), and BiologicalProperties. STI type determines usage.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: ControlledVocabularyTerms – REST
+    description: Standard REST read endpoints.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    cvtIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+
+  schemas:
+    ControlledVocabularyTerm:
+      type: object
+      required:
+        - id
+        - name
+        - definition
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          description: "STI type: Keyword, Topic, Predicate, BiologicalProperty, etc."
+        name:
+          type: string
+        definition:
+          type: string
+          description: Minimum 20 characters.
+        uri:
+          type: string
+          nullable: true
+        uri_relation:
+          type: string
+          nullable: true
+        css_color:
+          type: string
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /controlled_vocabulary_terms:
+    get:
+      operationId: getControlledVocabularyTerms
+      summary: List / filter ControlledVocabularyTerms
+      description: |
+        Returns a paginated, filterable list.
+
+        **Route:** `GET /api/v1/controlled_vocabulary_terms`
+        **Controller:** `ControlledVocabularyTermsController#api_index`
+        **View:** `controlled_vocabulary_terms/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - ControlledVocabularyTerms – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+
+        - name: controlled_vocabulary_term_id[]
+          in: query
+          description: Return specific CVT(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: type
+          in: query
+          description: Filter by STI type (Keyword, Topic, Predicate, BiologicalProperty).
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Paginated array of ControlledVocabularyTerm objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ControlledVocabularyTerm'
+
+  /controlled_vocabulary_terms/{id}:
+    get:
+      operationId: getControlledVocabularyTerm
+      summary: Get a single ControlledVocabularyTerm
+      description: |
+        **Route:** `GET /api/v1/controlled_vocabulary_terms/:id`
+        **Controller:** `ControlledVocabularyTermsController#api_show`
+        **View:** `controlled_vocabulary_terms/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - ControlledVocabularyTerms – REST
+      parameters:
+        - $ref: '#/components/parameters/cvtIdPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: A single ControlledVocabularyTerm.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ControlledVocabularyTerm'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All ControlledVocabularyTerm routes documented:
+#   GET /controlled_vocabulary_terms     | api_index | done
+#   GET /controlled_vocabulary_terms/:id | api_show  | done

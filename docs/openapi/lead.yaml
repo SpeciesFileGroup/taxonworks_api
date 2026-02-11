@@ -1,0 +1,140 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – Lead Resource
+  description: |
+    OpenAPI 3.0 specification for the **Lead** (dichotomous key) resource.
+
+    A Lead represents a node in a dichotomous identification key. The API
+    exposes a single endpoint that returns the full key structure as JSON,
+    including metadata (title, citation, attribution, taxonomic scope) and
+    data (entries and leads).
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: Leads – Key
+    description: Dichotomous key endpoint.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    leadIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+
+  schemas:
+    LeadKey:
+      type: object
+      properties:
+        metadata:
+          type: object
+          properties:
+            server:
+              type: string
+              description: Root URL of the TaxonWorks instance.
+            key_version:
+              type: string
+              description: Version string for the key format.
+            title:
+              type: string
+              description: Title text from the root lead.
+            origin_citation:
+              type: string
+              nullable: true
+              description: Cached source citation.
+            attribution:
+              type: object
+              nullable: true
+              description: Attribution JSON.
+            taxonomic_scope:
+              type: string
+              nullable: true
+              description: Label for the associated OTU.
+        data:
+          type: object
+          properties:
+            entries:
+              type: object
+              description: Key metadata describing the couplet structure.
+            leads:
+              type: object
+              description: Lead data with text, targets, and figures.
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /leads/key/{id}:
+    get:
+      operationId: getLeadKey
+      summary: Get a dichotomous key
+      description: |
+        Returns the full dichotomous key structure for a public Lead,
+        including metadata and data sections.
+
+        **Route:** `GET /api/v1/leads/key/:id`
+        **Controller:** `LeadsController#api_key`
+        **View:** `leads/api/v1/key.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - Leads – Key
+      parameters:
+        - $ref: '#/components/parameters/leadIdPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: Full dichotomous key structure.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadKey'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All Lead routes documented:
+#   GET /leads/key/:id | api_key | done

@@ -1,0 +1,564 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – CollectingEvent Resource
+  description: |
+    OpenAPI 3.0 specification for the **CollectingEvent** resource.
+
+    A CollectingEvent describes how something was acquired — the unique
+    combination of who, where, when, and how. CollectingEvents link to
+    CollectionObjects and carry verbatim label data, geographic areas,
+    georeferences, elevations, dates, and paleontological context.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: CollectingEvents – REST
+    description: Standard REST read endpoints.
+  - name: CollectingEvents – Autocomplete
+    description: Autocomplete search.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    collectingEventIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    extendParam:
+      name: extend[]
+      in: query
+      description: "Supported: `roles`, `notes`."
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  schemas:
+    CollectingEvent:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        verbatim_label:
+          type: string
+          nullable: true
+        print_label:
+          type: string
+          nullable: true
+        document_label:
+          type: string
+          nullable: true
+        verbatim_locality:
+          type: string
+          nullable: true
+        verbatim_longitude:
+          type: string
+          nullable: true
+        verbatim_latitude:
+          type: string
+          nullable: true
+        verbatim_geolocation_uncertainty:
+          type: string
+          nullable: true
+        verbatim_field_number:
+          type: string
+          nullable: true
+        verbatim_collectors:
+          type: string
+          nullable: true
+        verbatim_method:
+          type: string
+          nullable: true
+        verbatim_elevation:
+          type: string
+          nullable: true
+        verbatim_habitat:
+          type: string
+          nullable: true
+        verbatim_datum:
+          type: string
+          nullable: true
+        verbatim_date:
+          type: string
+          nullable: true
+        geographic_area_id:
+          type: integer
+          nullable: true
+        minimum_elevation:
+          type: number
+          nullable: true
+        maximum_elevation:
+          type: number
+          nullable: true
+        elevation_precision:
+          type: number
+          nullable: true
+        start_date_day:
+          type: integer
+          nullable: true
+        start_date_month:
+          type: integer
+          nullable: true
+        start_date_year:
+          type: integer
+          nullable: true
+        end_date_day:
+          type: integer
+          nullable: true
+        end_date_month:
+          type: integer
+          nullable: true
+        end_date_year:
+          type: integer
+          nullable: true
+        time_start_hour:
+          type: integer
+          nullable: true
+        time_start_minute:
+          type: integer
+          nullable: true
+        time_start_second:
+          type: integer
+          nullable: true
+        time_end_hour:
+          type: integer
+          nullable: true
+        time_end_minute:
+          type: integer
+          nullable: true
+        time_end_second:
+          type: integer
+          nullable: true
+        field_notes:
+          type: string
+          nullable: true
+        md5_of_verbatim_label:
+          type: string
+          nullable: true
+        min_ma:
+          type: number
+          nullable: true
+          description: Minimum geological age in Ma.
+        max_ma:
+          type: number
+          nullable: true
+          description: Maximum geological age in Ma.
+        cached:
+          type: string
+          nullable: true
+        cached_level0_geographic_name:
+          type: string
+          nullable: true
+          description: Country-level cached name.
+        cached_level1_geographic_name:
+          type: string
+          nullable: true
+          description: State/province-level cached name.
+        cached_level2_geographic_name:
+          type: string
+          nullable: true
+          description: County-level cached name.
+        group:
+          type: string
+          nullable: true
+          description: Geological group.
+        formation:
+          type: string
+          nullable: true
+          description: Geological formation.
+        member:
+          type: string
+          nullable: true
+          description: Geological member.
+        lithology:
+          type: string
+          nullable: true
+          description: Lithology.
+        identifiers:
+          type: array
+          nullable: true
+          items:
+            type: object
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        project_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        global_id:
+          type: string
+        # extend[]=roles
+        collector_roles:
+          type: array
+          description: Present when `extend[]=roles`.
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              position:
+                type: integer
+              type:
+                type: string
+        # extend[]=notes
+        notes:
+          type: array
+          description: Present when `extend[]=notes`.
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+
+    CollectingEventAutocompleteItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        label_html:
+          type: string
+        response_values:
+          type: object
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /collecting_events:
+    get:
+      operationId: getCollectingEvents
+      summary: List / filter CollectingEvents
+      description: |
+        Returns a paginated, filterable list ordered by `collecting_events.id`.
+
+        **Route:** `GET /api/v1/collecting_events`
+        **Controller:** `CollectingEventsController#api_index`
+        **View:** `collecting_events/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - CollectingEvents – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        - name: collecting_event_id[]
+          in: query
+          description: Return specific CollectingEvent(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: otu_id[]
+          in: query
+          description: Return CollectingEvents linked to these OTU ids (via CollectionObject determinations).
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: collection_object_id[]
+          in: query
+          description: Return CollectingEvents for these CollectionObject ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: collector_id[]
+          in: query
+          description: Filter by collector Person ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: collector_id_all
+          in: query
+          description: |
+            `true` – match ALL collector_id values (AND).
+            `false`/nil – match ANY (OR).
+          schema:
+            type: boolean
+
+        - name: collectors
+          in: query
+          description: |
+            `true` – has collector roles.
+            `false` – no collector roles.
+          schema:
+            type: boolean
+
+        - name: collection_objects
+          in: query
+          description: |
+            `true` – has associated CollectionObjects.
+            `false` – no associated CollectionObjects.
+          schema:
+            type: boolean
+
+        - name: georeferences
+          in: query
+          description: |
+            `true` – has georeferences.
+            `false` – not georeferenced.
+          schema:
+            type: boolean
+
+        - name: geographic_area
+          in: query
+          description: |
+            `true` – has a geographic area.
+            `false` – no geographic area.
+          schema:
+            type: boolean
+
+        - name: in_labels
+          in: query
+          description: Wildcard search matching any label field.
+          schema:
+            type: string
+
+        - name: md5_verbatim_label
+          in: query
+          description: If `true`, `in_labels` checks only the MD5 hash.
+          schema:
+            type: boolean
+
+        - name: wkt
+          in: query
+          description: Spatial area in Well-Known Text format.
+          schema:
+            type: string
+
+        - name: geo_json
+          in: query
+          description: GeoJSON geometry for spatial filtering.
+          schema:
+            type: object
+
+        - name: radius
+          in: query
+          description: Buffer radius in meters for geo_json. Default 100.
+          schema:
+            type: number
+            default: 100
+
+        - name: geo_shape_id[]
+          in: query
+          description: Geographic shape ids (pair with geo_shape_type[]).
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: geo_shape_type[]
+          in: query
+          description: Shape types (GeographicArea or Gazetteer).
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [GeographicArea, Gazetteer]
+          style: form
+          explode: true
+
+        - name: geo_mode
+          in: query
+          description: |
+            How to interpret shapes: omit = exact, `true` = spatial, `false` = descendants.
+          schema:
+            type: boolean
+
+        - name: use_min
+          in: query
+          description: Minimum number of CollectionObjects linked.
+          schema:
+            type: integer
+
+        - name: use_max
+          in: query
+          description: Maximum number of CollectionObjects linked.
+          schema:
+            type: integer
+
+        # Inherited concern params
+        - name: tags
+          in: query
+          schema:
+            type: boolean
+        - name: notes
+          in: query
+          schema:
+            type: boolean
+        - name: depictions
+          in: query
+          schema:
+            type: boolean
+        - name: citations
+          in: query
+          schema:
+            type: boolean
+
+      responses:
+        '200':
+          description: Paginated array of CollectingEvent objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CollectingEvent'
+
+  /collecting_events/{id}:
+    get:
+      operationId: getCollectingEvent
+      summary: Get a single CollectingEvent
+      description: |
+        Supports `extend[]`: `roles`, `notes`.
+
+        **Route:** `GET /api/v1/collecting_events/:id`
+        **Controller:** `CollectingEventsController#api_show`
+        **View:** `collecting_events/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - CollectingEvents – REST
+      parameters:
+        - $ref: '#/components/parameters/collectingEventIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single CollectingEvent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectingEvent'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /collecting_events/autocomplete:
+    get:
+      operationId: autocompleteCollectingEvents
+      summary: Autocomplete CollectingEvents
+      description: |
+        **Route:** `GET /api/v1/collecting_events/autocomplete`
+        **Controller:** `CollectingEventsController#api_autocomplete`
+        **View:** `collecting_events/api/v1/autocomplete.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - CollectingEvents – Autocomplete
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - name: term
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 1
+        - name: method
+          in: query
+          description: Populates response_values key.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Array of autocomplete results.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CollectingEventAutocompleteItem'
+
+# CONSISTENCY REPORT
+# All CollectingEvent routes documented:
+#   GET /collecting_events            | api_index        | ✅
+#   GET /collecting_events/autocomplete | api_autocomplete | ✅
+#   GET /collecting_events/:id        | api_show         | ✅

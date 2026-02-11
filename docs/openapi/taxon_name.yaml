@@ -1,0 +1,1458 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – TaxonName Resource
+  description: |
+    OpenAPI 3.0 specification for the **TaxonName** resource of the
+    TaxonWorks external API.
+
+    A TaxonName is a nomenclatural name governed by a code (ICZN, ICN, ICNP,
+    etc.). It may be a Protonym (an original name), a Combination, or a
+    Hybrid. TaxonNames are organized in a parent-child hierarchy that is
+    strictly organizational; all nomenclatural statuses and relationships are
+    explicit via TaxonNameRelationships and TaxonNameClassifications.
+
+    ## Authentication
+    All endpoints require **either** a valid `project_token` **or** a valid
+    `user_token` + `project_id` pair, passed as query parameters.
+
+    ## Pagination
+    List endpoints return paginated results. Use `page` and `per` query
+    parameters. Pagination metadata is returned in response headers
+    (`X-Page`, `X-Per-Page`, `X-Total`, `X-Total-Pages`).
+
+    ## Response extensions
+    Some endpoints support `extend[]` query parameters to include additional
+    nested data in the response.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: TaxonNames – REST
+    description: Standard REST (CRUD-style) read endpoints for TaxonNames.
+  - name: TaxonNames – Autocomplete
+    description: Autocomplete / typeahead search across taxon names.
+  - name: TaxonNames – Extended
+    description: Resource-specific extended endpoints (inventory, parse, origin citation).
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+      description: User API token. When used, `project_id` must also be provided.
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+      description: Project-level API token. Provides read-only access scoped to the project.
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      description: Project ID (required when authenticating with a user `token`).
+      schema:
+        type: integer
+
+    pageParam:
+      name: page
+      in: query
+      description: Page number for paginated results.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+
+    perParam:
+      name: per
+      in: query
+      description: Number of items per page.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 10000
+        default: 500
+
+    taxonNameIdPath:
+      name: id
+      in: path
+      required: true
+      description: TaxonName id.
+      schema:
+        type: integer
+
+    extendParam:
+      name: extend[]
+      in: query
+      description: |
+        Include additional nested data in the response. Supported values
+        vary by endpoint.
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  schemas:
+    TaxonNameBase:
+      type: object
+      description: |
+        Base TaxonName attributes returned in list (index) responses.
+        Rendered by `_base_attributes.json.jbuilder`.
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          description: Unique identifier.
+          example: 6789
+        name:
+          type: string
+          description: The fully latinized monominal string of the name.
+          example: "bus"
+        parent_id:
+          type: integer
+          nullable: true
+          description: Id of the parent TaxonName in the hierarchy.
+        cached:
+          type: string
+          nullable: true
+          description: The full cached name string (e.g. "Aus bus").
+          example: "Aus bus"
+        cached_html:
+          type: string
+          nullable: true
+          description: HTML-formatted cached name.
+          example: "<i>Aus bus</i>"
+        feminine_name:
+          type: string
+          nullable: true
+          description: Feminine form of a species-group epithet (adjective/participle).
+        masculine_name:
+          type: string
+          nullable: true
+          description: Masculine form of a species-group epithet.
+        neuter_name:
+          type: string
+          nullable: true
+          description: Neuter form of a species-group epithet.
+        nomenclatural_code:
+          type: string
+          nullable: true
+          description: The governing nomenclatural code (e.g. "iczn", "icn", "icnp").
+          example: "iczn"
+        etymology:
+          type: string
+          nullable: true
+          description: Etymology of the name.
+        year_of_publication:
+          type: integer
+          nullable: true
+          description: The 4-digit year of publication (availability).
+          example: 2000
+        verbatim_author:
+          type: string
+          nullable: true
+          description: Verbatim author string as originally provided.
+        rank:
+          type: string
+          nullable: true
+          description: Short rank label (e.g. "species", "genus").
+          example: "species"
+        rank_string:
+          type: string
+          nullable: true
+          description: Full NOMEN rank class string.
+          example: "NomenclaturalRank::Iczn::SpeciesGroup::Species"
+        type:
+          type: string
+          description: Subclass type (`Protonym`, `Combination`, `Hybrid`).
+          example: "Protonym"
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        project_id:
+          type: integer
+        cached_valid_taxon_name_id:
+          type: integer
+          nullable: true
+          description: Id of the valid/accepted taxon name.
+        cached_original_combination:
+          type: string
+          nullable: true
+          description: Plain-text original combination string.
+        cached_original_combination_html:
+          type: string
+          nullable: true
+          description: HTML-formatted original combination.
+        cached_author_year:
+          type: string
+          nullable: true
+          description: Cached "Author, Year" string.
+          example: "Author, 2000"
+        cached_secondary_homonym:
+          type: string
+          nullable: true
+        cached_primary_homonym:
+          type: string
+          nullable: true
+        cached_gender:
+          type: string
+          nullable: true
+        cached_is_valid:
+          type: boolean
+          nullable: true
+          description: Whether this name is currently treated as valid.
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        verbatim_name:
+          type: string
+          nullable: true
+        year:
+          type: integer
+          nullable: true
+          description: Computed year integer from cached_nomenclature_date.
+        name_string:
+          type: string
+          description: Full name label (via `label_for_taxon_name` helper).
+        original_combination:
+          type: string
+          description: Full original combination label (plain text, via `full_original_taxon_name_label` helper).
+
+    TaxonName:
+      description: |
+        Full TaxonName with extensions. Rendered by `_attributes.json.jbuilder`.
+        Extends TaxonNameBase with `original_combination` (HTML) and optional
+        `extend[]` blocks.
+      allOf:
+        - $ref: '#/components/schemas/TaxonNameBase'
+        - type: object
+          properties:
+            original_combination:
+              type: string
+              description: HTML-formatted original combination (overrides base plain-text version in show).
+            parent:
+              description: Present when `extend[]=parent`.
+              allOf:
+                - type: object
+                  properties:
+                    id:
+                      type: integer
+                - $ref: '#/components/schemas/TaxonNameBase'
+            otus:
+              type: array
+              description: Present when `extend[]=otus`. Array of OTU objects linked to this name.
+              items:
+                type: object
+                description: OTU attributes (see Otu schema).
+            taxon_name_author_roles:
+              type: array
+              description: Present when `extend[]=roles`. Author roles with person details.
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  position:
+                    type: integer
+                  type:
+                    type: string
+                  # Plus person brief attributes
+            ancestor_ids:
+              type: array
+              description: Present when `extend[]=ancestor_ids`. Array of [id, rank_class] pairs.
+              items:
+                type: array
+                items:
+                  oneOf:
+                    - type: integer
+                    - type: string
+            children:
+              type: array
+              description: Present when `extend[]=children`. Array of child TaxonName ids.
+              items:
+                type: integer
+            type_taxon_name_relationship:
+              type: object
+              nullable: true
+              description: Present when `extend[]=type_taxon_name_relationship`. The type species/genus relationship.
+            notes:
+              type: array
+              description: Present when `extend[]=notes`.
+              items:
+                type: object
+                properties:
+                  text:
+                    type: string
+
+    TaxonNameSummary:
+      type: object
+      description: |
+        Summary view of a TaxonName with status, rank, author, parent info,
+        and optional name elements and relationships.
+        Rendered by `summary.json.jbuilder`.
+      properties:
+        id:
+          type: integer
+        parent_id:
+          type: integer
+          nullable: true
+        name:
+          type: string
+        is_valid:
+          type: boolean
+          nullable: true
+        full_name:
+          type: string
+          description: Full label.
+        expanded_name:
+          type: string
+          description: The cached name.
+        full_name_tag:
+          type: string
+          description: HTML-formatted full name.
+        nomenclatural_code:
+          type: string
+          nullable: true
+        short_status:
+          type: string
+          description: Short status label.
+        status:
+          type: string
+          description: Full status label.
+        rank:
+          type: string
+          nullable: true
+        rank_string:
+          type: string
+          nullable: true
+        author:
+          type: string
+          nullable: true
+          description: Author string.
+        year:
+          type: integer
+          nullable: true
+        pages:
+          type: string
+          nullable: true
+          description: Pages from origin citation.
+        original_citation:
+          type: string
+          nullable: true
+          description: Cached source string of the origin citation.
+        global_id:
+          type: string
+        descorator_status:
+          type: object
+          nullable: true
+          description: Decorator status metadata.
+        parent:
+          type: object
+          properties:
+            full_name:
+              type: string
+            author:
+              type: string
+              nullable: true
+            global_id:
+              type: string
+              nullable: true
+            rank:
+              type: string
+              nullable: true
+            expanded_name:
+              type: string
+              nullable: true
+        elements:
+          type: object
+          description: Present when `extend[]=name_elements` and type is Protonym.
+          properties:
+            name:
+              type: object
+              description: Full name hash keyed by rank.
+              additionalProperties:
+                type: string
+            original_combination:
+              type: object
+              description: Original combination elements keyed by rank.
+              additionalProperties:
+                type: string
+        valid_name:
+          type: object
+          description: Present when name is invalid and not ambiguously invalid.
+          properties:
+            id:
+              type: integer
+            valid_name:
+              type: string
+            valid_full_name:
+              type: string
+            author:
+              type: string
+              nullable: true
+            year:
+              type: integer
+              nullable: true
+            pages:
+              type: string
+              nullable: true
+            original_citation:
+              type: string
+              nullable: true
+        taxon_name_classifications:
+          type: array
+          description: Present when `extend[]=taxon_name_classifications`.
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              nomen_uri:
+                type: string
+              label:
+                type: string
+              status:
+                type: string
+              id:
+                type: integer
+              global_id:
+                type: string
+              pages:
+                type: string
+                nullable: true
+              original_citation:
+                type: string
+                nullable: true
+        subject_taxon_name_relationships:
+          type: array
+          description: Present when `extend[]=taxon_name_relationships`. Invalid-name relationships where this name is subject.
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              nomen_uri:
+                type: string
+              label:
+                type: string
+              related_name:
+                type: string
+              status:
+                type: string
+              id:
+                type: integer
+              global_id:
+                type: string
+              pages:
+                type: string
+                nullable: true
+              original_citation:
+                type: string
+                nullable: true
+
+    TaxonNameCatalog:
+      type: object
+      description: |
+        Catalog view of a TaxonName with timeline, sources, stats, and
+        repositories. Rendered by `catalog.json.jbuilder`.
+      properties:
+        id:
+          type: integer
+        parent_id:
+          type: integer
+          nullable: true
+        name:
+          type: string
+        is_valid:
+          type: boolean
+          nullable: true
+        full_name:
+          type: string
+        full_name_tag:
+          type: string
+        nomenclatural_code:
+          type: string
+          nullable: true
+        short_status:
+          type: string
+        status:
+          type: string
+        rank:
+          type: string
+          nullable: true
+        rank_string:
+          type: string
+          nullable: true
+        author:
+          type: string
+          nullable: true
+        year:
+          type: integer
+          nullable: true
+        pages:
+          type: string
+          nullable: true
+        original_citation:
+          type: string
+          nullable: true
+        timeline:
+          type: array
+          description: Chronological catalog entries.
+          items:
+            type: object
+        sources:
+          type: array
+          items:
+            type: object
+            properties:
+              cached:
+                type: string
+                description: Full cached source string.
+              url:
+                type: string
+                nullable: true
+        stats:
+          type: object
+          description: Inventory statistics for this taxon name.
+        repositories:
+          type: array
+          items:
+            type: object
+
+    TaxonNameParseResult:
+      type: object
+      description: Result of parsing a taxon name string via the biodiversity parser.
+      properties:
+        data:
+          type: object
+          properties:
+            protonyms:
+              type: object
+              description: Matched protonyms keyed by rank.
+              additionalProperties:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaxonName'
+            parse:
+              type: object
+              description: Raw parse result from the biodiversity parser.
+            unambiguous:
+              type: boolean
+              description: Whether the parse is unambiguous.
+            existing_combination_id:
+              type: integer
+              nullable: true
+              description: Id of an existing Combination that matches.
+        other_matches:
+          type: object
+          description: Additional partial matches keyed by category.
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/TaxonName'
+        combination:
+          description: Present when `combination_id` param is provided.
+          type: object
+
+    OriginCitationItem:
+      type: object
+      description: Taxon name with its origin citation source.
+      properties:
+        name:
+          type: string
+          description: Full name label.
+        original_name:
+          type: string
+          description: Original combination label.
+        source:
+          type: string
+          nullable: true
+          description: Cached source citation string.
+
+    TaxonNameAutocompleteItem:
+      type: object
+      description: A single taxon name autocomplete result.
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+          description: Display label.
+        label_html:
+          type: string
+          description: HTML-formatted label.
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+# ─────────────────────────────────────────────
+# Paths
+# ─────────────────────────────────────────────
+paths:
+
+  # ═══════════════════════════════════════════
+  #  REST endpoints
+  # ═══════════════════════════════════════════
+
+  /taxon_names:
+    get:
+      operationId: getTaxonNames
+      summary: List / filter TaxonNames
+      description: |
+        Returns a paginated, filterable list of TaxonNames for the
+        authenticated project. Results are ordered by `taxon_names.id`.
+
+        Also supports CSV output via `.csv` format suffix.
+
+        **Route:** `GET /api/v1/taxon_names`
+        **Controller:** `TaxonNamesController#api_index`
+        **View:** `taxon_names/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - TaxonNames – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+
+        # ── TaxonName-specific filter params ──
+        - name: taxon_name_id[]
+          in: query
+          description: Return specific TaxonName(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: parent_id[]
+          in: query
+          description: Filter to TaxonNames with these parent ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: name
+          in: query
+          description: |
+            Filter by name. Matches against `cached` by default (partial).
+            Pass as array for multiple values.
+          schema:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+
+        - name: name_exact
+          in: query
+          description: If `true`, match `name` exactly instead of partial.
+          schema:
+            type: boolean
+
+        - name: epithet_only
+          in: query
+          description: If `true`, match against the `name` column (monominal) rather than `cached`.
+          schema:
+            type: boolean
+
+        - name: cached[]
+          in: query
+          description: Match `cached` field exactly. Array of strings.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: author
+          in: query
+          description: Match against `cached_author_year`. Use "&" for "and".
+          schema:
+            type: string
+
+        - name: author_exact
+          in: query
+          description: If `true`, match `author` exactly.
+          schema:
+            type: boolean
+
+        - name: authors
+          in: query
+          description: Boolean flag for filtering by author presence.
+          schema:
+            type: boolean
+
+        - name: year
+          in: query
+          description: Match against `cached_author_year` year ("yyyy").
+          schema:
+            type: string
+
+        - name: year_start
+          in: query
+          description: Start year for range filter against `cached_nomenclature_date`.
+          schema:
+            type: string
+
+        - name: year_end
+          in: query
+          description: End year for range filter against `cached_nomenclature_date`.
+          schema:
+            type: string
+
+        - name: nomenclature_date
+          in: query
+          description: |
+            `true` – only names with a cached nomenclature date set.
+            `false` – only names without one.
+          schema:
+            type: boolean
+
+        - name: nomenclature_code
+          in: query
+          description: Filter by governing nomenclatural code (e.g. "iczn", "icn", "icnp").
+          schema:
+            type: string
+
+        - name: nomenclature_group[]
+          in: query
+          description: |
+            Filter by nomenclature group. Values like `Iczn::SpeciesGroup`,
+            `Iczn::GenusGroup`, `Iczn::FamilyGroup`, `Iczn::HigherClassification`, etc.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: rank[]
+          in: query
+          description: Filter by rank (e.g. "species", "genus", "family").
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: type[]
+          in: query
+          description: Filter by TaxonName subclass type (`Protonym`, `Combination`, `Hybrid`).
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - Protonym
+                - Combination
+                - Hybrid
+          style: form
+          explode: true
+
+        - name: taxon_name_type
+          in: query
+          description: Alias for filtering by type.
+          schema:
+            type: string
+
+        - name: validity
+          in: query
+          description: |
+            `true` – only valid names (`id == cached_valid_taxon_name_id`).
+            `false` – only invalid names.
+          schema:
+            type: boolean
+
+        - name: availability
+          in: query
+          description: |
+            `true` – only available names.
+            `false` – only unavailable names.
+          schema:
+            type: boolean
+
+        - name: descendants
+          in: query
+          description: |
+            Used with `taxon_name_id[]`:
+            `true` – only descendants (NOT self).
+            `false` – self AND descendants.
+            Omit to ignore.
+          schema:
+            type: boolean
+
+        - name: descendants_max_depth
+          in: query
+          description: Maximum depth of descendant traversal.
+          schema:
+            type: integer
+
+        - name: ancestors
+          in: query
+          description: |
+            Used with `taxon_name_id[]`:
+            `true` – include ancestors.
+          schema:
+            type: boolean
+
+        - name: leaves
+          in: query
+          description: |
+            `true` – only leaf names (no children).
+            `false` – only non-leaf names.
+          schema:
+            type: boolean
+
+        - name: otus
+          in: query
+          description: |
+            `true` – only names linked to at least one OTU.
+            `false` – only names without OTUs.
+          schema:
+            type: boolean
+
+        - name: otu_id[]
+          in: query
+          description: Return TaxonNames linked to these OTU ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: combinations
+          in: query
+          description: |
+            `true` – only names that have subsequent Combinations.
+            `false` – only names without subsequent Combinations.
+          schema:
+            type: boolean
+
+        - name: etymology
+          in: query
+          description: |
+            `true` – only names with etymology.
+            `false` – only names without etymology.
+          schema:
+            type: boolean
+
+        - name: original_combination
+          in: query
+          description: |
+            `true` – only names with an original combination set.
+            `false` – only names without.
+          schema:
+            type: boolean
+
+        - name: verbatim_name
+          in: query
+          description: |
+            `true` – only names with `verbatim_name` populated.
+            `false` – only names without.
+          schema:
+            type: boolean
+
+        - name: not_specified
+          in: query
+          description: |
+            `true` – include "not specified" names.
+            `false` – exclude "not specified" names.
+          schema:
+            type: boolean
+
+        - name: collecting_event_id[]
+          in: query
+          description: Return TaxonNames of OTUs determined from CollectionObjects in these CollectingEvents.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: collection_object_id[]
+          in: query
+          description: Return TaxonNames of OTUs determined for these CollectionObjects.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: combination_taxon_name_id[]
+          in: query
+          description: Return TaxonNames that appear in Combinations using these name ids as elements.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: taxon_name_classification[]
+          in: query
+          description: Filter by TaxonNameClassification type strings.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: taxon_name_relationship
+          in: query
+          description: |
+            Filter by TaxonNameRelationship. Object with keys
+            `subject_taxon_name_id`, `object_taxon_name_id`, `type`.
+          schema:
+            type: object
+            properties:
+              subject_taxon_name_id:
+                type: integer
+              object_taxon_name_id:
+                type: integer
+              type:
+                type: string
+
+        - name: taxon_name_relationship_type_subject[]
+          in: query
+          description: Return names that are the subject of these relationship types.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: taxon_name_relationship_type_object[]
+          in: query
+          description: Return names that are the object of these relationship types.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: taxon_name_relationship_type_either[]
+          in: query
+          description: Return names that are subject or object of these relationship types.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: taxon_name_author_id[]
+          in: query
+          description: Filter by TaxonName author Person ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: taxon_name_author_id_or
+          in: query
+          description: |
+            `true` – match ANY of the `taxon_name_author_id[]` values (OR).
+            `false`/nil – match ALL (AND).
+          schema:
+            type: boolean
+
+        - name: type_metadata
+          in: query
+          description: |
+            `true` – only names with type metadata.
+            `false` – only names without.
+          schema:
+            type: boolean
+
+        - name: latinized
+          in: query
+          description: |
+            `true` – only latinized names.
+            `false` – only non-latinized names.
+          schema:
+            type: boolean
+
+        - name: sort
+          in: query
+          description: Sort order for results.
+          schema:
+            type: string
+
+        # ── Post-processing modifiers ──
+        - name: ancestrify
+          in: query
+          description: |
+            `true` – extend results to include all ancestors of matched names.
+          schema:
+            type: boolean
+
+        - name: validify
+          in: query
+          description: |
+            `true` – for each name in the result, return its valid name instead.
+          schema:
+            type: boolean
+
+        - name: synonymify
+          in: query
+          description: |
+            `true` – extend results to include synonyms.
+          schema:
+            type: boolean
+
+        - name: combinationify
+          in: query
+          description: |
+            `true` – extend results to include all Combinations in which matched names participate.
+          schema:
+            type: boolean
+
+        # ── Citations concern ──
+        - name: citations
+          in: query
+          description: |
+            `true` – only names with citations.
+            `false` – only names without citations.
+          schema:
+            type: boolean
+
+        - name: origin_citation
+          in: query
+          description: |
+            `true` – only names with an origin citation.
+            `false` – only names without.
+          schema:
+            type: boolean
+
+        # ── Tags concern ──
+        - name: keyword_id_and[]
+          in: query
+          description: Return names tagged with ALL of the given Keyword ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: keyword_id_or[]
+          in: query
+          description: Return names tagged with ANY of the given Keyword ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: tags
+          in: query
+          description: |
+            `true` – only names with tags.
+            `false` – only names without tags.
+          schema:
+            type: boolean
+
+        # ── Notes concern ──
+        - name: notes
+          in: query
+          description: |
+            `true` – only names with notes.
+            `false` – only names without notes.
+          schema:
+            type: boolean
+
+      responses:
+        '200':
+          description: A paginated array of TaxonName objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaxonNameBase'
+              example:
+                - id: 6789
+                  name: "bus"
+                  parent_id: 6000
+                  cached: "Aus bus"
+                  cached_html: "<i>Aus bus</i>"
+                  nomenclatural_code: "iczn"
+                  year_of_publication: 2000
+                  rank: "species"
+                  rank_string: "NomenclaturalRank::Iczn::SpeciesGroup::Species"
+                  type: "Protonym"
+                  cached_valid_taxon_name_id: 6789
+                  cached_author_year: "Author, 2000"
+                  cached_is_valid: true
+                  year: 2000
+                  name_string: "Aus bus Author, 2000"
+                  original_combination: "Aus bus Author, 2000"
+
+  /taxon_names/{id}:
+    get:
+      operationId: getTaxonName
+      summary: Get a single TaxonName
+      description: |
+        Returns a single TaxonName by id with full attributes.
+
+        Supports `extend[]` values: `parent`, `otus`, `roles`, `ancestor_ids`,
+        `children`, `type_taxon_name_relationship`, `notes`.
+
+        **Route:** `GET /api/v1/taxon_names/:id`
+        **Controller:** `TaxonNamesController#api_show`
+        **View:** `taxon_names/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - TaxonNames – REST
+      parameters:
+        - $ref: '#/components/parameters/taxonNameIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single TaxonName object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxonName'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ═══════════════════════════════════════════
+  #  Autocomplete
+  # ═══════════════════════════════════════════
+
+  /taxon_names/autocomplete:
+    get:
+      operationId: autocompleteTaxonNames
+      summary: Autocomplete TaxonNames
+      description: |
+        Performs a multi-strategy autocomplete across cached names, original
+        combinations, and author-year fields. Strategies include exact match,
+        prefix match, GIN trigram search, and genus+species parsing.
+
+        **Route:** `GET /api/v1/taxon_names/autocomplete`
+        **Controller:** `TaxonNamesController#autocomplete`
+        **Query class:** `Queries::TaxonName::Autocomplete`
+        **Type:** Extended resource endpoint
+      tags:
+        - TaxonNames – Autocomplete
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - name: term
+          in: query
+          required: true
+          description: The search string.
+          schema:
+            type: string
+            minLength: 1
+
+        - name: valid
+          in: query
+          description: |
+            `true` – only valid names.
+            `false` – only invalid names.
+          schema:
+            type: boolean
+
+        - name: exact
+          in: query
+          description: If `true`, only return exact name matches (no fuzzy).
+          schema:
+            type: boolean
+
+        - name: no_leaves
+          in: query
+          description: If `true`, only return names that have descendants.
+          schema:
+            type: boolean
+
+        - name: type[]
+          in: query
+          description: Filter by TaxonName subclass type.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: parent_id[]
+          in: query
+          description: Limit to names with these parent ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: nomenclature_group[]
+          in: query
+          description: Filter by nomenclature group.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+      responses:
+        '200':
+          description: Array of autocomplete results.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaxonNameAutocompleteItem'
+
+  # ═══════════════════════════════════════════
+  #  Extended endpoints
+  # ═══════════════════════════════════════════
+
+  /taxon_names/parse:
+    get:
+      operationId: parseTaxonName
+      summary: Parse a taxon name string
+      description: |
+        Parses a taxonomic name string using the biodiversity parser and
+        attempts to match the result against existing TaxonNames in the
+        project.
+
+        **Route:** `GET /api/v1/taxon_names/parse`
+        **Controller:** `TaxonNamesController#parse` (same view used for API)
+        **View:** `taxon_names/api/v1/parse.json.jbuilder`
+        **Type:** Extended resource endpoint
+
+        Note: Currently hardcoded to ICZN nomenclatural code.
+      tags:
+        - TaxonNames – Extended
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - name: query_string
+          in: query
+          required: true
+          description: The taxon name string to parse.
+          schema:
+            type: string
+          example: "Aus bus Author, 2000"
+
+        - name: combination_id
+          in: query
+          description: Optionally provide an existing Combination id for context.
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Parse results with matched protonyms.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxonNameParseResult'
+
+  /taxon_names/origin_citation:
+    get:
+      operationId: getTaxonNamesOriginCitation
+      summary: List TaxonNames with origin citations
+      description: |
+        Returns a filterable, paginated list of TaxonNames with their origin
+        citation source. Uses the same filter parameters as `GET /taxon_names`.
+
+        Also supports CSV output.
+
+        **Route:** `GET /api/v1/taxon_names/origin_citation`
+        **Controller:** `TaxonNamesController#api_origin_citation`
+        **View:** `taxon_names/origin_citation.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - TaxonNames – Extended
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        # All filter params from GET /taxon_names also apply
+      responses:
+        '200':
+          description: Array of taxon name origin citation entries.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OriginCitationItem'
+              example:
+                - name: "Aus bus Author, 2000"
+                  original_name: "Aus bus Author, 2000"
+                  source: "Author, A. (2000) A monograph of Aus. Journal, 1: 1-100."
+
+  /taxon_names/{id}/inventory/summary:
+    get:
+      operationId: getTaxonNameSummary
+      summary: Summary inventory for a TaxonName
+      description: |
+        Returns a summary view of a TaxonName including status, rank, author,
+        parent info, and optionally name elements, classifications, and
+        relationships.
+
+        Supports `extend[]` values: `name_elements`,
+        `taxon_name_classifications`, `taxon_name_relationships`.
+
+        **Route:** `GET /api/v1/taxon_names/:id/inventory/summary`
+        **Controller:** `TaxonNamesController#api_summary`
+        **View:** `taxon_names/api/v1/summary.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - TaxonNames – Extended
+      parameters:
+        - $ref: '#/components/parameters/taxonNameIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: Summary of the TaxonName.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxonNameSummary'
+
+  /taxon_names/{id}/inventory/catalog:
+    get:
+      operationId: getTaxonNameCatalog
+      summary: Catalog for a TaxonName
+      description: |
+        Returns a catalog view of a TaxonName including a chronological
+        timeline, sources, inventory statistics, and repositories.
+
+        **Route:** `GET /api/v1/taxon_names/:id/inventory/catalog`
+        **Controller:** `TaxonNamesController#api_catalog`
+        **View:** `taxon_names/api/v1/catalog.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - TaxonNames – Extended
+      parameters:
+        - $ref: '#/components/parameters/taxonNameIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - name: target_depth
+          in: query
+          description: Depth for recursive catalog generation. Defaults to `0`.
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Catalog data for the TaxonName.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxonNameCatalog'
+
+# ─────────────────────────────────────────────
+# Notes
+# ─────────────────────────────────────────────
+# CONSISTENCY REPORT
+#
+# All TaxonName routes from config/routes/api_v1.rb are documented:
+#
+#   Route                                                | Endpoint              | Status
+#   -----------------------------------------------------|---------------------- |---------
+#   GET /taxon_names/origin_citation                     | api_origin_citation   | ✅ Documented
+#   GET /taxon_names                                     | api_index             | ✅ Documented
+#   GET /taxon_names/autocomplete                        | autocomplete          | ✅ Documented
+#   GET /taxon_names/parse                               | parse                 | ✅ Documented
+#   GET /taxon_names/:id/inventory/catalog               | api_catalog           | ✅ Documented
+#   GET /taxon_names/:id/inventory/summary               | api_summary           | ✅ Documented
+#   GET /taxon_names/:id                                 | api_show              | ✅ Documented
+#
+# OBSERVATIONS & INCONSISTENCIES:
+#
+# 1. The `parse` view at `taxon_names/api/v1/parse.json.jbuilder` references
+#    partials with the path `/api/v1//taxon_names/attributes` (double slash)
+#    and `/api/v1/combinations/attributes`. This may be a typo in the view
+#    that works due to Rails path normalization but is worth verifying.
+#
+# 2. The `api_origin_citation` action reuses the non-API view
+#    `taxon_names/origin_citation.json.jbuilder` (not under api/v1/),
+#    which returns a simpler schema (name, original_name, source) compared
+#    to the standard index view.
+#
+# 3. The `parse` endpoint is currently hardcoded to `code: :iczn`. The
+#    TODO in the controller notes this should be generalized.
+#
+# 4. The filter has many nested sub-query parameters (e.g. `otu_query`,
+#    `collection_object_query`, etc.) inherited from the base Filter class
+#    that are technically available but not individually documented here
+#    to keep the spec manageable.
+#
+# 5. No POST/PATCH/DELETE endpoints are exposed on the external API
+#    (read-only), consistent with the authentication section.
+#
+# 6. The `summary.json.jbuilder` view has a typo: `descorator_status`
+#    (should likely be `decorator_status`). Documented as-is to match
+#    the actual API response.

@@ -1,0 +1,336 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – Identifier Resource
+  description: |
+    OpenAPI 3.0 specification for the **Identifier** resource.
+
+    An Identifier assigns a unique identifier string (local or global)
+    to any data object. Local identifiers use Namespaces; global
+    identifiers (DOI, URI, LSID, etc.) do not.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: Identifiers – REST
+    description: Standard REST read endpoints.
+  - name: Identifiers – Autocomplete
+    description: Autocomplete search.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    identifierIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    extendParam:
+      name: extend[]
+      in: query
+      description: "Supported: `namespace`."
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  schemas:
+    Identifier:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        identifier_object_id:
+          type: integer
+        identifier_object_type:
+          type: string
+        identifier:
+          type: string
+          description: The identifier string value.
+        type:
+          type: string
+          description: STI type (e.g., Identifier::Local::CatalogNumber).
+        cached:
+          type: string
+          description: Full cached identifier (namespace + identifier).
+        namespace_id:
+          type: integer
+          nullable: true
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        identifier_object_global_id:
+          type: string
+        namespace:
+          type: object
+          description: Present when `extend[]=namespace`.
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            short_name:
+              type: string
+            delimiter:
+              type: string
+            institution:
+              type: string
+              nullable: true
+            verbatim_short_name:
+              type: string
+              nullable: true
+
+    IdentifierAutocompleteItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        label_html:
+          type: string
+        identifier_object_global_id:
+          type: string
+        identifier_object_id:
+          type: integer
+        identifier_object_type:
+          type: string
+        response_values:
+          type: object
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /identifiers:
+    get:
+      operationId: getIdentifiers
+      summary: List / filter Identifiers
+      description: |
+        Returns a paginated, filterable list.
+
+        **Route:** `GET /api/v1/identifiers`
+        **Controller:** `IdentifiersController#api_index`
+        **View:** `identifiers/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - Identifiers – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        - name: identifier_id[]
+          in: query
+          description: Return specific Identifier(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: identifier[]
+          in: query
+          description: Filter by identifier string values.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: namespace_id[]
+          in: query
+          description: Filter by Namespace ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: type
+          in: query
+          description: Filter by identifier STI type.
+          schema:
+            type: string
+
+        - name: identifier_object_type[]
+          in: query
+          description: Filter by identified object class.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: identifier_object_id[]
+          in: query
+          description: Filter by identified object id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: namespace_name
+          in: query
+          description: Filter by namespace name.
+          schema:
+            type: string
+
+        - name: namespace_short_name
+          in: query
+          description: Filter by namespace short name.
+          schema:
+            type: string
+
+        - name: query_string
+          in: query
+          description: General search string.
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Paginated array of Identifier objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Identifier'
+
+  /identifiers/autocomplete:
+    get:
+      operationId: autocompleteIdentifiers
+      summary: Autocomplete Identifiers
+      description: |
+        **Route:** `GET /api/v1/identifiers/autocomplete`
+        **Controller:** `IdentifiersController#api_autocomplete`
+        **View:** `identifiers/api/v1/autocomplete.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - Identifiers – Autocomplete
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - name: term
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 1
+        - name: method
+          in: query
+          description: Populates response_values key.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Array of autocomplete results.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdentifierAutocompleteItem'
+
+  /identifiers/{id}:
+    get:
+      operationId: getIdentifier
+      summary: Get a single Identifier
+      description: |
+        **Route:** `GET /api/v1/identifiers/:id`
+        **Controller:** `IdentifiersController#api_show`
+        **View:** `identifiers/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - Identifiers – REST
+      parameters:
+        - $ref: '#/components/parameters/identifierIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single Identifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Identifier'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All Identifier routes documented:
+#   GET /identifiers              | api_index        | done
+#   GET /identifiers/autocomplete | api_autocomplete | done
+#   GET /identifiers/:id          | api_show         | done

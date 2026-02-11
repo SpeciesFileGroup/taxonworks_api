@@ -1,0 +1,171 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – FieldOccurrence Resource
+  description: |
+    OpenAPI 3.0 specification for the **FieldOccurrence** resource.
+
+    A FieldOccurrence records a biological entity observed in the field.
+    The API exposes a single endpoint returning Darwin Core occurrence
+    attributes for a given FieldOccurrence.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: FieldOccurrences – DwC
+    description: Darwin Core occurrence data for field occurrences.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    fieldOccurrenceIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+
+  schemas:
+    FieldOccurrenceDwc:
+      type: object
+      description: Darwin Core occurrence attributes for the field occurrence.
+      properties:
+        occurrenceID:
+          type: string
+        basisOfRecord:
+          type: string
+        scientificName:
+          type: string
+        taxonRank:
+          type: string
+        kingdom:
+          type: string
+        phylum:
+          type: string
+        class:
+          type: string
+        order:
+          type: string
+        family:
+          type: string
+        genus:
+          type: string
+        specificEpithet:
+          type: string
+        infraspecificEpithet:
+          type: string
+          nullable: true
+        scientificNameAuthorship:
+          type: string
+        eventDate:
+          type: string
+        decimalLatitude:
+          type: number
+          nullable: true
+        decimalLongitude:
+          type: number
+          nullable: true
+        geodeticDatum:
+          type: string
+          nullable: true
+        coordinateUncertaintyInMeters:
+          type: number
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        stateProvince:
+          type: string
+          nullable: true
+        county:
+          type: string
+          nullable: true
+        locality:
+          type: string
+          nullable: true
+        verbatimLocality:
+          type: string
+          nullable: true
+        recordedBy:
+          type: string
+          nullable: true
+        identifiedBy:
+          type: string
+          nullable: true
+        dateIdentified:
+          type: string
+          nullable: true
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /field_occurrences/{id}/dwc:
+    get:
+      operationId: getFieldOccurrenceDwc
+      summary: Get Darwin Core data for a FieldOccurrence
+      description: |
+        Returns Darwin Core occurrence attributes for the specified
+        FieldOccurrence.
+
+        **Route:** `GET /api/v1/field_occurrences/:id/dwc`
+        **Controller:** `FieldOccurrencesController#api_dwc`
+        **Type:** Extended resource endpoint
+      tags:
+        - FieldOccurrences – DwC
+      parameters:
+        - $ref: '#/components/parameters/fieldOccurrenceIdPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: Darwin Core occurrence attributes.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FieldOccurrenceDwc'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All FieldOccurrence routes documented:
+#   GET /field_occurrences/:id/dwc | api_dwc | done

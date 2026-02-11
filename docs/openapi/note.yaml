@@ -1,0 +1,214 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – Note Resource
+  description: |
+    OpenAPI 3.0 specification for the **Note** resource.
+
+    A Note is a free-text annotation attached to any data object
+    (polymorphic via `note_object_type` / `note_object_id`).
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: Notes – REST
+    description: Standard REST read endpoints.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    noteIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+
+  schemas:
+    Note:
+      type: object
+      required:
+        - id
+        - text
+      properties:
+        id:
+          type: integer
+        text:
+          type: string
+          description: The note content.
+        note_object_attribute:
+          type: string
+          nullable: true
+          description: Specific attribute the note annotates (if any).
+        note_object_id:
+          type: integer
+        note_object_type:
+          type: string
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        project_id:
+          type: integer
+        note_object:
+          type: object
+          description: Metadata for the annotated object.
+          properties:
+            global_id:
+              type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /notes:
+    get:
+      operationId: getNotes
+      summary: List / filter Notes
+      description: |
+        Returns a paginated, filterable list.
+
+        **Route:** `GET /api/v1/notes`
+        **Controller:** `NotesController#api_index`
+        **View:** `notes/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - Notes – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+
+        - name: note_id[]
+          in: query
+          description: Return specific Note(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: text
+          in: query
+          description: Filter by note text (wildcard match).
+          schema:
+            type: string
+
+        - name: note_object_type[]
+          in: query
+          description: Filter by annotated object class name.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: note_object_id[]
+          in: query
+          description: Filter by annotated object id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+      responses:
+        '200':
+          description: Paginated array of Note objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Note'
+
+  /notes/{id}:
+    get:
+      operationId: getNote
+      summary: Get a single Note
+      description: |
+        **Route:** `GET /api/v1/notes/:id`
+        **Controller:** `NotesController#api_show`
+        **View:** `notes/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - Notes – REST
+      parameters:
+        - $ref: '#/components/parameters/noteIdPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: A single Note.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All Note routes documented:
+#   GET /notes     | api_index | done
+#   GET /notes/:id | api_show  | done

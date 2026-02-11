@@ -1,9 +1,0 @@
-is: [pageable: { default_per: 50, max_per: 1000 }]
-responses:
-  200:
-    body:
-      application/json:
-        type: Otu[]
-        maxItems: 100
-        uniqueItems: true
-        example: !include /examples/otus_id_inventory_distribution-result-example.json

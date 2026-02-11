@@ -1,0 +1,1055 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – BiologicalAssociation Resource
+  description: |
+    OpenAPI 3.0 specification for the **BiologicalAssociation** resource.
+
+    A BiologicalAssociation records an interaction between two biological
+    entities (OTUs, CollectionObjects, FieldOccurrences) via a
+    BiologicalRelationship. The API provides seven distinct view formats
+    including standard REST, denormalised basic/simple/extended views,
+    and GloBI/DwC resource-relationship exports.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: BiologicalAssociations – REST
+    description: Standard REST read endpoints.
+  - name: BiologicalAssociations – Basic
+    description: Pre-computed index-based denormalised view.
+  - name: BiologicalAssociations – Simple
+    description: Denormalised view with taxonomic hierarchy.
+  - name: BiologicalAssociations – Extended
+    description: Extended denormalised view with ids and taxonomic hierarchy.
+  - name: BiologicalAssociations – GloBI
+    description: GloBI and DwC ResourceRelationship export formats.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    baIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    extendParam:
+      name: extend[]
+      in: query
+      description: "Supported: `biological_relationship`, `biological_relationship_types`, `subject`, `object`, `taxonomy`, `notes`."
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  schemas:
+    BiologicalAssociation:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        biological_relationship_id:
+          type: integer
+        biological_association_subject_id:
+          type: integer
+        biological_association_subject_type:
+          type: string
+        biological_association_object_id:
+          type: integer
+        biological_association_object_type:
+          type: string
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        project_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        object_tag:
+          type: string
+        global_id:
+          type: string
+        biological_relationship:
+          type: object
+          description: Present when `extend[]=biological_relationship`.
+        biological_relationship_types:
+          type: array
+          description: Present when `extend[]=biological_relationship_types`.
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              type:
+                type: string
+              target:
+                type: string
+              biological_property:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+        subject:
+          type: object
+          description: Present when `extend[]=subject`. Includes taxonomy when `extend[]=taxonomy`.
+          properties:
+            id:
+              type: integer
+            object_tag:
+              type: string
+            global_id:
+              type: string
+            taxonomy:
+              type: object
+              description: Present when both subject and taxonomy are extended.
+        object:
+          type: object
+          description: Present when `extend[]=object`. Includes taxonomy when `extend[]=taxonomy`.
+          properties:
+            id:
+              type: integer
+            object_tag:
+              type: string
+            global_id:
+              type: string
+            taxonomy:
+              type: object
+              description: Present when both object and taxonomy are extended.
+        notes:
+          type: array
+          description: Present when `extend[]=notes`.
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+
+    BiologicalAssociationBasic:
+      type: object
+      description: Pre-computed index-based view.
+      properties:
+        id:
+          type: integer
+        subject:
+          type: object
+          properties:
+            id:
+              type: integer
+            type:
+              type: string
+            order:
+              type: string
+              nullable: true
+            family:
+              type: string
+              nullable: true
+            genus:
+              type: string
+              nullable: true
+            label:
+              type: string
+            properties:
+              type: string
+              nullable: true
+        relationship:
+          type: string
+        object:
+          type: object
+          properties:
+            id:
+              type: integer
+            type:
+              type: string
+            order:
+              type: string
+              nullable: true
+            family:
+              type: string
+              nullable: true
+            genus:
+              type: string
+              nullable: true
+            label:
+              type: string
+            properties:
+              type: string
+              nullable: true
+        citations:
+          type: string
+          nullable: true
+
+    BiologicalAssociationSimple:
+      type: object
+      description: Denormalised view with taxonomic hierarchy labels.
+      properties:
+        subject_order:
+          type: string
+          nullable: true
+        subject_family:
+          type: string
+          nullable: true
+        subject_genus:
+          type: string
+          nullable: true
+        subject:
+          type: string
+        subject_properties:
+          type: string
+          nullable: true
+          description: Pipe-separated biological properties.
+        biological_relationships:
+          type: string
+        object_properties:
+          type: string
+          nullable: true
+          description: Pipe-separated biological properties.
+        object:
+          type: string
+        object_order:
+          type: string
+          nullable: true
+        object_family:
+          type: string
+          nullable: true
+        object_genus:
+          type: string
+          nullable: true
+
+    BiologicalAssociationExtended:
+      type: object
+      description: Extended denormalised view with ids and taxonomic hierarchy.
+      properties:
+        id:
+          type: integer
+        subject_id:
+          type: integer
+        subject_taxon_name_id:
+          type: integer
+          nullable: true
+        subject_type:
+          type: string
+        subject_order:
+          type: string
+          nullable: true
+        subject_family:
+          type: string
+          nullable: true
+        subject_genus:
+          type: string
+          nullable: true
+        subject:
+          type: string
+        subject_properties:
+          type: string
+          nullable: true
+        biological_relationship_id:
+          type: integer
+        biological_relationships:
+          type: string
+        object_properties:
+          type: string
+          nullable: true
+        object_id:
+          type: integer
+        object_taxon_name_id:
+          type: integer
+          nullable: true
+        object_type:
+          type: string
+        object_order:
+          type: string
+          nullable: true
+        object_family:
+          type: string
+          nullable: true
+        object_genus:
+          type: string
+          nullable: true
+        object:
+          type: string
+
+    GlobiExtension:
+      type: object
+      description: GloBI-format interaction record (also used for DwC ResourceRelationship).
+      properties:
+        sourceOccurrenceId:
+          type: string
+          nullable: true
+        sourceCatalogNumber:
+          type: string
+          nullable: true
+        sourceCollectionCode:
+          type: string
+          nullable: true
+        sourceInstitutionCode:
+          type: string
+          nullable: true
+        sourceTaxonName:
+          type: string
+        sourceTaxonRank:
+          type: string
+          nullable: true
+        sourceTaxonPath:
+          type: string
+          nullable: true
+        sourceLifeStageId:
+          type: string
+          nullable: true
+        sourceLifeStageName:
+          type: string
+          nullable: true
+        sourceSexId:
+          type: string
+          nullable: true
+        sourceSexName:
+          type: string
+          nullable: true
+        interactionTypeId:
+          type: string
+          nullable: true
+        interactionTypeName:
+          type: string
+        targetOccurrenceId:
+          type: string
+          nullable: true
+        targetCatalogNumber:
+          type: string
+          nullable: true
+        targetCollectionCode:
+          type: string
+          nullable: true
+        targetInstitutionCode:
+          type: string
+          nullable: true
+        targetTaxonName:
+          type: string
+        targetTaxonRank:
+          type: string
+          nullable: true
+        targetTaxonPath:
+          type: string
+          nullable: true
+        targetLifeStageId:
+          type: string
+          nullable: true
+        targetLifeStageName:
+          type: string
+          nullable: true
+        targetSexId:
+          type: string
+          nullable: true
+        targetSexName:
+          type: string
+          nullable: true
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /biological_associations:
+    get:
+      operationId: getBiologicalAssociations
+      summary: List / filter BiologicalAssociations
+      description: |
+        Returns a paginated, filterable list.
+
+        **Route:** `GET /api/v1/biological_associations`
+        **Controller:** `BiologicalAssociationsController#api_index`
+        **View:** `biological_associations/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - BiologicalAssociations – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        - name: biological_association_id[]
+          in: query
+          description: Return specific BiologicalAssociation(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: biological_relationship_id[]
+          in: query
+          description: Filter by BiologicalRelationship ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: biological_associations_graph_id[]
+          in: query
+          description: Filter by BiologicalAssociationsGraph ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: otu_id[]
+          in: query
+          description: Filter by OTU ids (as subject or object).
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: taxon_name_id[]
+          in: query
+          description: Filter by TaxonName ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: taxon_name_id_mode
+          in: query
+          description: Mode for taxon_name_id matching.
+          schema:
+            type: string
+
+        - name: descendants
+          in: query
+          description: Include descendants of taxon_name_id.
+          schema:
+            type: boolean
+
+        - name: exclude_taxon_name_relationship
+          in: query
+          description: Exclude specific taxon name relationships.
+          schema:
+            type: string
+
+        - name: subject_taxon_name_id[]
+          in: query
+          description: Filter by subject TaxonName ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: object_taxon_name_id[]
+          in: query
+          description: Filter by object TaxonName ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: subject_object_global_id[]
+          in: query
+          description: Filter by subject global ids.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: object_object_global_id[]
+          in: query
+          description: Filter by object global ids.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: biological_association_subject_id[]
+          in: query
+          description: Filter by subject entity ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: biological_association_subject_type[]
+          in: query
+          description: Filter by subject entity types.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: biological_association_object_id[]
+          in: query
+          description: Filter by object entity ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: biological_association_object_type[]
+          in: query
+          description: Filter by object entity types.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: subject_type
+          in: query
+          description: Filter by subject polymorphic type.
+          schema:
+            type: string
+
+        - name: object_type
+          in: query
+          description: Filter by object polymorphic type.
+          schema:
+            type: string
+
+        - name: collection_object_id[]
+          in: query
+          description: Filter by CollectionObject ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: collection_object_as_subject_or_as_object
+          in: query
+          description: Which role the collection object plays.
+          schema:
+            type: string
+
+        - name: collecting_event_id[]
+          in: query
+          description: Filter by CollectingEvent ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: field_occurrence_id[]
+          in: query
+          description: Filter by FieldOccurrence ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: anatomical_part_id[]
+          in: query
+          description: Filter by anatomical part ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: subject_biological_property_id[]
+          in: query
+          description: Filter by subject biological property ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: object_biological_property_id[]
+          in: query
+          description: Filter by object biological property ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: wkt
+          in: query
+          description: Spatial filter in WKT format.
+          schema:
+            type: string
+
+        - name: geo_json
+          in: query
+          description: GeoJSON geometry for spatial filtering.
+          schema:
+            type: object
+
+        - name: radius
+          in: query
+          description: Buffer radius in meters for geo_json.
+          schema:
+            type: number
+
+        - name: geo_shape_id[]
+          in: query
+          description: Shape ids for geographic filtering.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: geo_shape_type[]
+          in: query
+          description: Shape types (GeographicArea or Gazetteer).
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: geo_mode
+          in: query
+          description: Geographic matching mode.
+          schema:
+            type: boolean
+
+        - name: geo_collecting_event_geographic_area
+          in: query
+          description: Filter by collecting event geographic area.
+          schema:
+            type: boolean
+
+      responses:
+        '200':
+          description: Paginated array of BiologicalAssociation objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BiologicalAssociation'
+
+  /biological_associations/{id}:
+    get:
+      operationId: getBiologicalAssociation
+      summary: Get a single BiologicalAssociation
+      description: |
+        **Route:** `GET /api/v1/biological_associations/:id`
+        **Controller:** `BiologicalAssociationsController#api_show`
+        **View:** `biological_associations/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - BiologicalAssociations – REST
+      parameters:
+        - $ref: '#/components/parameters/baIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single BiologicalAssociation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BiologicalAssociation'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /biological_associations/basic:
+    get:
+      operationId: getBiologicalAssociationsBasic
+      summary: Basic denormalised list
+      description: |
+        Returns a denormalised view using a pre-computed index table for
+        fast retrieval of subject, relationship, object, and citation data.
+
+        **Route:** `GET /api/v1/biological_associations/basic`
+        **Controller:** `BiologicalAssociationsController#api_index_basic`
+        **View:** `biological_associations/api/v1/basic.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - BiologicalAssociations – Basic
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+
+        - name: biological_association_id[]
+          in: query
+          description: Return specific BiologicalAssociation(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: biological_relationship_id[]
+          in: query
+          description: Filter by BiologicalRelationship ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: otu_id[]
+          in: query
+          description: Filter by OTU ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: taxon_name_id[]
+          in: query
+          description: Filter by TaxonName ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: descendants
+          in: query
+          description: Include descendants of taxon_name_id.
+          schema:
+            type: boolean
+
+      responses:
+        '200':
+          description: Paginated array of basic BiologicalAssociation objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BiologicalAssociationBasic'
+
+  /biological_associations/simple:
+    get:
+      operationId: getBiologicalAssociationsSimple
+      summary: Simple denormalised list
+      description: |
+        Returns a denormalised view with taxonomic hierarchy labels
+        (order, family, genus) and pipe-separated biological properties.
+
+        **Route:** `GET /api/v1/biological_associations/simple`
+        **Controller:** `BiologicalAssociationsController#api_index_simple`
+        **View:** `biological_associations/api/v1/simple.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - BiologicalAssociations – Simple
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+
+        - name: biological_association_id[]
+          in: query
+          description: Return specific BiologicalAssociation(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: biological_relationship_id[]
+          in: query
+          description: Filter by BiologicalRelationship ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: otu_id[]
+          in: query
+          description: Filter by OTU ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: taxon_name_id[]
+          in: query
+          description: Filter by TaxonName ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: descendants
+          in: query
+          description: Include descendants of taxon_name_id.
+          schema:
+            type: boolean
+
+      responses:
+        '200':
+          description: Paginated array of simple BiologicalAssociation objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BiologicalAssociationSimple'
+
+  /biological_associations/extended:
+    get:
+      operationId: getBiologicalAssociationsExtended
+      summary: Extended denormalised list
+      description: |
+        Returns an extended denormalised view including ids,
+        taxon_name_ids, types, and full taxonomic hierarchy.
+
+        **Route:** `GET /api/v1/biological_associations/extended`
+        **Controller:** `BiologicalAssociationsController#api_index_extended`
+        **View:** `biological_associations/api/v1/extended.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - BiologicalAssociations – Extended
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+
+        - name: biological_association_id[]
+          in: query
+          description: Return specific BiologicalAssociation(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: biological_relationship_id[]
+          in: query
+          description: Filter by BiologicalRelationship ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: otu_id[]
+          in: query
+          description: Filter by OTU ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: taxon_name_id[]
+          in: query
+          description: Filter by TaxonName ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: descendants
+          in: query
+          description: Include descendants of taxon_name_id.
+          schema:
+            type: boolean
+
+      responses:
+        '200':
+          description: Paginated array of extended BiologicalAssociation objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BiologicalAssociationExtended'
+
+  /biological_associations/{id}/globi:
+    get:
+      operationId: getBiologicalAssociationGlobi
+      summary: GloBI-format export
+      description: |
+        Returns a single BiologicalAssociation in GloBI extension format.
+
+        **Route:** `GET /api/v1/biological_associations/:id/globi`
+        **Controller:** `BiologicalAssociationsController#api_globi`
+        **Type:** Extended resource endpoint
+      tags:
+        - BiologicalAssociations – GloBI
+      parameters:
+        - $ref: '#/components/parameters/baIdPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: GloBI-format interaction record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GlobiExtension'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /biological_associations/{id}/resource_relationship:
+    get:
+      operationId: getBiologicalAssociationResourceRelationship
+      summary: DwC ResourceRelationship export
+      description: |
+        Returns a single BiologicalAssociation as a DwC ResourceRelationship
+        (same format as the GloBI endpoint).
+
+        **Route:** `GET /api/v1/biological_associations/:id/resource_relationship`
+        **Controller:** `BiologicalAssociationsController#api_resource_relationship`
+        **Type:** Extended resource endpoint
+      tags:
+        - BiologicalAssociations – GloBI
+      parameters:
+        - $ref: '#/components/parameters/baIdPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: GloBI-format interaction record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GlobiExtension'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All BiologicalAssociation routes documented:
+#   GET /biological_associations                         | api_index               | done
+#   GET /biological_associations/:id                     | api_show                | done
+#   GET /biological_associations/basic                   | api_index_basic         | done
+#   GET /biological_associations/simple                  | api_index_simple        | done
+#   GET /biological_associations/extended                | api_index_extended      | done
+#   GET /biological_associations/:id/globi               | api_globi               | done
+#   GET /biological_associations/:id/resource_relationship | api_resource_relationship | done

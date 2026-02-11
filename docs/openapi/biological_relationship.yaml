@@ -1,0 +1,172 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – BiologicalRelationship Resource
+  description: |
+    OpenAPI 3.0 specification for the **BiologicalRelationship** resource.
+
+    A BiologicalRelationship defines a named interaction type (e.g. parasitoid,
+    pollinator, host) used in BiologicalAssociations. Each relationship has
+    subject and object BiologicalRelationshipType arrays describing the
+    biological properties of each participant.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: BiologicalRelationships – REST
+    description: Standard REST read endpoints.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+
+  schemas:
+    BiologicalRelationshipType:
+      type: object
+      properties:
+        id:
+          type: integer
+        biological_property_id:
+          type: integer
+        biological_relationship_id:
+          type: integer
+        type:
+          type: string
+          description: "BiologicalRelationshipType::BiologicalRelationshipSubjectType or ::ObjectType."
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        project_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    BiologicalRelationship:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        definition:
+          type: string
+          nullable: true
+        inverted_name:
+          type: string
+          nullable: true
+        is_transitive:
+          type: boolean
+        is_reflexive:
+          type: boolean
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        project_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        object_tag:
+          type: string
+        global_id:
+          type: string
+        subject_biological_relationship_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/BiologicalRelationshipType'
+        object_biological_relationship_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/BiologicalRelationshipType'
+
+paths:
+  /biological_relationships:
+    get:
+      operationId: getBiologicalRelationships
+      summary: List BiologicalRelationships
+      description: |
+        Returns a paginated list of all biological relationships, ordered by name.
+
+        **Route:** `GET /api/v1/biological_relationships`
+        **Controller:** `BiologicalRelationshipsController#api_index`
+        **View:** `biological_relationships/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - BiologicalRelationships – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+      responses:
+        '200':
+          description: Paginated array of BiologicalRelationship objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BiologicalRelationship'
+
+# CONSISTENCY REPORT
+# All BiologicalRelationship routes documented:
+#   GET /biological_relationships | api_index | done
+# Note: No api_show endpoint exists for this resource.

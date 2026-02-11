@@ -1,0 +1,335 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – TaxonDetermination Resource
+  description: |
+    OpenAPI 3.0 specification for the **TaxonDetermination** resource.
+
+    A TaxonDetermination is an assertion that a collection object (or field
+    occurrence) belongs to a taxonomic concept (OTU). The determination at
+    position 1 is the accepted/current determination.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: TaxonDeterminations – REST
+    description: Standard REST read endpoints.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    taxonDeterminationIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    extendParam:
+      name: extend[]
+      in: query
+      description: "Supported: `notes`."
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  schemas:
+    TaxonDetermination:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        taxon_determination_object_id:
+          type: integer
+          description: Id of the object being determined (CollectionObject or FieldOccurrence).
+        taxon_determination_object_type:
+          type: string
+          description: Type of the object being determined.
+          example: "CollectionObject"
+        otu_id:
+          type: integer
+          description: The OTU (taxonomic concept) of this determination.
+        position:
+          type: integer
+          description: Position in the determination stack. Position 1 is the current/accepted determination.
+        year_made:
+          type: integer
+          nullable: true
+          description: 4-digit year the determination was made.
+        month_made:
+          type: integer
+          nullable: true
+        day_made:
+          type: integer
+          nullable: true
+        print_label:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        # shared metadata
+        object_tag:
+          type: string
+        object_label:
+          type: string
+        global_id:
+          type: string
+        base_class:
+          type: string
+        url_for:
+          type: string
+        object_url:
+          type: string
+        # nested objects
+        object:
+          type: object
+          description: Metadata for the determined object (CollectionObject/FieldOccurrence).
+          properties:
+            object_tag:
+              type: string
+            object_label:
+              type: string
+            global_id:
+              type: string
+        otu:
+          type: object
+          description: Metadata for the OTU.
+          properties:
+            object_tag:
+              type: string
+            object_label:
+              type: string
+            global_id:
+              type: string
+            name:
+              type: string
+              nullable: true
+            taxon_name_id:
+              type: integer
+              nullable: true
+        determiner_roles:
+          type: array
+          description: Present when determiners exist.
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              position:
+                type: integer
+              type:
+                type: string
+              person:
+                type: object
+                description: Present when agent is a person.
+              organization:
+                type: object
+                description: Present when agent is an organization.
+        notes:
+          type: array
+          description: Present when `extend[]=notes`.
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /taxon_determinations:
+    get:
+      operationId: getTaxonDeterminations
+      summary: List / filter TaxonDeterminations
+      description: |
+        Returns a paginated, filterable list ordered by `taxon_determinations.id`.
+
+        **Route:** `GET /api/v1/taxon_determinations`
+        **Controller:** `TaxonDeterminationsController#api_index`
+        **View:** `taxon_determinations/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - TaxonDeterminations – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        - name: taxon_determination_id[]
+          in: query
+          description: Return specific TaxonDetermination(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: otu_id[]
+          in: query
+          description: Filter by OTU ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: collection_object_id[]
+          in: query
+          description: Filter by CollectionObject ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: field_occurrence_id[]
+          in: query
+          description: Filter by FieldOccurrence ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: determiner_id[]
+          in: query
+          description: Filter by determiner Person ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: taxon_determination_object_id[]
+          in: query
+          description: Filter by determined object ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: taxon_determination_object_type[]
+          in: query
+          description: Filter by determined object type (CollectionObject, FieldOccurrence).
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+      responses:
+        '200':
+          description: Paginated array of TaxonDetermination objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaxonDetermination'
+
+  /taxon_determinations/{id}:
+    get:
+      operationId: getTaxonDetermination
+      summary: Get a single TaxonDetermination
+      description: |
+        **Route:** `GET /api/v1/taxon_determinations/:id`
+        **Controller:** `TaxonDeterminationsController#api_show`
+        **View:** `taxon_determinations/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - TaxonDeterminations – REST
+      parameters:
+        - $ref: '#/components/parameters/taxonDeterminationIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single TaxonDetermination.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxonDetermination'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All TaxonDetermination routes documented:
+#   GET /taxon_determinations     | api_index | ✅
+#   GET /taxon_determinations/:id | api_show  | ✅

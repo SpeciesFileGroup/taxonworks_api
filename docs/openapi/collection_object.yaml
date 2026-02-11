@@ -1,0 +1,901 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – CollectionObject Resource
+  description: |
+    OpenAPI 3.0 specification for the **CollectionObject** resource of the
+    TaxonWorks external API.
+
+    A CollectionObject is one or more physical things that have been
+    collected. Subclasses: `Specimen` (total = 1), `Lot` (total > 1),
+    `RangedLot` (total expressed as a range category).
+
+    CollectionObjects are linked to CollectingEvents, have
+    TaxonDeterminations (linking them to OTUs/TaxonNames), and may carry
+    buffered label data for rapid data capture.
+
+    ## Authentication
+    All endpoints require **either** a valid `project_token` **or** a
+    valid `user_token` + `project_id` pair.
+
+    ## Pagination
+    List endpoints return paginated results via `page` and `per`.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: CollectionObjects – REST
+    description: Standard REST read endpoints for CollectionObjects.
+  - name: CollectionObjects – Autocomplete
+    description: Autocomplete search for CollectionObjects.
+  - name: CollectionObjects – Extended
+    description: Extended resource-specific endpoints (DwC).
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+      description: User API token. Requires `project_id`.
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+      description: Project-level API token.
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      description: Project ID (required when using user `token`).
+      schema:
+        type: integer
+
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 10000
+        default: 500
+
+    collectionObjectIdPath:
+      name: id
+      in: path
+      required: true
+      description: CollectionObject id.
+      schema:
+        type: integer
+
+    extendParam:
+      name: extend[]
+      in: query
+      description: |
+        Include additional nested data. Supported values:
+        `container`, `taxon_determinations`, `dwc_fields`,
+        `type_material`, `notes`.
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  schemas:
+    CollectionObject:
+      type: object
+      description: |
+        CollectionObject attributes. Rendered by `_attributes.json.jbuilder`.
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          example: 99001
+        total:
+          type: integer
+          nullable: true
+          description: Number of individual things. 1 = Specimen, >1 = Lot, nil when RangedLot.
+          example: 1
+        preparation_type_id:
+          type: integer
+          nullable: true
+          description: How the object was prepared (e.g. slide mounted).
+        collecting_event_id:
+          type: integer
+          nullable: true
+          description: The CollectingEvent from which this object came.
+        repository_id:
+          type: integer
+          nullable: true
+          description: Home repository id (where the object is found when not in use).
+        type:
+          type: string
+          description: Subclass (`Specimen`, `Lot`, `RangedLot`).
+          example: "Specimen"
+        buffered_collecting_event:
+          type: string
+          nullable: true
+          description: Verbatim collecting event label data.
+        buffered_determinations:
+          type: string
+          nullable: true
+          description: Verbatim determination label data.
+        buffered_other_labels:
+          type: string
+          nullable: true
+          description: Verbatim other label data.
+        ranged_lot_category_id:
+          type: integer
+          nullable: true
+          description: RangedLotCategory id (present only for RangedLot subclass).
+        accessioned_at:
+          type: string
+          format: date-time
+          nullable: true
+        deaccessioned_at:
+          type: string
+          format: date-time
+          nullable: true
+        deaccession_reason:
+          type: string
+          nullable: true
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        project_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        global_id:
+          type: string
+          description: Rails GlobalID URI.
+          example: "gid://taxon-works/Specimen/99001"
+
+        # extend[]=container
+        contained_in:
+          type: string
+          nullable: true
+          description: Present when `extend[]=container` and object is containerized.
+        container_id:
+          type: integer
+          nullable: true
+          description: Present when `extend[]=container`.
+
+        # extend[]=taxon_determinations
+        taxon_determinations:
+          type: array
+          description: Present when `extend[]=taxon_determinations`.
+          items:
+            type: object
+            description: TaxonDetermination attributes.
+
+        # extend[]=dwc_fields
+        dwc:
+          type: object
+          description: Present when `extend[]=dwc_fields`. Non-null DwC occurrence fields.
+          additionalProperties:
+            type: string
+
+        # extend[]=type_material
+        type_material:
+          type: array
+          description: Present when `extend[]=type_material`.
+          items:
+            type: object
+            properties:
+              type_type:
+                type: string
+                description: E.g. "holotype", "paratype".
+              notes:
+                type: array
+                description: Present when also `extend[]=notes`.
+                items:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+
+        # extend[]=notes
+        notes:
+          type: array
+          description: Present when `extend[]=notes`.
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+
+    CollectionObjectAutocompleteItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+          description: Plain-text label.
+        gid:
+          type: string
+          description: Rails GlobalID.
+        label_html:
+          type: string
+          description: HTML-formatted label.
+        response_values:
+          type: object
+          description: Dynamic key-value pair (key from `method` param).
+
+    DwcOccurrenceAttributes:
+      type: object
+      description: Darwin Core occurrence attributes for a single CollectionObject.
+      additionalProperties:
+        type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+
+  /collection_objects:
+    get:
+      operationId: getCollectionObjects
+      summary: List / filter CollectionObjects
+      description: |
+        Returns a paginated, filterable list of CollectionObjects ordered
+        by `collection_objects.id`.
+
+        The filter is very powerful and includes all CollectingEvent filter
+        params as well, allowing geographic, temporal, and collector-based
+        filtering.
+
+        **Route:** `GET /api/v1/collection_objects`
+        **Controller:** `CollectionObjectsController#api_index`
+        **View:** `collection_objects/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - CollectionObjects – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        # ── CollectionObject-specific filter params ──
+        - name: collection_object_id[]
+          in: query
+          description: Return specific CollectionObject(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: collection_object_type
+          in: query
+          description: Filter by subclass type.
+          schema:
+            type: string
+            enum:
+              - Specimen
+              - Lot
+              - RangedLot
+
+        - name: otu_id[]
+          in: query
+          description: Filter by OTU ids (via TaxonDetermination).
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: taxon_name_id[]
+          in: query
+          description: Filter by TaxonName ids (via OTU TaxonDetermination, optionally with descendants).
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: descendants
+          in: query
+          description: When `true` with `taxon_name_id`, include descendants.
+          schema:
+            type: boolean
+
+        - name: validity
+          in: query
+          description: |
+            With `taxon_name_id`:
+            `true` – match only valid ancestors.
+            `false` – match only invalid ancestors.
+          schema:
+            type: boolean
+
+        - name: current_determinations
+          in: query
+          description: |
+            `true` – only current determinations.
+            `false` – only historical determinations.
+          schema:
+            type: boolean
+
+        - name: collecting_event_id[]
+          in: query
+          description: Filter by CollectingEvent ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: collecting_event
+          in: query
+          description: |
+            `true` – only objects with a collecting event.
+            `false` – only objects without.
+          schema:
+            type: boolean
+
+        - name: geographic_area_id[]
+          in: query
+          description: Filter by GeographicArea ids (via CollectingEvent).
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: preparation_type_id[]
+          in: query
+          description: Filter by PreparationType ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: preparation_type
+          in: query
+          description: |
+            `true` – has preparation type.
+            `false` – no preparation type.
+          schema:
+            type: boolean
+
+        - name: repository_id
+          in: query
+          description: Filter by home Repository id.
+          schema:
+            type: integer
+
+        - name: repository
+          in: query
+          description: |
+            `true` – has a repository.
+            `false` – no repository.
+          schema:
+            type: boolean
+
+        - name: current_repository_id
+          in: query
+          description: Filter by current Repository id.
+          schema:
+            type: integer
+
+        - name: current_repository
+          in: query
+          description: |
+            `true` – has a current repository.
+            `false` – no current repository.
+          schema:
+            type: boolean
+
+        - name: biocuration_class_id[]
+          in: query
+          description: Filter by BiocurationClass ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: is_type[]
+          in: query
+          description: Filter by type designation (e.g. `holotype`, `paratype`, `lectotype`).
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: type_specimen_taxon_name_id
+          in: query
+          description: Filter to type specimens of this TaxonName.
+          schema:
+            type: integer
+
+        - name: type_material
+          in: query
+          description: |
+            `true` – only objects that are type material.
+            `false` – only objects that are not type material.
+          schema:
+            type: boolean
+
+        - name: taxon_determinations
+          in: query
+          description: |
+            `true` – has taxon determinations.
+            `false` – no taxon determinations.
+          schema:
+            type: boolean
+
+        - name: determiners
+          in: query
+          description: |
+            `true` – has determiner roles.
+            `false` – no determiner roles.
+          schema:
+            type: boolean
+
+        - name: determiner_id[]
+          in: query
+          description: Filter by determiner Person ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: determiner_id_all
+          in: query
+          description: |
+            `true` – match ALL determiner_id values (AND).
+            `false`/nil – match ANY (OR).
+          schema:
+            type: boolean
+
+        - name: collectors
+          in: query
+          description: |
+            `true` – has collector roles.
+            `false` – no collector roles.
+          schema:
+            type: boolean
+
+        - name: containerized
+          in: query
+          description: |
+            `true` – object is in a container.
+            `false` – object is not in a container.
+          schema:
+            type: boolean
+
+        - name: georeferences
+          in: query
+          description: |
+            `true` – has georeferences (via CollectingEvent).
+            `false` – no georeferences.
+          schema:
+            type: boolean
+
+        - name: loaned
+          in: query
+          description: "`true` – has been loaned at least once."
+          schema:
+            type: boolean
+
+        - name: never_loaned
+          in: query
+          description: "`true` – has never been loaned."
+          schema:
+            type: boolean
+
+        - name: on_loan
+          in: query
+          description: "`true` – currently on loan."
+          schema:
+            type: boolean
+
+        - name: loan_id[]
+          in: query
+          description: Return all CollectionObjects in these Loans.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: deaccessioned
+          in: query
+          description: |
+            `true` – has deaccession data.
+            `false` – no deaccession data.
+          schema:
+            type: boolean
+
+        - name: dwc_indexed
+          in: query
+          description: |
+            `true` – DwC index is built.
+            `false` – DwC index is not built.
+          schema:
+            type: boolean
+
+        - name: dates
+          in: query
+          description: |
+            `true` – has any date data (start/end/verbatim).
+            `false` – no date data.
+          schema:
+            type: boolean
+
+        - name: buffered_collecting_event
+          in: query
+          description: Search buffered collecting event text.
+          schema:
+            type: string
+
+        - name: exact_buffered_collecting_event
+          in: query
+          description: If `true`, match buffered collecting event exactly.
+          schema:
+            type: boolean
+
+        - name: with_buffered_collecting_event
+          in: query
+          description: |
+            `true` – has buffered collecting event.
+            `false` – no buffered collecting event.
+          schema:
+            type: boolean
+
+        - name: buffered_determinations
+          in: query
+          description: Search buffered determinations text.
+          schema:
+            type: string
+
+        - name: exact_buffered_determinations
+          in: query
+          description: If `true`, match buffered determinations exactly.
+          schema:
+            type: boolean
+
+        - name: with_buffered_determinations
+          in: query
+          description: |
+            `true` – has buffered determinations.
+            `false` – no buffered determinations.
+          schema:
+            type: boolean
+
+        - name: buffered_other_labels
+          in: query
+          description: Search buffered other labels text.
+          schema:
+            type: string
+
+        - name: exact_buffered_other_labels
+          in: query
+          description: If `true`, match buffered other labels exactly.
+          schema:
+            type: boolean
+
+        - name: with_buffered_other_labels
+          in: query
+          description: |
+            `true` – has buffered other labels.
+            `false` – no buffered other labels.
+          schema:
+            type: boolean
+
+        - name: biological_association_id[]
+          in: query
+          description: Filter by BiologicalAssociation ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: biological_associations
+          in: query
+          description: |
+            `true` – has biological associations.
+            `false` – no biological associations.
+          schema:
+            type: boolean
+
+        - name: biological_relationship_id[]
+          in: query
+          description: Filter by BiologicalRelationship ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: extract_id[]
+          in: query
+          description: Filter to CollectionObjects that are the origin of these Extract ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: sled_image_id
+          in: query
+          description: Filter by SledImage id.
+          schema:
+            type: integer
+
+        - name: import_dataset_id[]
+          in: query
+          description: Filter by ImportDataset ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        # ── Inherited concerns (Tags, Citations, Notes, Depictions, etc.) ──
+        - name: keyword_id_and[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: keyword_id_or[]
+          in: query
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: tags
+          in: query
+          schema:
+            type: boolean
+
+        - name: citations
+          in: query
+          schema:
+            type: boolean
+
+        - name: notes
+          in: query
+          schema:
+            type: boolean
+
+        - name: depictions
+          in: query
+          schema:
+            type: boolean
+
+        - name: data_attributes
+          in: query
+          schema:
+            type: boolean
+
+      responses:
+        '200':
+          description: A paginated array of CollectionObject objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CollectionObject'
+              example:
+                - id: 99001
+                  total: 1
+                  type: "Specimen"
+                  collecting_event_id: 5000
+                  repository_id: 10
+                  global_id: "gid://taxon-works/Specimen/99001"
+
+  /collection_objects/{id}:
+    get:
+      operationId: getCollectionObject
+      summary: Get a single CollectionObject
+      description: |
+        Returns a single CollectionObject by id.
+
+        Supports `extend[]` values: `container`, `taxon_determinations`,
+        `dwc_fields`, `type_material`, `notes`.
+
+        **Route:** `GET /api/v1/collection_objects/:id`
+        **Controller:** `CollectionObjectsController#api_show`
+        **View:** `collection_objects/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - CollectionObjects – REST
+      parameters:
+        - $ref: '#/components/parameters/collectionObjectIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single CollectionObject.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionObject'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /collection_objects/autocomplete:
+    get:
+      operationId: autocompleteCollectionObjects
+      summary: Autocomplete CollectionObjects
+      description: |
+        Searches collection objects by term string.
+
+        **Route:** `GET /api/v1/collection_objects/autocomplete`
+        **Controller:** `CollectionObjectsController#api_autocomplete`
+        **View:** `collection_objects/api/v1/autocomplete.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - CollectionObjects – Autocomplete
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - name: term
+          in: query
+          required: true
+          description: The search string.
+          schema:
+            type: string
+            minLength: 1
+
+        - name: method
+          in: query
+          description: When provided, `response_values` will include a key with this name.
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Array of autocomplete results.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CollectionObjectAutocompleteItem'
+
+  /collection_objects/{id}/dwc:
+    get:
+      operationId: getCollectionObjectDwc
+      summary: DwC occurrence for a CollectionObject
+      description: |
+        Returns the Darwin Core occurrence attributes for a single
+        CollectionObject. Triggers a DwC occurrence rebuild if needed.
+
+        **Route:** `GET /api/v1/collection_objects/:id/dwc`
+        **Controller:** `CollectionObjectsController#api_dwc`
+        **Type:** Extended resource endpoint
+      tags:
+        - CollectionObjects – Extended
+      parameters:
+        - $ref: '#/components/parameters/collectionObjectIdPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: DwC occurrence attributes (key-value pairs).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DwcOccurrenceAttributes'
+              example:
+                occurrenceID: "urn:uuid:abc123"
+                basisOfRecord: "PreservedSpecimen"
+                scientificName: "Aus bus Author, 2000"
+                country: "United States"
+                stateProvince: "Illinois"
+                decimalLatitude: "40.1164"
+                decimalLongitude: "-88.2434"
+
+# ─────────────────────────────────────────────
+# CONSISTENCY REPORT
+#
+# All CollectionObject routes from config/routes/api_v1.rb are documented:
+#
+#   Route                                    | Endpoint         | Status
+#   -----------------------------------------|------------------|---------
+#   GET /collection_objects                  | api_index        | ✅ Documented
+#   GET /collection_objects/autocomplete     | api_autocomplete | ✅ Documented
+#   GET /collection_objects/:id/dwc          | api_dwc          | ✅ Documented
+#   GET /collection_objects/:id              | api_show         | ✅ Documented
+#
+# OBSERVATIONS:
+#
+# 1. The CollectionObject filter inherits ALL CollectingEvent::Filter
+#    BASE_PARAMS, making geographic, temporal, and collector-based filtering
+#    available. These inherited params are not individually listed here but
+#    are available (see CollectingEvent spec for full list).
+#
+# 2. The filter includes DateRanges concern params for date-based filtering.
+#
+# 3. The `determiner_name_regex` param is noted as "Probably shouldn't
+#    expose to external API" in the source — it is excluded from this spec.
+#
+# 4. The index view uses a slightly unusual partial rendering pattern:
+#    `json.partial! ... collection: @collection_objects, as: :collection_object`
+#
+# 5. No POST/PATCH/DELETE endpoints exposed (read-only).

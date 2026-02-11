@@ -1,0 +1,219 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – News Resource
+  description: |
+    OpenAPI 3.0 specification for the **News** resource.
+
+    News items are public blog posts associated with a project. Only current,
+    public blog posts (`News::Project::BlogPost`) are returned by the API.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: News – REST
+    description: Standard REST read endpoints.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    newsIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+
+  schemas:
+    News:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          description: "STI type, e.g. News::Project::BlogPost."
+        title:
+          type: string
+        body:
+          type: string
+          nullable: true
+        body_html:
+          type: string
+          description: Rendered markdown HTML of the body.
+        display_start:
+          type: string
+          format: date-time
+          nullable: true
+        display_end:
+          type: string
+          format: date-time
+          nullable: true
+        is_public:
+          type: boolean
+        current:
+          type: boolean
+          description: Whether the news item is currently active.
+        url:
+          type: string
+          description: URL to the news item.
+        creator:
+          type: string
+          description: Name of the user who created the news item.
+        updater:
+          type: string
+          description: Name of the user who last updated the news item.
+        project_id:
+          type: integer
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /news:
+    get:
+      operationId: getNews
+      summary: List / filter News
+      description: |
+        Returns a paginated list of current, public blog posts.
+
+        **Route:** `GET /api/v1/news`
+        **Controller:** `NewsController#api_index`
+        **View:** `news/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - News – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+
+        - name: news_id[]
+          in: query
+          description: Return specific News item(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: type[]
+          in: query
+          description: Filter by news type.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+      responses:
+        '200':
+          description: Paginated array of News objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/News'
+
+  /news/{id}:
+    get:
+      operationId: getNewsItem
+      summary: Get a single News item
+      description: |
+        **Route:** `GET /api/v1/news/:id`
+        **Controller:** `NewsController#api_show`
+        **View:** `news/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - News – REST
+      parameters:
+        - $ref: '#/components/parameters/newsIdPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: A single News item.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All News routes documented:
+#   GET /news     | api_index | done
+#   GET /news/:id | api_show  | done

@@ -1,0 +1,351 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – Utility Endpoints
+  description: |
+    OpenAPI 3.0 specification for the TaxonWorks API **utility** endpoints.
+
+    These include health checks (ping), project/global statistics, recent
+    activity feeds, citation helpers, and authentication verification
+    endpoints.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: Ping
+    description: Health-check endpoints.
+  - name: Stats
+    description: Project and global statistics.
+  - name: Activity
+    description: Recent activity feed.
+  - name: Cite
+    description: Citation helper endpoints (unauthenticated).
+  - name: Base
+    description: Authentication verification.
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  schemas:
+    PingResponse:
+      type: object
+      properties:
+        pong:
+          type: boolean
+
+    StatsResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          description: Counts for all data model classes.
+          additionalProperties:
+            type: integer
+        metadata:
+          type: object
+          description: Summary statistics for the past week.
+          additionalProperties:
+            type: integer
+
+    ActivityResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Project id.
+        name:
+          type: string
+          description: Project name.
+        recent_records:
+          type: object
+          description: Map of model type to recent record info.
+          additionalProperties:
+            type: object
+            properties:
+              api_route:
+                type: string
+                nullable: true
+              count:
+                type: integer
+              ids:
+                type: array
+                items:
+                  type: integer
+
+    CountValidSpeciesResponse:
+      type: object
+      properties:
+        EXPERIMENTAL:
+          type: object
+          description: Project-keyed map of valid species counts.
+          additionalProperties:
+            type: array
+            items:
+              type: object
+              properties:
+                taxon_name_id:
+                  type: integer
+                name:
+                  type: string
+                count:
+                  type: integer
+                cite_as:
+                  type: string
+
+    NotFoundResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+
+paths:
+  /ping:
+    get:
+      operationId: ping
+      summary: Health check
+      description: |
+        Returns `{"pong": true}` if the API is running.
+
+        **Route:** `GET /api/v1/ping`
+        **Controller:** `Api::V1::PingController#ping`
+        **Type:** Utility (unauthenticated)
+      tags:
+        - Ping
+      security: []
+      responses:
+        '200':
+          description: API is alive.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PingResponse'
+
+  /pingz:
+    get:
+      operationId: pingz
+      summary: Deep health check
+      description: |
+        Returns `{"pong": true}` if the API is running and assets are
+        compiled. Returns 503 if assets are not available.
+
+        **Route:** `GET /api/v1/pingz`
+        **Controller:** `Api::V1::PingController#pingz`
+        **Type:** Utility (unauthenticated)
+      tags:
+        - Ping
+      security: []
+      responses:
+        '200':
+          description: API and assets are healthy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PingResponse'
+        '503':
+          description: Assets not available.
+
+  /stats:
+    get:
+      operationId: getStats
+      summary: Project or global statistics
+      description: |
+        Returns counts for all data model classes and summary statistics
+        for the past week. When a project_token is provided, returns
+        project-specific stats; otherwise returns global stats.
+
+        **Route:** `GET /api/v1/stats`
+        **Controller:** `Api::V1::StatsController#index`
+        **View:** `api/v1/stats/index.json.jbuilder`
+        **Type:** Utility
+      tags:
+        - Stats
+      security: []
+      parameters:
+        - name: project_token
+          in: query
+          description: Optional project token to scope statistics to a project.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Statistics response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatsResponse'
+
+  /activity:
+    get:
+      operationId: getActivity
+      summary: Recent project activity
+      description: |
+        Returns recent record activity for a project, grouped by model type.
+
+        **Route:** `GET /api/v1/activity`
+        **Controller:** `Api::V1::StatsController#activity`
+        **View:** `projects/api/v1/activity.json.jbuilder`
+        **Type:** Utility
+      tags:
+        - Activity
+      security:
+        - projectTokenAuth: []
+      parameters:
+        - name: project_token
+          in: query
+          required: true
+          description: Project token (required).
+          schema:
+            type: string
+        - name: past_days
+          in: query
+          description: Number of days to look back (default varies).
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Recent activity feed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityResponse'
+
+  /cite/count_valid_species:
+    get:
+      operationId: countValidSpecies
+      summary: Count valid species for a taxon name
+      description: |
+        Returns counts of valid species for a given taxon name across
+        all projects. This is an experimental, unauthenticated endpoint.
+
+        **Route:** `GET /api/v1/cite/count_valid_species`
+        **Controller:** `Api::V1::CiteController#count_valid_species`
+        **View:** `api/v1/cite/count_valid_species.json.jbuilder`
+        **Type:** Utility (unauthenticated, experimental)
+      tags:
+        - Cite
+      security: []
+      parameters:
+        - name: taxon_name
+          in: query
+          required: true
+          description: Exact taxon name string to search.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Valid species counts by project.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountValidSpeciesResponse'
+
+  /:
+    get:
+      operationId: apiIndex
+      summary: API base endpoint
+      description: |
+        Returns 200 if authentication is valid. Used to verify credentials.
+
+        **Route:** `GET /api/v1/`
+        **Controller:** `Api::V1::BaseController#index`
+        **Type:** Utility
+      tags:
+        - Base
+      security: []
+      responses:
+        '200':
+          description: Authentication valid.
+
+  /user_authenticated:
+    get:
+      operationId: userAuthenticated
+      summary: Verify user authentication
+      description: |
+        Returns 200 if user token is valid.
+
+        **Route:** `GET /api/v1/user_authenticated`
+        **Controller:** `Api::V1::BaseController#index`
+        **Type:** Utility
+      tags:
+        - Base
+      security:
+        - tokenAuth: []
+      responses:
+        '200':
+          description: User authentication valid.
+
+  /project_authenticated:
+    get:
+      operationId: projectAuthenticated
+      summary: Verify project authentication
+      description: |
+        Returns 200 if project_token is valid.
+
+        **Route:** `GET /api/v1/project_authenticated`
+        **Controller:** `Api::V1::BaseController#index`
+        **Type:** Utility
+      tags:
+        - Base
+      security:
+        - projectTokenAuth: []
+      responses:
+        '200':
+          description: Project authentication valid.
+
+  /both_authenticated:
+    get:
+      operationId: bothAuthenticated
+      summary: Verify both user and project authentication
+      description: |
+        Returns 200 if both token and project_id are valid.
+
+        **Route:** `GET /api/v1/both_authenticated`
+        **Controller:** `Api::V1::BaseController#index`
+        **Type:** Utility
+      tags:
+        - Base
+      security:
+        - tokenAuth: []
+      parameters:
+        - name: project_id
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Both authentications valid.
+
+# CONSISTENCY REPORT
+# All utility routes documented:
+#   GET /ping                      | ping                | done
+#   GET /pingz                     | pingz               | done
+#   GET /stats                     | stats#index         | done
+#   GET /activity                  | stats#activity      | done
+#   GET /cite/count_valid_species  | cite#count_valid_species | done
+#   GET /                          | base#index          | done
+#   GET /user_authenticated        | base#index          | done
+#   GET /project_authenticated     | base#index          | done
+#   GET /both_authenticated        | base#index          | done
+# Note: MATCH /:path → base#not_found is a catch-all 404, not documented as an endpoint.

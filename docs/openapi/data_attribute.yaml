@@ -1,0 +1,307 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – DataAttribute Resource
+  description: |
+    OpenAPI 3.0 specification for the **DataAttribute** resource.
+
+    A DataAttribute attaches a key-value pair to any data object.
+    InternalAttributes use a Predicate (ControlledVocabularyTerm);
+    ImportAttributes use a free-text import_predicate string.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: DataAttributes – REST
+    description: Standard REST read endpoints.
+  - name: DataAttributes – Brief
+    description: Compact tabular format.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    dataAttributeIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    extendParam:
+      name: extend[]
+      in: query
+      description: "Supported: `annotated_object`, `predicate`."
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  schemas:
+    DataAttribute:
+      type: object
+      required:
+        - id
+        - value
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          description: "InternalAttribute or ImportAttribute."
+        attribute_subject_id:
+          type: integer
+        attribute_subject_type:
+          type: string
+        controlled_vocabulary_term_id:
+          type: integer
+          nullable: true
+        import_predicate:
+          type: string
+          nullable: true
+        value:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        project_id:
+          type: integer
+        predicate_name:
+          type: string
+          nullable: true
+        object_tag:
+          type: string
+        object_label:
+          type: string
+        global_id:
+          type: string
+        annotated_object:
+          type: object
+          description: Present when `extend[]=annotated_object`.
+        predicate:
+          type: object
+          description: Present when `extend[]=predicate`.
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /data_attributes:
+    get:
+      operationId: getDataAttributes
+      summary: List / filter DataAttributes
+      description: |
+        Returns a paginated, filterable list.
+
+        **Route:** `GET /api/v1/data_attributes`
+        **Controller:** `DataAttributesController#api_index`
+        **View:** `data_attributes/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - DataAttributes – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        - name: data_attribute_id[]
+          in: query
+          description: Return specific DataAttribute(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: controlled_vocabulary_term_id[]
+          in: query
+          description: Filter by Predicate (CVT) ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: value
+          in: query
+          description: Filter by value string.
+          schema:
+            type: string
+
+        - name: import_predicate
+          in: query
+          description: Filter by import predicate string.
+          schema:
+            type: string
+
+        - name: type
+          in: query
+          description: Filter by type (InternalAttribute or ImportAttribute).
+          schema:
+            type: string
+
+        - name: attribute_subject_type[]
+          in: query
+          description: Filter by subject class name.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: attribute_subject_id[]
+          in: query
+          description: Filter by subject id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+      responses:
+        '200':
+          description: Paginated array of DataAttribute objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataAttribute'
+
+  /data_attributes/brief:
+    get:
+      operationId: getDataAttributesBrief
+      summary: Brief tabular DataAttributes
+      description: |
+        Returns a compact, tabular representation with index and data columns.
+
+        **Route:** `GET /api/v1/data_attributes/brief`
+        **Controller:** `DataAttributesController#api_brief`
+        **View:** `data_attributes/api/v1/brief.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - DataAttributes – Brief
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+      responses:
+        '200':
+          description: Tabular representation with index and data columns.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  index:
+                    type: array
+                    items:
+                      type: string
+                  data:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        type: string
+
+  /data_attributes/{id}:
+    get:
+      operationId: getDataAttribute
+      summary: Get a single DataAttribute
+      description: |
+        **Route:** `GET /api/v1/data_attributes/:id`
+        **Controller:** `DataAttributesController#api_show`
+        **View:** `data_attributes/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - DataAttributes – REST
+      parameters:
+        - $ref: '#/components/parameters/dataAttributeIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single DataAttribute.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataAttribute'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All DataAttribute routes documented:
+#   GET /data_attributes       | api_index | done
+#   GET /data_attributes/brief | api_brief | done
+#   GET /data_attributes/:id   | api_show  | done

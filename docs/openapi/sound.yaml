@@ -1,0 +1,265 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – Sound Resource
+  description: |
+    OpenAPI 3.0 specification for the **Sound** resource.
+
+    A Sound stores an audio recording. Sounds are linked to OTUs,
+    CollectionObjects, and other data via Conveyances.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: Sounds – REST
+    description: Standard REST read endpoints.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    soundIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    extendParam:
+      name: extend[]
+      in: query
+      description: "Supported: `conveyances`, `attribution`, `notes`."
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  schemas:
+    Sound:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          nullable: true
+        sound_file:
+          type: string
+          description: URL to the sound file.
+        project_id:
+          type: integer
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        object_tag:
+          type: string
+        object_label:
+          type: string
+        global_id:
+          type: string
+        conveyances:
+          type: array
+          description: Present when `extend[]=conveyances`.
+          items:
+            type: object
+        attribution:
+          type: object
+          nullable: true
+          description: Present when `extend[]=attribution`.
+        notes:
+          type: array
+          description: Present when `extend[]=notes`.
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /sounds:
+    get:
+      operationId: getSounds
+      summary: List / filter Sounds
+      description: |
+        Returns a paginated, filterable list.
+
+        **Route:** `GET /api/v1/sounds`
+        **Controller:** `SoundsController#api_index`
+        **View:** `sounds/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - Sounds – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        - name: sound_id[]
+          in: query
+          description: Return specific Sound(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: name
+          in: query
+          description: Filter by sound name.
+          schema:
+            type: string
+
+        - name: otu_id[]
+          in: query
+          description: Filter by OTU ids (via conveyances).
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: collection_object_id[]
+          in: query
+          description: Filter by CollectionObject ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: field_occurrence_id[]
+          in: query
+          description: Filter by FieldOccurrence ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: conveyances
+          in: query
+          description: Filter by whether sound has conveyances.
+          schema:
+            type: boolean
+
+        - name: with_name
+          in: query
+          description: Filter by whether sound has a name.
+          schema:
+            type: boolean
+
+      responses:
+        '200':
+          description: Paginated array of Sound objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sound'
+
+  /sounds/{id}:
+    get:
+      operationId: getSound
+      summary: Get a single Sound
+      description: |
+        **Route:** `GET /api/v1/sounds/:id`
+        **Controller:** `SoundsController#api_show`
+        **View:** `sounds/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - Sounds – REST
+      parameters:
+        - $ref: '#/components/parameters/soundIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single Sound.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sound'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All Sound routes documented:
+#   GET /sounds     | api_index | done
+#   GET /sounds/:id | api_show  | done

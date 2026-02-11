@@ -1,0 +1,317 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – TaxonNameRelationship Resource
+  description: |
+    OpenAPI 3.0 specification for the **TaxonNameRelationship** resource.
+
+    A TaxonNameRelationship records a nomenclatural relationship between
+    two TaxonNames (subject and object), such as synonymy, misspelling,
+    or type species designation.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: TaxonNameRelationships – REST
+    description: Standard REST read endpoints.
+  - name: TaxonNameRelationships – Types
+    description: Relationship type enumeration.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    tnrIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    extendParam:
+      name: extend[]
+      in: query
+      description: "Supported: `notes`."
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  schemas:
+    TaxonNameRelationship:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        subject_taxon_name_id:
+          type: integer
+        object_taxon_name_id:
+          type: integer
+        type:
+          type: string
+          description: Rails STI relationship type class name.
+        subject_status_tag:
+          type: string
+          nullable: true
+        object_status_tag:
+          type: string
+          nullable: true
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        project_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        inverse_assignment_method:
+          type: string
+          nullable: true
+        assignment_method:
+          type: string
+          nullable: true
+        subject_name:
+          type: string
+        object_name:
+          type: string
+        global_id:
+          type: string
+        notes:
+          type: array
+          description: Present when `extend[]=notes`.
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /taxon_name_relationships:
+    get:
+      operationId: getTaxonNameRelationships
+      summary: List / filter TaxonNameRelationships
+      description: |
+        Returns a paginated, filterable list. Also supports CSV output.
+
+        **Route:** `GET /api/v1/taxon_name_relationships`
+        **Controller:** `TaxonNameRelationshipsController#api_index`
+        **View:** `taxon_name_relationships/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - TaxonNameRelationships – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        - name: taxon_name_relationship_id[]
+          in: query
+          description: Return specific relationship(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: taxon_name_id[]
+          in: query
+          description: Filter by TaxonName ids (matches subject or object).
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: subject_taxon_name_id[]
+          in: query
+          description: Filter by subject TaxonName ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: object_taxon_name_id[]
+          in: query
+          description: Filter by object TaxonName ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: taxon_name_relationship_type[]
+          in: query
+          description: Filter by relationship type class names.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: taxon_name_relationship_set[]
+          in: query
+          description: Filter by relationship set names.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: ancestors
+          in: query
+          description: Include ancestors of matching taxon_name_id.
+          schema:
+            type: boolean
+
+        - name: descendants
+          in: query
+          description: Include descendants of matching taxon_name_id.
+          schema:
+            type: boolean
+
+        - name: taxon_name_subject_object
+          in: query
+          description: Filter taxon_name_id as subject only, object only, or both.
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Paginated array of TaxonNameRelationship objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaxonNameRelationship'
+
+  /taxon_name_relationships/taxon_name_relationship_types:
+    get:
+      operationId: getTaxonNameRelationshipTypes
+      summary: List available relationship types
+      description: |
+        Returns the list of valid TaxonNameRelationship type strings.
+
+        **Route:** `GET /api/v1/taxon_name_relationships/taxon_name_relationship_types`
+        **Controller:** `TaxonNameRelationshipsController#taxon_name_relationship_types`
+        **Type:** Extended resource endpoint
+      tags:
+        - TaxonNameRelationships – Types
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: Array of relationship type strings.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+  /taxon_name_relationships/{id}:
+    get:
+      operationId: getTaxonNameRelationship
+      summary: Get a single TaxonNameRelationship
+      description: |
+        **Route:** `GET /api/v1/taxon_name_relationships/:id`
+        **Controller:** `TaxonNameRelationshipsController#api_show`
+        **View:** `taxon_name_relationships/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - TaxonNameRelationships – REST
+      parameters:
+        - $ref: '#/components/parameters/tnrIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single TaxonNameRelationship.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxonNameRelationship'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All TaxonNameRelationship routes documented:
+#   GET /taxon_name_relationships                                | api_index                       | done
+#   GET /taxon_name_relationships/taxon_name_relationship_types  | taxon_name_relationship_types   | done
+#   GET /taxon_name_relationships/:id                            | api_show                        | done

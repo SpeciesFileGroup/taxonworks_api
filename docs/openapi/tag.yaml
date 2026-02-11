@@ -1,0 +1,211 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – Tag Resource
+  description: |
+    OpenAPI 3.0 specification for the **Tag** resource.
+
+    A Tag links a Keyword (ControlledVocabularyTerm) to any data object.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: Tags – REST
+    description: Standard REST read endpoints.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    tagIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+
+  schemas:
+    Tag:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        tag_object_type:
+          type: string
+        tag_object_attribute:
+          type: string
+          nullable: true
+        tag_object_id:
+          type: integer
+        keyword_id:
+          type: integer
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        project_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        tag_object_global_id:
+          type: string
+        keyword:
+          type: object
+          properties:
+            name:
+              type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /tags:
+    get:
+      operationId: getTags
+      summary: List / filter Tags
+      description: |
+        Returns a paginated, filterable list.
+
+        **Route:** `GET /api/v1/tags`
+        **Controller:** `TagsController#api_index`
+        **View:** `tags/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - Tags – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+
+        - name: keyword_id[]
+          in: query
+          description: Filter by Keyword ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: tag_object_type[]
+          in: query
+          description: Filter by tagged object class.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: tag_object_id[]
+          in: query
+          description: Filter by tagged object id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+      responses:
+        '200':
+          description: Paginated array of Tag objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+
+  /tags/{id}:
+    get:
+      operationId: getTag
+      summary: Get a single Tag
+      description: |
+        **Route:** `GET /api/v1/tags/:id`
+        **Controller:** `TagsController#api_show`
+        **View:** `tags/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - Tags – REST
+      parameters:
+        - $ref: '#/components/parameters/tagIdPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: A single Tag.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All Tag routes documented:
+#   GET /tags     | api_index | done
+#   GET /tags/:id | api_show  | done

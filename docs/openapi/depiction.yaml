@@ -1,0 +1,335 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – Depiction Resource
+  description: |
+    OpenAPI 3.0 specification for the **Depiction** resource.
+
+    A Depiction links an Image to a data object, optionally with
+    figure labels, captions, and SVG clip regions.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: Depictions – REST
+    description: Standard REST read endpoints.
+  - name: Depictions – Gallery
+    description: Gallery-oriented view with image URLs.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    depictionIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+
+  schemas:
+    Depiction:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        depiction_object_id:
+          type: integer
+        depiction_object_type:
+          type: string
+        image_id:
+          type: integer
+        caption:
+          type: string
+          nullable: true
+        figure_label:
+          type: string
+          nullable: true
+        is_metadata_depiction:
+          type: boolean
+          nullable: true
+        sled_image_id:
+          type: integer
+          nullable: true
+        sled_image_x_position:
+          type: integer
+          nullable: true
+        sled_image_y_position:
+          type: integer
+          nullable: true
+        svg_view_box:
+          type: string
+          nullable: true
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        project_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    DepictionGalleryItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        depiction_object_id:
+          type: integer
+        depiction_object_type:
+          type: string
+        image_id:
+          type: integer
+        caption:
+          type: string
+          nullable: true
+        figure_label:
+          type: string
+          nullable: true
+        is_metadata_depiction:
+          type: boolean
+          nullable: true
+        svg_view_box:
+          type: string
+          nullable: true
+        svg_clip:
+          type: string
+          nullable: true
+        label:
+          type: string
+        depiction_object:
+          type: object
+          properties:
+            label:
+              type: string
+        attribution:
+          type: object
+          nullable: true
+          properties:
+            label:
+              type: string
+            id:
+              type: integer
+        figures:
+          type: object
+          properties:
+            medium:
+              type: string
+            thumb:
+              type: string
+        image:
+          type: object
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /depictions:
+    get:
+      operationId: getDepictions
+      summary: List / filter Depictions
+      description: |
+        Returns a paginated, filterable list.
+
+        **Route:** `GET /api/v1/depictions`
+        **Controller:** `DepictionsController#api_index`
+        **View:** `depictions/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - Depictions – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+
+        - name: depiction_id[]
+          in: query
+          description: Return specific Depiction(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: depiction_object_type[]
+          in: query
+          description: Filter by depicted object class.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: depiction_object_id[]
+          in: query
+          description: Filter by depicted object id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: image_id[]
+          in: query
+          description: Filter by Image ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: otu_id[]
+          in: query
+          description: Filter by OTU ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: otu_scope[]
+          in: query
+          description: Scope OTU filtering (all, otu, collection_objects, etc.).
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+      responses:
+        '200':
+          description: Paginated array of Depiction objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Depiction'
+
+  /depictions/gallery:
+    get:
+      operationId: getDepictionsGallery
+      summary: Gallery view of Depictions
+      description: |
+        Returns depictions with image URLs, attribution, and figure renderings
+        suitable for gallery display.
+
+        **Route:** `GET /api/v1/depictions/gallery`
+        **Controller:** `DepictionsController#api_gallery`
+        **View:** `depictions/api/v1/gallery.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - Depictions – Gallery
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+      responses:
+        '200':
+          description: Array of gallery depiction items with image URLs.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DepictionGalleryItem'
+
+  /depictions/{id}:
+    get:
+      operationId: getDepiction
+      summary: Get a single Depiction
+      description: |
+        **Route:** `GET /api/v1/depictions/:id`
+        **Controller:** `DepictionsController#api_show`
+        **View:** `depictions/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - Depictions – REST
+      parameters:
+        - $ref: '#/components/parameters/depictionIdPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: A single Depiction.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Depiction'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All Depiction routes documented:
+#   GET /depictions         | api_index   | done
+#   GET /depictions/gallery | api_gallery | done
+#   GET /depictions/:id     | api_show    | done
