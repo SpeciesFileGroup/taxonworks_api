@@ -25,7 +25,7 @@ import taxonworksLogo from '../assets/images/taxonworks_logo.svg'
 }
 
 .app-header__logo {
-  height: 42px;
+  height: 32px;
   width: auto;
 }
 
