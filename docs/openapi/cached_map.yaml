@@ -1,0 +1,153 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – CachedMap Resource
+  description: |
+    OpenAPI 3.0 specification for the **CachedMap** resource.
+
+    A CachedMap is a pre-computed geographic distribution map for an OTU,
+    with synchronisation metadata and source-scope statistics.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: CachedMaps – REST
+    description: Standard REST read endpoints.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    cachedMapIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+
+  schemas:
+    CachedMap:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        reference_count:
+          type: integer
+        cached_map_type:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        latest_cached_map_item_created_at:
+          type: string
+          format: date-time
+          nullable: true
+        synced:
+          type: boolean
+        cached_map_item_reference_total:
+          type: integer
+        time_between_data_and_sync:
+          type: string
+          nullable: true
+          description: Present when synced is true.
+        time_between_data_and_now:
+          type: string
+          nullable: true
+          description: Present when synced is true.
+        source_scope:
+          type: object
+          properties:
+            taxon_names:
+              type: integer
+            otus:
+              type: integer
+            collection_objects:
+              type: integer
+            georeferences:
+              type: integer
+            unregistered_georeferences:
+              type: integer
+            asserted_distributions:
+              type: integer
+            unregistered_asserted_distributions:
+              type: integer
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /cached_maps/{id}:
+    get:
+      operationId: getCachedMap
+      summary: Get a single CachedMap
+      description: |
+        Returns a cached map with synchronisation metadata and source-scope
+        statistics.
+
+        **Route:** `GET /api/v1/cached_maps/:id`
+        **Controller:** `CachedMapsController#api_show`
+        **View:** `cached_maps/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - CachedMaps – REST
+      parameters:
+        - $ref: '#/components/parameters/cachedMapIdPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: A single CachedMap with sync metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CachedMap'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All CachedMap routes documented:
+#   GET /cached_maps/:id | api_show | done
+# Note: No index endpoint exists for this resource.

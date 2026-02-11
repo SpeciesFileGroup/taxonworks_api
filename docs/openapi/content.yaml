@@ -1,0 +1,234 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – Content Resource
+  description: |
+    OpenAPI 3.0 specification for the **Content** resource.
+
+    A Content record stores narrative text for an OTU under a Topic
+    (controlled vocabulary term). Used for species pages, descriptions, etc.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: Contents – REST
+    description: Standard REST read endpoints.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    contentIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+
+  schemas:
+    Content:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        text:
+          type: string
+          nullable: true
+          description: The content body (may contain HTML).
+        otu_id:
+          type: integer
+        topic_id:
+          type: integer
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        project_id:
+          type: integer
+        revision_id:
+          type: integer
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        global_id:
+          type: string
+        otu:
+          type: object
+          properties:
+            global_id:
+              type: string
+        topic:
+          type: object
+          properties:
+            global_id:
+              type: string
+            uri:
+              type: string
+              nullable: true
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /contents:
+    get:
+      operationId: getContents
+      summary: List / filter Contents
+      description: |
+        Returns a paginated, filterable list.
+
+        **Route:** `GET /api/v1/contents`
+        **Controller:** `ContentsController#api_index`
+        **View:** `contents/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - Contents – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+
+        - name: content_id[]
+          in: query
+          description: Return specific Content(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: otu_id[]
+          in: query
+          description: Filter by OTU ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: topic_id[]
+          in: query
+          description: Filter by Topic ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: text
+          in: query
+          description: Filter by content text (wildcard match).
+          schema:
+            type: string
+
+        - name: exact
+          in: query
+          description: If true, text must match exactly.
+          schema:
+            type: boolean
+
+      responses:
+        '200':
+          description: Paginated array of Content objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Content'
+
+  /contents/{id}:
+    get:
+      operationId: getContent
+      summary: Get a single Content
+      description: |
+        **Route:** `GET /api/v1/contents/:id`
+        **Controller:** `ContentsController#api_show`
+        **View:** `contents/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - Contents – REST
+      parameters:
+        - $ref: '#/components/parameters/contentIdPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: A single Content.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Content'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All Content routes documented:
+#   GET /contents     | api_index | done
+#   GET /contents/:id | api_show  | done

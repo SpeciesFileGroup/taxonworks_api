@@ -1,0 +1,255 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – TaxonNameClassification Resource
+  description: |
+    OpenAPI 3.0 specification for the **TaxonNameClassification** resource.
+
+    A TaxonNameClassification assigns a nomenclatural status or classification
+    to a TaxonName (e.g., nomen nudum, valid, unavailable). Uses Rails STI
+    with many subtype classes.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: TaxonNameClassifications – REST
+    description: Standard REST read endpoints.
+  - name: TaxonNameClassifications – Types
+    description: Classification type enumeration.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    tncIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    extendParam:
+      name: extend[]
+      in: query
+      description: "Supported: `notes`."
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  schemas:
+    TaxonNameClassification:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        taxon_name_id:
+          type: integer
+        type:
+          type: string
+          description: Rails STI classification type class name.
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        project_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        object_tag:
+          type: string
+        url:
+          type: string
+        global_id:
+          type: string
+        notes:
+          type: array
+          description: Present when `extend[]=notes`.
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /taxon_name_classifications:
+    get:
+      operationId: getTaxonNameClassifications
+      summary: List / filter TaxonNameClassifications
+      description: |
+        Returns a paginated, filterable list.
+
+        **Route:** `GET /api/v1/taxon_name_classifications`
+        **Controller:** `TaxonNameClassificationsController#api_index`
+        **View:** `taxon_name_classifications/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - TaxonNameClassifications – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        - name: taxon_name_id[]
+          in: query
+          description: Filter by TaxonName ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: taxon_name_classification_type[]
+          in: query
+          description: Filter by classification type class names.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: taxon_name_classification_set[]
+          in: query
+          description: Filter by classification set names.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+      responses:
+        '200':
+          description: Paginated array of TaxonNameClassification objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaxonNameClassification'
+
+  /taxon_name_classifications/taxon_name_classification_types:
+    get:
+      operationId: getTaxonNameClassificationTypes
+      summary: List available classification types
+      description: |
+        Returns the list of valid TaxonNameClassification type strings.
+
+        **Route:** `GET /api/v1/taxon_name_classifications/taxon_name_classification_types`
+        **Controller:** `TaxonNameClassificationsController#taxon_name_classification_types`
+        **Type:** Extended resource endpoint
+      tags:
+        - TaxonNameClassifications – Types
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: Array of classification type strings.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+  /taxon_name_classifications/{id}:
+    get:
+      operationId: getTaxonNameClassification
+      summary: Get a single TaxonNameClassification
+      description: |
+        **Route:** `GET /api/v1/taxon_name_classifications/:id`
+        **Controller:** `TaxonNameClassificationsController#api_show`
+        **View:** `taxon_name_classifications/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - TaxonNameClassifications – REST
+      parameters:
+        - $ref: '#/components/parameters/tncIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single TaxonNameClassification.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxonNameClassification'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All TaxonNameClassification routes documented:
+#   GET /taxon_name_classifications                                | api_index                        | done
+#   GET /taxon_name_classifications/taxon_name_classification_types | taxon_name_classification_types  | done
+#   GET /taxon_name_classifications/:id                            | api_show                         | done

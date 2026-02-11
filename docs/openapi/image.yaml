@@ -1,0 +1,860 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – Image Resource
+  description: |
+    OpenAPI 3.0 specification for the **Image** resource.
+
+    An Image stores a raster image file with metadata (dimensions, fingerprint,
+    pixels-to-centimeter ratio). Images are linked to data objects via
+    Depictions. The API provides JSON metadata endpoints, an OTU inventory
+    view, SHA-based lookups, and binary endpoints for file delivery and
+    region cropping.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: Images – REST
+    description: Standard REST read endpoints.
+  - name: Images – Inventory
+    description: OTU-scoped image inventory.
+  - name: Images – SHA Lookup
+    description: Image lookup by SHA fingerprint.
+  - name: Images – Binary
+    description: Binary file and image region delivery.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    imageIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    shaPath:
+      name: sha
+      in: path
+      required: true
+      description: Image file fingerprint (SHA hash).
+      schema:
+        type: string
+    extendParam:
+      name: extend[]
+      in: query
+      description: "Supported: `depictions`, `attribution`, `source`, `notes`."
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  schemas:
+    Image:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        height:
+          type: integer
+        width:
+          type: integer
+        image_file_fingerprint:
+          type: string
+          description: SHA256 fingerprint of the image file.
+        image_file_file_name:
+          type: string
+        image_file_file_size:
+          type: integer
+        pixels_to_centimeter:
+          type: number
+          nullable: true
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        project_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        original:
+          type: string
+          description: URL to the original-size image.
+        thumb:
+          type: string
+          description: URL to the thumbnail image.
+        medium:
+          type: string
+          description: URL to the medium-size image.
+        content_type:
+          type: string
+          description: MIME type of the image.
+        original_png:
+          type: string
+          description: URL to the original image as PNG.
+        as_png:
+          type: string
+          description: URL to convert and serve image as PNG.
+        object_tag:
+          type: string
+        global_id:
+          type: string
+        depictions:
+          type: array
+          description: Present when `extend[]=depictions`.
+          items:
+            type: object
+            properties:
+              figure_label:
+                type: string
+                nullable: true
+              caption:
+                type: string
+                nullable: true
+              depiction_object_type:
+                type: string
+              depiction_object_id:
+                type: integer
+              position:
+                type: integer
+              label:
+                type: string
+        attribution:
+          type: object
+          nullable: true
+          description: Present when `extend[]=attribution`.
+          properties:
+            label:
+              type: string
+            id:
+              type: integer
+            license:
+              type: string
+              description: Full license text from Creative Commons licenses.
+        source:
+          type: object
+          nullable: true
+          description: Present when `extend[]=source`.
+        notes:
+          type: array
+          description: Present when `extend[]=notes`.
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+
+    ImageInventoryItem:
+      type: object
+      description: Simplified image record for OTU inventory.
+      properties:
+        id:
+          type: integer
+        image_file_fingerprint:
+          type: string
+        original:
+          type: string
+        thumb:
+          type: string
+        medium:
+          type: string
+        depictions:
+          type: array
+          description: Present when `extend[]=depictions`.
+          items:
+            type: object
+            properties:
+              caption:
+                type: string
+                nullable: true
+              figure_label:
+                type: string
+                nullable: true
+              depiction_object_type:
+                type: string
+              depiction_object_id:
+                type: integer
+              label:
+                type: string
+        attribution:
+          type: object
+          nullable: true
+          description: Present when `extend[]=attribution`.
+          properties:
+            label:
+              type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /images:
+    get:
+      operationId: getImages
+      summary: List / filter Images
+      description: |
+        Returns a paginated, filterable list.
+
+        **Route:** `GET /api/v1/images`
+        **Controller:** `ImagesController#api_index`
+        **View:** `images/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - Images – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        - name: image_id[]
+          in: query
+          description: Return specific Image(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: otu_id[]
+          in: query
+          description: Filter by OTU ids (via depictions).
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: otu_scope[]
+          in: query
+          description: Scope for OTU filtering (all, otu, collection_objects, etc.).
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: taxon_name_id[]
+          in: query
+          description: Filter by TaxonName ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: taxon_name_id_target
+          in: query
+          description: Target for taxon name filtering.
+          schema:
+            type: string
+
+        - name: collection_object_id[]
+          in: query
+          description: Filter by CollectionObject ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: collection_object_scope[]
+          in: query
+          description: Scope for collection object filtering.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: field_occurrence_id[]
+          in: query
+          description: Filter by FieldOccurrence ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: field_occurrence_scope[]
+          in: query
+          description: Scope for field occurrence filtering.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: depiction_object_type[]
+          in: query
+          description: Filter by depicted object class.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: depictions
+          in: query
+          description: Filter by whether image has depictions.
+          schema:
+            type: boolean
+
+        - name: depiction_caption
+          in: query
+          description: Filter by depiction caption text.
+          schema:
+            type: string
+
+        - name: depiction_caption_exact
+          in: query
+          description: Exact match on depiction caption.
+          schema:
+            type: boolean
+
+        - name: license[]
+          in: query
+          description: Filter by license type.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: copyright_year
+          in: query
+          description: Filter by exact copyright year.
+          schema:
+            type: integer
+
+        - name: copyright_prior_to_year
+          in: query
+          description: Filter by copyright before year.
+          schema:
+            type: integer
+
+        - name: copyright_after_year
+          in: query
+          description: Filter by copyright after year.
+          schema:
+            type: integer
+
+        - name: copyright_holder_id[]
+          in: query
+          description: Filter by copyright holder person ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: copyright_holder_id_all
+          in: query
+          description: Require all copyright holder ids to match.
+          schema:
+            type: boolean
+
+        - name: copyright_holder_organization_id[]
+          in: query
+          description: Filter by copyright holder organization ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: owner_id[]
+          in: query
+          description: Filter by owner person ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: owner_id_all
+          in: query
+          description: Require all owner ids to match.
+          schema:
+            type: boolean
+
+        - name: owner_organization_id[]
+          in: query
+          description: Filter by owner organization ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: creator_id[]
+          in: query
+          description: Filter by creator user ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: creator_id_all
+          in: query
+          description: Require all creator ids to match.
+          schema:
+            type: boolean
+
+        - name: editor_id[]
+          in: query
+          description: Filter by editor user ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: editor_id_all
+          in: query
+          description: Require all editor ids to match.
+          schema:
+            type: boolean
+
+        - name: source_id[]
+          in: query
+          description: Filter by Source ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: biocuration_class_id[]
+          in: query
+          description: Filter by biocuration class ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: sled_image
+          in: query
+          description: Filter by whether image is a SLED image.
+          schema:
+            type: boolean
+
+        - name: sled_image_id[]
+          in: query
+          description: Filter by SLED image ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: sqed_image
+          in: query
+          description: Filter by whether image has SqED data.
+          schema:
+            type: boolean
+
+        - name: freeform_svg
+          in: query
+          description: Filter by whether image has freeform SVG annotations.
+          schema:
+            type: boolean
+
+        - name: type_material_depictions
+          in: query
+          description: Filter images depicting type material.
+          schema:
+            type: boolean
+
+      responses:
+        '200':
+          description: Paginated array of Image objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Image'
+
+  /images/{id}:
+    get:
+      operationId: getImage
+      summary: Get a single Image
+      description: |
+        Returns a single Image with full metadata. Also accepts a SHA
+        fingerprint instead of a numeric id.
+
+        **Route:** `GET /api/v1/images/:id`
+        **Controller:** `ImagesController#api_show`
+        **View:** `images/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - Images – REST
+      parameters:
+        - $ref: '#/components/parameters/imageIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single Image.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /images/{otu_id}/inventory:
+    get:
+      operationId: getImageInventory
+      summary: Image inventory for an OTU
+      description: |
+        Returns a simplified list of images associated with an OTU,
+        with optional depiction and attribution extensions.
+
+        **Route:** `GET /api/v1/images/:otu_id/inventory`
+        **Controller:** `ImagesController#api_image_inventory`
+        **View:** `images/api/v1/images.json.jbuilder`
+        **Type:** Extended resource endpoint
+      tags:
+        - Images – Inventory
+      parameters:
+        - name: otu_id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        - name: otu_scope[]
+          in: query
+          description: Scope for OTU filtering.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+      responses:
+        '200':
+          description: Paginated array of image inventory items.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ImageInventoryItem'
+
+  /images/sha/{sha}:
+    get:
+      operationId: getImageBySha
+      summary: Get Image metadata by SHA fingerprint
+      description: |
+        Returns Image JSON metadata looked up by its file fingerprint.
+
+        **Route:** `GET /api/v1/images/sha/:sha`
+        **Controller:** `ImagesController#api_image_show_sha`
+        **View:** `images/api/v1/show.json.jbuilder`
+        **Type:** SHA lookup
+      tags:
+        - Images – SHA Lookup
+      parameters:
+        - $ref: '#/components/parameters/shaPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single Image.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /images/file/sha/{sha}:
+    get:
+      operationId: getImageFileBySha
+      summary: Download original image file by SHA
+      description: |
+        Returns the original binary image file looked up by its fingerprint.
+
+        **Route:** `GET /api/v1/images/file/sha/:sha`
+        **Controller:** `ImagesController#api_image_file_sha`
+        **Type:** Binary file delivery
+      tags:
+        - Images – Binary
+      parameters:
+        - $ref: '#/components/parameters/shaPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: Binary image file.
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /images/{id}/scale_to_box/{x}/{y}/{width}/{height}/{box_width}/{box_height}:
+    get:
+      operationId: getImageScaleToBox
+      summary: Get a cropped/scaled image region
+      description: |
+        Returns a JPEG image cropped and scaled to the specified box.
+
+        **Route:** `GET /api/v1/images/:id/scale_to_box/:x/:y/:width/:height/:box_width/:box_height`
+        **Controller:** `ImagesController#api_scale_to_box`
+        **Type:** Binary image delivery
+      tags:
+        - Images – Binary
+      parameters:
+        - $ref: '#/components/parameters/imageIdPath'
+        - name: x
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: X offset of the crop region.
+        - name: 'y'
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Y offset of the crop region.
+        - name: width
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Width of the crop region.
+        - name: height
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Height of the crop region.
+        - name: box_width
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Width of the output box.
+        - name: box_height
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Height of the output box.
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: Cropped and scaled JPEG image.
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /images/{id}/as_png:
+    get:
+      operationId: getImageAsPng
+      summary: Get image converted to PNG
+      description: |
+        Returns the image converted to PNG format.
+
+        **Route:** `GET /api/v1/images/:id/as_png`
+        **Controller:** `ImagesController#api_as_png`
+        **Type:** Binary image delivery
+      tags:
+        - Images – Binary
+      parameters:
+        - $ref: '#/components/parameters/imageIdPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: Image in PNG format.
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /images/file/sha/{sha}/scale_to_box/{x}/{y}/{width}/{height}/{box_width}/{box_height}:
+    get:
+      operationId: getImageScaleToBoxBySha
+      summary: Get a cropped/scaled image region by SHA
+      description: |
+        Returns a JPEG image cropped and scaled to the specified box,
+        looked up by its file fingerprint.
+
+        **Route:** `GET /api/v1/images/file/sha/:sha/scale_to_box/:x/:y/:width/:height/:box_width/:box_height`
+        **Controller:** `ImagesController#api_scale_to_box_sha`
+        **Type:** Binary image delivery
+      tags:
+        - Images – Binary
+      parameters:
+        - $ref: '#/components/parameters/shaPath'
+        - name: x
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: X offset of the crop region.
+        - name: 'y'
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Y offset of the crop region.
+        - name: width
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Width of the crop region.
+        - name: height
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Height of the crop region.
+        - name: box_width
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Width of the output box.
+        - name: box_height
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Height of the output box.
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: Cropped and scaled JPEG image.
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All Image routes documented:
+#   GET /images                                               | api_index            | done
+#   GET /images/:id                                           | api_show             | done
+#   GET /images/:otu_id/inventory                             | api_image_inventory  | done
+#   GET /images/sha/:sha                                      | api_image_show_sha   | done
+#   GET /images/file/sha/:sha                                 | api_image_file_sha   | done
+#   GET /images/:id/scale_to_box/:x/:y/:w/:h/:bw/:bh         | api_scale_to_box     | done
+#   GET /images/:id/as_png                                    | api_as_png           | done
+#   GET /images/file/sha/:sha/scale_to_box/:x/:y/:w/:h/:bw/:bh | api_scale_to_box_sha | done

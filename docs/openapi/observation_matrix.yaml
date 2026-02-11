@@ -1,0 +1,659 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – ObservationMatrix Resource
+  description: |
+    OpenAPI 3.0 specification for the **ObservationMatrix** resource.
+
+    An ObservationMatrix organises Observations into rows (OTUs,
+    CollectionObjects, etc.) and columns (Descriptors). The API provides
+    standard REST endpoints plus two task-based endpoints for interactive
+    keys and image matrices.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: ObservationMatrices – REST
+    description: Standard REST read endpoints.
+  - name: ObservationMatrices – Interactive Key
+    description: Interactive identification key endpoint.
+  - name: ObservationMatrices – Image Matrix
+    description: Image-based matrix endpoint.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    matrixIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    matrixIdKeyPath:
+      name: observation_matrix_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    extendParam:
+      name: extend[]
+      in: query
+      description: "Supported: `rows`, `columns`, `notes`."
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  schemas:
+    ObservationMatrix:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        is_media_matrix:
+          type: boolean
+          description: Whether all descriptors are media-type.
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        project_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        object_tag:
+          type: string
+        global_id:
+          type: string
+        rows:
+          type: array
+          description: Present when `extend[]=rows`.
+          items:
+            type: object
+            properties:
+              object_tag:
+                type: string
+              global_id:
+                type: string
+              observation_object:
+                type: object
+                properties:
+                  object_tag:
+                    type: string
+                  global_id:
+                    type: string
+        columns:
+          type: array
+          description: Present when `extend[]=columns`.
+          items:
+            type: object
+            properties:
+              object_tag:
+                type: string
+              global_id:
+                type: string
+              descriptor:
+                type: object
+                properties:
+                  object_tag:
+                    type: string
+                  global_id:
+                    type: string
+        notes:
+          type: array
+          description: Present when `extend[]=notes`.
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+
+    InteractiveKey:
+      type: object
+      properties:
+        observation_matrix_id:
+          type: integer
+        project_id:
+          type: integer
+        observation_matrix_citation:
+          type: string
+          nullable: true
+        descriptor_available_languages:
+          type: array
+          items:
+            type: object
+        language_id:
+          type: integer
+          nullable: true
+        language_to_use:
+          type: string
+          nullable: true
+        keyword_ids:
+          type: array
+          items:
+            type: integer
+        descriptor_available_keywords:
+          type: array
+          items:
+            type: object
+        row_filter:
+          type: string
+          nullable: true
+        row_id_filter_array:
+          type: array
+          items:
+            type: integer
+        otu_filter:
+          type: string
+          nullable: true
+        otu_id_filter_array:
+          type: array
+          items:
+            type: integer
+        sorting:
+          type: string
+          nullable: true
+        error_tolerance:
+          type: integer
+          nullable: true
+        eliminate_unknown:
+          type: boolean
+        identified_to_rank:
+          type: string
+          nullable: true
+        selected_descriptors:
+          type: string
+          nullable: true
+        selected_descriptors_hash:
+          type: object
+        list_of_descriptors:
+          type: array
+          items:
+            type: object
+        observation_matrix:
+          type: object
+          description: Full observation matrix object with metadata and attributes.
+        remaining:
+          type: array
+          description: OTUs remaining after elimination.
+          items:
+            type: object
+            properties:
+              errors:
+                type: integer
+              error_descriptors:
+                type: array
+                items:
+                  type: object
+              object:
+                type: object
+        eliminated:
+          type: array
+          description: OTUs eliminated by character scoring.
+          items:
+            type: object
+            properties:
+              errors:
+                type: integer
+              error_descriptors:
+                type: array
+                items:
+                  type: object
+              object:
+                type: object
+        eliminated_for_key:
+          type: array
+          description: OTUs eliminated specifically for the key.
+          items:
+            type: object
+            properties:
+              errors:
+                type: integer
+              error_descriptors:
+                type: array
+                items:
+                  type: object
+              object:
+                type: object
+
+    ImageMatrix:
+      type: object
+      properties:
+        observation_matrix_id:
+          type: integer
+        observation_matrix_citation:
+          type: string
+          nullable: true
+        descriptor_available_languages:
+          type: array
+          items:
+            type: object
+        language_id:
+          type: integer
+          nullable: true
+        language_to_use:
+          type: string
+          nullable: true
+        keyword_ids:
+          type: array
+          items:
+            type: integer
+        descriptor_available_keywords:
+          type: array
+          items:
+            type: object
+        row_filter:
+          type: string
+          nullable: true
+        row_id_filter_array:
+          type: array
+          items:
+            type: integer
+        otu_filter:
+          type: string
+          nullable: true
+        otu_id_filter_array:
+          type: array
+          items:
+            type: integer
+        identified_to_rank:
+          type: string
+          nullable: true
+        pagination:
+          type: object
+          properties:
+            pagination_page:
+              type: integer
+            pagination_per_page:
+              type: integer
+            pagination_total:
+              type: integer
+            pagination_total_pages:
+              type: integer
+            pagination_next_page:
+              type: integer
+              nullable: true
+            pagination_previous_page:
+              type: integer
+              nullable: true
+        list_of_descriptors:
+          type: array
+          items:
+            type: object
+        image_hash:
+          type: object
+          description: Map of image id to image and citation objects.
+          additionalProperties:
+            type: object
+            properties:
+              image:
+                type: object
+              citations:
+                type: array
+                items:
+                  type: object
+        depiction_matrix:
+          type: array
+          description: Matrix of depictions per observation object.
+          items:
+            type: object
+            properties:
+              object:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  type:
+                    type: string
+                  label:
+                    type: string
+              depictions:
+                type: array
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      depiction_object_id:
+                        type: integer
+                      depiction_object_type:
+                        type: string
+                      image_id:
+                        type: integer
+                      caption:
+                        type: string
+                        nullable: true
+                      figure_label:
+                        type: string
+                        nullable: true
+        observation_matrix:
+          type: object
+          nullable: true
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /observation_matrices:
+    get:
+      operationId: getObservationMatrices
+      summary: List / filter ObservationMatrices
+      description: |
+        Returns a paginated, filterable list.
+
+        **Route:** `GET /api/v1/observation_matrices`
+        **Controller:** `ObservationMatricesController#api_index`
+        **View:** `observation_matrices/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - ObservationMatrices – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        - name: observation_matrix_id[]
+          in: query
+          description: Return specific ObservationMatrix(es) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: otu_id[]
+          in: query
+          description: Filter by OTU ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+      responses:
+        '200':
+          description: Paginated array of ObservationMatrix objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ObservationMatrix'
+
+  /observation_matrices/{id}:
+    get:
+      operationId: getObservationMatrix
+      summary: Get a single ObservationMatrix
+      description: |
+        **Route:** `GET /api/v1/observation_matrices/:id`
+        **Controller:** `ObservationMatricesController#api_show`
+        **View:** `observation_matrices/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - ObservationMatrices – REST
+      parameters:
+        - $ref: '#/components/parameters/matrixIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single ObservationMatrix.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObservationMatrix'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /observation_matrices/{observation_matrix_id}/key:
+    get:
+      operationId: getObservationMatrixKey
+      summary: Interactive identification key
+      description: |
+        Returns an interactive key for the observation matrix, with remaining,
+        eliminated, and eliminated-for-key OTU lists based on the selected
+        descriptors and filtering parameters.
+
+        **Route:** `GET /api/v1/observation_matrices/:observation_matrix_id/key`
+        **Controller:** `Tasks::ObservationMatrices::InteractiveKeyController#api_key`
+        **View:** `tasks/observation_matrices/interactive_key/key.json.jbuilder`
+        **Type:** Extended resource endpoint (task)
+      tags:
+        - ObservationMatrices – Interactive Key
+      parameters:
+        - $ref: '#/components/parameters/matrixIdKeyPath'
+        - $ref: '#/components/parameters/projectId'
+
+        - name: language_id
+          in: query
+          description: Language id for descriptor labels.
+          schema:
+            type: integer
+
+        - name: row_filter
+          in: query
+          description: Comma-separated row ids to include.
+          schema:
+            type: string
+
+        - name: otu_filter
+          in: query
+          description: Comma-separated OTU ids to include.
+          schema:
+            type: string
+
+        - name: sorting
+          in: query
+          description: Sort order for descriptors.
+          schema:
+            type: string
+
+        - name: eliminate_unknown
+          in: query
+          description: Whether to eliminate taxa with unknown scores.
+          schema:
+            type: boolean
+
+        - name: error_tolerance
+          in: query
+          description: Number of mismatches allowed before elimination.
+          schema:
+            type: integer
+
+        - name: identified_to_rank
+          in: query
+          description: Restrict to taxa identified to this rank.
+          schema:
+            type: string
+
+        - name: selected_descriptors
+          in: query
+          description: Comma-separated descriptor ids with selected states.
+          schema:
+            type: string
+
+        - name: keyword_ids[]
+          in: query
+          description: Filter descriptors by keyword tag ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+      responses:
+        '200':
+          description: Interactive key data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InteractiveKey'
+
+  /observation_matrices/{observation_matrix_id}/image_matrix:
+    get:
+      operationId: getObservationMatrixImageMatrix
+      summary: Image matrix view
+      description: |
+        Returns an image-based matrix for the observation matrix, with
+        depictions organised by observation object and descriptor, plus
+        image metadata and citations.
+
+        **Route:** `GET /api/v1/observation_matrices/:observation_matrix_id/image_matrix`
+        **Controller:** `Tasks::ObservationMatrices::ImageMatrixController#api_key`
+        **View:** `observation_matrices/api/v1/image_matrix.json.jbuilder`
+        **Type:** Extended resource endpoint (task)
+      tags:
+        - ObservationMatrices – Image Matrix
+      parameters:
+        - $ref: '#/components/parameters/matrixIdKeyPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+
+        - name: language_id
+          in: query
+          description: Language id for descriptor labels.
+          schema:
+            type: integer
+
+        - name: row_filter
+          in: query
+          description: Comma-separated row ids to include.
+          schema:
+            type: string
+
+        - name: otu_filter
+          in: query
+          description: Comma-separated OTU ids to include.
+          schema:
+            type: string
+
+        - name: sorting
+          in: query
+          description: Sort order for descriptors.
+          schema:
+            type: string
+
+        - name: eliminate_unknown
+          in: query
+          description: Whether to eliminate taxa with unknown scores.
+          schema:
+            type: boolean
+
+        - name: error_tolerance
+          in: query
+          description: Number of mismatches allowed before elimination.
+          schema:
+            type: integer
+
+        - name: identified_to_rank
+          in: query
+          description: Restrict to taxa identified to this rank.
+          schema:
+            type: string
+
+        - name: selected_descriptors
+          in: query
+          description: Comma-separated descriptor ids with selected states.
+          schema:
+            type: string
+
+        - name: keyword_ids[]
+          in: query
+          description: Filter descriptors by keyword tag ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+      responses:
+        '200':
+          description: Image matrix data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageMatrix'
+
+# CONSISTENCY REPORT
+# All ObservationMatrix routes documented:
+#   GET /observation_matrices                                    | api_index        | done
+#   GET /observation_matrices/:id                                | api_show         | done
+#   GET /observation_matrices/:observation_matrix_id/key         | api_key (key)    | done
+#   GET /observation_matrices/:observation_matrix_id/image_matrix | api_key (image) | done

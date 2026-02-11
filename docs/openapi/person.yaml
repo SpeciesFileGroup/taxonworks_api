@@ -1,0 +1,613 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – Person Resource
+  description: |
+    OpenAPI 3.0 specification for the **Person** resource of the
+    TaxonWorks external API.
+
+    A Person represents a human (not a user). People are only related to
+    data via Roles (e.g. Author, Editor, Collector, TaxonDeterminer).
+
+    Person types: `Person::Vetted` (2+ roles or has annotations) and
+    `Person::Unvetted` (0-1 roles, no annotations).
+
+    ## Authentication
+    **People endpoints are unauthenticated (public).** No token required.
+
+    ## Pagination
+    List endpoints return paginated results via `page` and `per` parameters.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: People – REST
+    description: Standard REST read endpoints for People. **Unauthenticated.**
+  - name: People – Autocomplete
+    description: Autocomplete search for People. **Unauthenticated.**
+
+security: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+      description: User API token (optional).
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+      description: Project-level API token (optional).
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      description: Project ID (optional — provides project context).
+      schema:
+        type: integer
+
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 10000
+        default: 500
+
+    personIdPath:
+      name: id
+      in: path
+      required: true
+      description: Person id.
+      schema:
+        type: integer
+
+    extendParam:
+      name: extend[]
+      in: query
+      description: |
+        Include additional nested data. Supported values:
+        `roles`, `identifiers`, `notes`.
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  schemas:
+    PersonBase:
+      type: object
+      description: Core Person attributes. Rendered by `_base_attributes.json.jbuilder`.
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          example: 500
+        type:
+          type: string
+          description: Person subclass (`Person::Vetted` or `Person::Unvetted`).
+          example: "Person::Vetted"
+        last_name:
+          type: string
+          nullable: true
+          description: Last / family name.
+          example: "Smith"
+        first_name:
+          type: string
+          nullable: true
+          description: First name (may include initials).
+          example: "John A."
+        suffix:
+          type: string
+          nullable: true
+          description: Suffix following the last name (e.g. "Jr.", "III").
+        prefix:
+          type: string
+          nullable: true
+          description: Prefix (e.g. "Dr.", "von").
+        cached:
+          type: string
+          nullable: true
+          description: Full cached name.
+          example: "Smith, John A."
+        year_born:
+          type: integer
+          nullable: true
+        year_died:
+          type: integer
+          nullable: true
+        year_active_start:
+          type: integer
+          nullable: true
+          description: Rough start year of scientific activity.
+        year_active_end:
+          type: integer
+          nullable: true
+          description: Rough end year of scientific activity.
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        global_id:
+          type: string
+          description: Rails GlobalID URI.
+          example: "gid://taxon-works/Person/500"
+
+    Person:
+      description: Full Person with optional extensions.
+      allOf:
+        - $ref: '#/components/schemas/PersonBase'
+        - type: object
+          properties:
+            roles:
+              type: array
+              description: Present when `extend[]=roles`.
+              items:
+                type: object
+                description: Role attributes.
+            identifiers:
+              type: object
+              description: Present when `extend[]=identifiers`.
+            notes:
+              type: array
+              description: Present when `extend[]=notes`.
+              items:
+                type: object
+                properties:
+                  text:
+                    type: string
+
+    PersonBrief:
+      type: object
+      description: Minimal person representation used in nested contexts.
+      properties:
+        person:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+              description: Cached full name.
+            global_id:
+              type: string
+
+    PersonAutocompleteItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        label_html:
+          type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+
+  /people:
+    get:
+      operationId: getPeople
+      summary: List / filter People
+      description: |
+        Returns a paginated, filterable list of People ordered by `people.id`.
+
+        **Route:** `GET /api/v1/people`
+        **Controller:** `PeopleController#api_index`
+        **View:** `people/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+        **Authentication:** None (public)
+      tags:
+        - People – REST
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        - name: person_id[]
+          in: query
+          description: Return specific Person(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: name
+          in: query
+          description: Search against `cached` (full name). Wildcarded unless listed in `exact[]`.
+          schema:
+            type: string
+
+        - name: last_name
+          in: query
+          description: Filter by last name (also matches AlternateValues).
+          schema:
+            type: string
+
+        - name: first_name
+          in: query
+          description: Filter by first name (also matches AlternateValues).
+          schema:
+            type: string
+
+        - name: last_name_starts_with
+          in: query
+          description: Filter by last name prefix.
+          schema:
+            type: string
+
+        - name: prefix
+          in: query
+          description: Filter by name prefix (also matches AlternateValues).
+          schema:
+            type: string
+
+        - name: suffix
+          in: query
+          description: Filter by name suffix (also matches AlternateValues).
+          schema:
+            type: string
+
+        - name: exact[]
+          in: query
+          description: |
+            Attributes that should be matched exactly (not wildcarded).
+            Values: `last_name`, `first_name`, `suffix`, `prefix`, `name`.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - last_name
+                - first_name
+                - suffix
+                - prefix
+                - name
+          style: form
+          explode: true
+
+        - name: born_after_year
+          in: query
+          description: Only people born after this year.
+          schema:
+            type: integer
+
+        - name: born_before_year
+          in: query
+          description: Only people born before this year.
+          schema:
+            type: integer
+
+        - name: died_after_year
+          in: query
+          description: Only people who died after this year.
+          schema:
+            type: integer
+
+        - name: died_before_year
+          in: query
+          description: Only people who died before this year.
+          schema:
+            type: integer
+
+        - name: active_after_year
+          in: query
+          description: Only people active after this year.
+          schema:
+            type: integer
+
+        - name: active_before_year
+          in: query
+          description: Only people active before this year.
+          schema:
+            type: integer
+
+        - name: role[]
+          in: query
+          description: |
+            Filter to people with these role types (e.g. `TaxonNameAuthor`,
+            `SourceAuthor`, `SourceEditor`, `Collector`, `TaxonDeterminer`).
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: except_role[]
+          in: query
+          description: Exclude people with these role types.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: only_project_id[]
+          in: query
+          description: Only return people with roles in these project(s).
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: except_project_id[]
+          in: query
+          description: Exclude people with roles in these project(s).
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: use_min
+          in: query
+          description: Minimum number of roles the person must have.
+          schema:
+            type: integer
+
+        - name: use_max
+          in: query
+          description: Maximum number of roles the person must have.
+          schema:
+            type: integer
+
+        - name: repeated_total
+          in: query
+          description: Number of times this name must be an identical match (must be >= 2).
+          schema:
+            type: integer
+            minimum: 2
+
+        - name: levenshtein_cuttoff
+          in: query
+          description: Edit distance cutoff for fuzzy matching against `cached`. Requires `name`.
+          schema:
+            type: integer
+
+        - name: with[]
+          in: query
+          description: Only return people where these fields are NOT null. Values `first_name`, `prefix`, `suffix`.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: without[]
+          in: query
+          description: Only return people where these fields ARE null. Values `first_name`, `prefix`, `suffix`.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        # ── Tags concern ──
+        - name: keyword_id_and[]
+          in: query
+          description: Return people tagged with ALL of the given Keyword ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: keyword_id_or[]
+          in: query
+          description: Return people tagged with ANY of the given Keyword ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: tags
+          in: query
+          schema:
+            type: boolean
+
+        # ── Notes concern ──
+        - name: notes
+          in: query
+          schema:
+            type: boolean
+
+        # ── DataAttributes concern ──
+        - name: data_attributes
+          in: query
+          schema:
+            type: boolean
+
+      responses:
+        '200':
+          description: A paginated array of Person objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+            X-Page:
+              schema:
+                type: integer
+            X-Per-Page:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Person'
+              example:
+                - id: 500
+                  type: "Person::Vetted"
+                  last_name: "Smith"
+                  first_name: "John A."
+                  cached: "Smith, John A."
+                  year_born: 1950
+                  year_active_start: 1975
+                  global_id: "gid://taxon-works/Person/500"
+
+  /people/{id}:
+    get:
+      operationId: getPerson
+      summary: Get a single Person
+      description: |
+        Returns a single Person by id.
+
+        Supports `extend[]` values: `roles`, `identifiers`, `notes`.
+
+        **Route:** `GET /api/v1/people/:id`
+        **Controller:** `PeopleController#api_show`
+        **View:** `people/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+        **Authentication:** None (public)
+      tags:
+        - People – REST
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/personIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single Person object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /people/autocomplete:
+    get:
+      operationId: autocompletePeople
+      summary: Autocomplete People
+      description: |
+        Searches people by name string.
+
+        **Route:** `GET /api/v1/people/autocomplete`
+        **Controller:** `PeopleController#autocomplete`
+        **Type:** Extended resource endpoint
+        **Authentication:** None (public)
+      tags:
+        - People – Autocomplete
+      security: []
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - name: term
+          in: query
+          required: true
+          description: The search string.
+          schema:
+            type: string
+            minLength: 1
+
+        - name: role_type
+          in: query
+          description: |
+            Limit to people with this role type (e.g. `TaxonNameAuthor`,
+            `SourceAuthor`, `Collector`).
+          schema:
+            oneOf:
+              - type: string
+              - type: array
+                items:
+                  type: string
+
+        - name: in_project
+          in: query
+          description: If `true`, only return people used in the current project.
+          schema:
+            type: boolean
+
+      responses:
+        '200':
+          description: Array of autocomplete results.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonAutocompleteItem'
+
+# ─────────────────────────────────────────────
+# CONSISTENCY REPORT
+#
+# All People routes from config/routes/api_v1.rb are documented:
+#
+#   Route                        | Endpoint      | Status
+#   -----------------------------|---------------|---------
+#   GET /people                  | api_index     | ✅ Documented
+#   GET /people/autocomplete     | autocomplete  | ✅ Documented
+#   GET /people/:id              | api_show      | ✅ Documented
+#
+# OBSERVATIONS:
+#
+# 1. People endpoints are in the unauthenticated block
+#    (`authenticate_project: false, authenticate_user: false`), same as
+#    Sources.
+#
+# 2. The filter has a `regex` param documented as "DO NOT EXPOSE TO
+#    EXTERNAL API" — it is excluded from this spec.
+#
+# 3. No POST/PATCH/DELETE endpoints exposed (read-only).

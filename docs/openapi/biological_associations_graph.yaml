@@ -1,0 +1,281 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – BiologicalAssociationsGraph Resource
+  description: |
+    OpenAPI 3.0 specification for the **BiologicalAssociationsGraph** resource.
+
+    A BiologicalAssociationsGraph groups a set of BiologicalAssociations into
+    a named graph with an optional layout, used for visualising interaction
+    networks.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: BiologicalAssociationsGraphs – REST
+    description: Standard REST read endpoints.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    bagIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    extendParam:
+      name: extend[]
+      in: query
+      description: "Supported: `biological_associations_biological_associations_graphs`, `notes`."
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  schemas:
+    BiologicalAssociationsGraph:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          nullable: true
+        layout:
+          type: string
+          nullable: true
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        project_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        object_tag:
+          type: string
+        global_id:
+          type: string
+        biological_associations_biological_associations_graphs:
+          type: array
+          description: Present when `extend[]=biological_associations_biological_associations_graphs`.
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              biological_association_id:
+                type: integer
+        notes:
+          type: array
+          description: Present when `extend[]=notes`.
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /biological_associations_graphs:
+    get:
+      operationId: getBiologicalAssociationsGraphs
+      summary: List / filter BiologicalAssociationsGraphs
+      description: |
+        Returns a paginated, filterable list.
+
+        **Route:** `GET /api/v1/biological_associations_graphs`
+        **Controller:** `BiologicalAssociationsGraphsController#api_index`
+        **View:** `biological_associations_graphs/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - BiologicalAssociationsGraphs – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        - name: biological_associations_graph_id[]
+          in: query
+          description: Return specific graph(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: biological_association_id[]
+          in: query
+          description: Filter by BiologicalAssociation ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: biological_relationship_id[]
+          in: query
+          description: Filter by BiologicalRelationship ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: wkt
+          in: query
+          description: Spatial filter in WKT format.
+          schema:
+            type: string
+
+        - name: geo_json
+          in: query
+          description: GeoJSON geometry for spatial filtering.
+          schema:
+            type: object
+
+        - name: radius
+          in: query
+          description: Buffer radius in meters for geo_json.
+          schema:
+            type: number
+
+        - name: geo_shape_id[]
+          in: query
+          description: Shape ids for geographic filtering.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: geo_shape_type[]
+          in: query
+          description: Shape types (GeographicArea or Gazetteer).
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: geo_mode
+          in: query
+          description: Geographic matching mode.
+          schema:
+            type: boolean
+
+      responses:
+        '200':
+          description: Paginated array of BiologicalAssociationsGraph objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BiologicalAssociationsGraph'
+
+  /biological_associations_graphs/{id}:
+    get:
+      operationId: getBiologicalAssociationsGraph
+      summary: Get a single BiologicalAssociationsGraph
+      description: |
+        **Route:** `GET /api/v1/biological_associations_graphs/:id`
+        **Controller:** `BiologicalAssociationsGraphsController#api_show`
+        **View:** `biological_associations_graphs/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - BiologicalAssociationsGraphs – REST
+      parameters:
+        - $ref: '#/components/parameters/bagIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single BiologicalAssociationsGraph.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BiologicalAssociationsGraph'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All BiologicalAssociationsGraph routes documented:
+#   GET /biological_associations_graphs     | api_index | done
+#   GET /biological_associations_graphs/:id | api_show  | done

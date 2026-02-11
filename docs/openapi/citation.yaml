@@ -1,0 +1,248 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – Citation Resource
+  description: |
+    OpenAPI 3.0 specification for the **Citation** resource.
+
+    A Citation links a Source to any data object, optionally recording
+    pages and whether it is the original citation.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: Citations – REST
+    description: Standard REST read endpoints.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    citationIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    extendParam:
+      name: extend[]
+      in: query
+      description: "Supported: `source`, `citation_object`, `citation_topics`, `notes`."
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  schemas:
+    Citation:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        citation_object_id:
+          type: integer
+        citation_object_type:
+          type: string
+        source_id:
+          type: integer
+        pages:
+          type: string
+          nullable: true
+        is_original:
+          type: boolean
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        project_id:
+          type: integer
+        citation_source_body:
+          type: string
+          nullable: true
+          description: Cached source string.
+        citation_object:
+          type: object
+          description: Present when `extend[]=citation_object`.
+        citation_topics:
+          type: array
+          description: Present when `extend[]=citation_topics`.
+          items:
+            type: object
+        source:
+          type: object
+          description: Present when `extend[]=source`.
+        notes:
+          type: array
+          description: Present when `extend[]=notes`.
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /citations:
+    get:
+      operationId: getCitations
+      summary: List / filter Citations
+      description: |
+        Returns a paginated, filterable list.
+
+        **Route:** `GET /api/v1/citations`
+        **Controller:** `CitationsController#api_index`
+        **View:** `citations/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - Citations – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        - name: citation_object_type[]
+          in: query
+          description: Filter by cited object class.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: citation_object_id[]
+          in: query
+          description: Filter by cited object id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: source_id
+          in: query
+          description: Filter by Source id.
+          schema:
+            type: integer
+
+        - name: is_original
+          in: query
+          description: Filter by original citation flag.
+          schema:
+            type: boolean
+
+        - name: role_id[]
+          in: query
+          description: Filter by role (person) ids on the citation.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+      responses:
+        '200':
+          description: Paginated array of Citation objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Citation'
+
+  /citations/{id}:
+    get:
+      operationId: getCitation
+      summary: Get a single Citation
+      description: |
+        **Route:** `GET /api/v1/citations/:id`
+        **Controller:** `CitationsController#api_show`
+        **View:** `citations/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - Citations – REST
+      parameters:
+        - $ref: '#/components/parameters/citationIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single Citation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Citation'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All Citation routes documented:
+#   GET /citations     | api_index | done
+#   GET /citations/:id | api_show  | done

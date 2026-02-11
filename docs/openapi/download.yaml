@@ -1,0 +1,281 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – Download Resource
+  description: |
+    OpenAPI 3.0 specification for the **Download** resource.
+
+    A Download represents a generated file (export, archive, etc.) that can
+    be retrieved via the API. Downloads have expiration times and track the
+    number of times they have been accessed.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: Downloads – REST
+    description: Standard REST read endpoints.
+  - name: Downloads – File
+    description: Binary file delivery.
+  - name: Downloads – DwC Archive
+    description: Darwin Core archive generation and retrieval.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    downloadIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+
+  schemas:
+    Download:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        type:
+          type: string
+          description: STI type of the download.
+        description:
+          type: string
+          nullable: true
+        filename:
+          type: string
+          nullable: true
+        times_downloaded:
+          type: integer
+        request:
+          type: string
+          nullable: true
+        expires:
+          type: string
+          format: date-time
+          nullable: true
+        sha2:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        project_id:
+          type: integer
+        file:
+          type: string
+          nullable: true
+          description: URL to the download file, if persisted and not expired.
+
+    DownloadShow:
+      type: object
+      properties:
+        status:
+          type: object
+          properties:
+            ready:
+              type: boolean
+            expired:
+              type: boolean
+        download:
+          $ref: '#/components/schemas/Download'
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /downloads:
+    get:
+      operationId: getDownloads
+      summary: List / filter Downloads
+      description: |
+        Returns a paginated, filterable list.
+
+        **Route:** `GET /api/v1/downloads`
+        **Controller:** `DownloadsController#api_index`
+        **View:** `downloads/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - Downloads – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+
+        - name: download_id[]
+          in: query
+          description: Return specific Download(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: download_type[]
+          in: query
+          description: Filter by download type.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+      responses:
+        '200':
+          description: Paginated array of Download objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Download'
+
+  /downloads/{id}:
+    get:
+      operationId: getDownload
+      summary: Get a single Download with status
+      description: |
+        Returns a single Download wrapped in a status envelope indicating
+        whether the file is ready and/or expired.
+
+        **Route:** `GET /api/v1/downloads/:id`
+        **Controller:** `DownloadsController#api_show`
+        **View:** `downloads/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - Downloads – REST
+      parameters:
+        - $ref: '#/components/parameters/downloadIdPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: A single Download with status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DownloadShow'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /downloads/{id}/file:
+    get:
+      operationId: getDownloadFile
+      summary: Download the file
+      description: |
+        Returns the binary file content of the Download if it is ready.
+
+        **Route:** `GET /api/v1/downloads/:id/file`
+        **Controller:** `DownloadsController#api_file`
+        **Type:** Binary file delivery
+      tags:
+        - Downloads – File
+      parameters:
+        - $ref: '#/components/parameters/downloadIdPath'
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: Binary file content.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /downloads/dwc_archive_complete:
+    get:
+      operationId: getDwcArchiveComplete
+      summary: Get or create a complete DwC archive
+      description: |
+        Creates or retrieves a complete Darwin Core Archive for the project.
+        Only available for public projects (project_token authentication).
+
+        **Route:** `GET /api/v1/downloads/dwc_archive_complete`
+        **Controller:** `DownloadsController#api_dwc_archive_complete`
+        **Type:** Extended resource endpoint
+      tags:
+        - Downloads – DwC Archive
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+      responses:
+        '200':
+          description: Download status and metadata for the DwC archive.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DownloadShow'
+
+# CONSISTENCY REPORT
+# All Download routes documented:
+#   GET /downloads                    | api_index                | done
+#   GET /downloads/:id               | api_show                 | done
+#   GET /downloads/:id/file          | api_file                 | done
+#   GET /downloads/dwc_archive_complete | api_dwc_archive_complete | done

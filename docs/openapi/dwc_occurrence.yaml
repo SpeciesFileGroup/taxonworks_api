@@ -1,0 +1,353 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – DwcOccurrence Resource
+  description: |
+    OpenAPI 3.0 specification for the **DwcOccurrence** resource.
+
+    A DwcOccurrence is a cached/indexed Darwin Core record for the
+    Occurrence core. Each record references a specific CollectionObject,
+    AssertedDistribution, or FieldOccurrence. DWC attributes are
+    camelCase. This is a cache — data are periodically regenerated.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: DwcOccurrences – REST
+    description: Standard REST read endpoints.
+  - name: DwcOccurrences – Autocomplete
+    description: Area-name autocomplete for DwC geographic fields.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+
+  schemas:
+    DwcOccurrence:
+      type: object
+      description: |
+        A Darwin Core Occurrence record. Contains standard DwC terms as
+        camelCase fields. Only non-blank fields are returned. Internal
+        fields (`created_by_id`, `updated_by_id`) are excluded.
+      properties:
+        id:
+          type: integer
+          description: TaxonWorks internal id (NOT the DwC occurrenceID).
+        occurrenceID:
+          type: string
+        basisOfRecord:
+          type: string
+          example: "PreservedSpecimen"
+        scientificName:
+          type: string
+        scientificNameAuthorship:
+          type: string
+        kingdom:
+          type: string
+        phylum:
+          type: string
+        dwcClass:
+          type: string
+          description: DwC `class` field (renamed to avoid Ruby reserved word).
+        order:
+          type: string
+        family:
+          type: string
+        genus:
+          type: string
+        specificEpithet:
+          type: string
+        infraspecificEpithet:
+          type: string
+        taxonRank:
+          type: string
+        country:
+          type: string
+        stateProvince:
+          type: string
+        county:
+          type: string
+        locality:
+          type: string
+        decimalLatitude:
+          type: string
+        decimalLongitude:
+          type: string
+        coordinateUncertaintyInMeters:
+          type: string
+        eventDate:
+          type: string
+        year:
+          type: string
+        month:
+          type: string
+        day:
+          type: string
+        recordedBy:
+          type: string
+        identifiedBy:
+          type: string
+        institutionCode:
+          type: string
+        collectionCode:
+          type: string
+        catalogNumber:
+          type: string
+        typeStatus:
+          type: string
+      additionalProperties:
+        type: string
+        description: Additional DwC terms not explicitly listed.
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    UnprocessableEntity:
+      description: Unprocessable entity.
+      content:
+        application/json:
+          schema:
+            type: object
+
+paths:
+  /dwc_occurrences:
+    get:
+      operationId: getDwcOccurrences
+      summary: List / filter DwC Occurrences
+      description: |
+        Returns a paginated list of DwcOccurrence records. Only non-blank
+        fields are included in each record. Supports JSON and CSV output.
+
+        Filter parameters include standard DwC field names (camelCase) for
+        direct attribute matching, plus TaxonWorks-specific filters.
+
+        **Route:** `GET /api/v1/dwc_occurrences`
+        **Controller:** `DwcOccurrencesController#api_index`
+        **View:** `dwc_occurrences/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - DwcOccurrences – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+
+        - name: dwc_occurrence_id[]
+          in: query
+          description: Return specific DwcOccurrence(s) by TW internal id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: otu_id[]
+          in: query
+          description: Filter by OTU ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: taxon_name_id[]
+          in: query
+          description: Filter by TaxonName ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: person_id[]
+          in: query
+          description: Filter by Person ids (collectors/determiners).
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: empty_rank[]
+          in: query
+          description: Return records where the specified DwC rank fields are empty.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        # DwC attribute filters — any DwC field can be passed as a query param
+        - name: scientificName
+          in: query
+          description: Filter by scientificName.
+          schema:
+            type: string
+
+        - name: country
+          in: query
+          description: Filter by country.
+          schema:
+            type: string
+
+        - name: stateProvince
+          in: query
+          description: Filter by stateProvince.
+          schema:
+            type: string
+
+        - name: county
+          in: query
+          description: Filter by county.
+          schema:
+            type: string
+
+        - name: family
+          in: query
+          description: Filter by family.
+          schema:
+            type: string
+
+        - name: genus
+          in: query
+          description: Filter by genus.
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Paginated array of DwC Occurrence records.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DwcOccurrence'
+              example:
+                - id: 50000
+                  occurrenceID: "urn:uuid:abc123"
+                  basisOfRecord: "PreservedSpecimen"
+                  scientificName: "Aus bus Author, 2000"
+                  country: "United States"
+                  stateProvince: "Illinois"
+            text/csv:
+              schema:
+                type: string
+                description: Tab-separated DwC occurrence data (limit 100,000 rows).
+
+  /dwc_occurrences/area_autocomplete:
+    get:
+      operationId: areaAutocompleteDwcOccurrences
+      summary: Autocomplete DwC geographic area names
+      description: |
+        Returns distinct geographic area names from DwC Occurrence records
+        matching the search term. Useful for building geographic filters.
+
+        **Route:** `GET /api/v1/dwc_occurrences/area_autocomplete`
+        **Controller:** `DwcOccurrencesController#api_area_autocomplete`
+        **Type:** Extended resource endpoint
+      tags:
+        - DwcOccurrences – Autocomplete
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - name: term
+          in: query
+          required: true
+          description: Search string (case-insensitive ILIKE match).
+          schema:
+            type: string
+            minLength: 1
+
+        - name: target
+          in: query
+          description: Which DwC geographic field to search.
+          schema:
+            type: string
+            default: country
+            enum:
+              - country
+              - stateProvince
+              - county
+
+      responses:
+        '200':
+          description: Array of distinct area name strings (max 20), sorted by length.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+                - "Illinois"
+                - "Illinois Territory"
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+
+# CONSISTENCY REPORT
+# All DwcOccurrence routes documented:
+#   GET /dwc_occurrences/area_autocomplete | api_area_autocomplete | ✅
+#   GET /dwc_occurrences                   | api_index             | ✅

@@ -1,0 +1,275 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – CommonName Resource
+  description: |
+    OpenAPI 3.0 specification for the **CommonName** resource.
+
+    A CommonName links a vernacular name string to an OTU, optionally
+    scoped by geographic area and language, with optional temporal
+    range (start/end year).
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: CommonNames – REST
+    description: Standard REST read endpoints.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    commonNameIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    extendParam:
+      name: extend[]
+      in: query
+      description: "Supported: `otu`, `notes`."
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  schemas:
+    CommonName:
+      type: object
+      required:
+        - id
+        - name
+        - otu_id
+      properties:
+        id:
+          type: integer
+          example: 300
+        name:
+          type: string
+          description: The vernacular name.
+          example: "house fly"
+        geographic_area_id:
+          type: integer
+          nullable: true
+          description: Geographic area where this common name is used.
+        otu_id:
+          type: integer
+          description: The OTU this common name refers to.
+        language_id:
+          type: integer
+          nullable: true
+          description: Language id.
+        start_year:
+          type: integer
+          nullable: true
+          description: Year the common name started being used.
+        end_year:
+          type: integer
+          nullable: true
+          description: Year the common name stopped being used.
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        language:
+          type: string
+          nullable: true
+          description: Language label string.
+          example: "English"
+        geographic_area:
+          type: object
+          nullable: true
+          description: Present when the common name has a geographic area.
+          properties:
+            name:
+              type: string
+        otu:
+          type: object
+          description: Present when `extend[]=otu`. Full OTU attributes.
+        notes:
+          type: array
+          description: Present when `extend[]=notes`.
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /common_names:
+    get:
+      operationId: getCommonNames
+      summary: List / filter CommonNames
+      description: |
+        Returns a paginated, filterable list ordered by `common_names.id`.
+        Also supports CSV output.
+
+        **Route:** `GET /api/v1/common_names`
+        **Controller:** `CommonNamesController#api_index`
+        **View:** `common_names/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - CommonNames – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        - name: common_name_id[]
+          in: query
+          description: Return specific CommonName(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: otu_id[]
+          in: query
+          description: Filter by OTU ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: name
+          in: query
+          description: Filter by common name string.
+          schema:
+            type: string
+
+        - name: geographic_area_id
+          in: query
+          description: Filter by GeographicArea id.
+          schema:
+            type: integer
+
+        - name: gazetteer_id
+          in: query
+          description: Filter by Gazetteer id.
+          schema:
+            type: integer
+
+        - name: language_id
+          in: query
+          description: Filter by Language id.
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Paginated array of CommonName objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommonName'
+              example:
+                - id: 300
+                  name: "house fly"
+                  otu_id: 12345
+                  language_id: 1
+                  language: "English"
+
+  /common_names/{id}:
+    get:
+      operationId: getCommonName
+      summary: Get a single CommonName
+      description: |
+        Supports `extend[]`: `otu`, `notes`.
+
+        **Route:** `GET /api/v1/common_names/:id`
+        **Controller:** `CommonNamesController#api_show`
+        **View:** `common_names/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - CommonNames – REST
+      parameters:
+        - $ref: '#/components/parameters/commonNameIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single CommonName.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonName'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All CommonName routes documented:
+#   GET /common_names     | api_index | ✅
+#   GET /common_names/:id | api_show  | ✅

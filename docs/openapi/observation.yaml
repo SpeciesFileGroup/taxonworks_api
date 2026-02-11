@@ -1,0 +1,389 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – Observation Resource
+  description: |
+    OpenAPI 3.0 specification for the **Observation** resource.
+
+    An Observation records a scored value for a Descriptor on an observation
+    object (Otu, CollectionObject, FieldOccurrence, etc.). STI subtypes:
+    Qualitative, PresenceAbsence, Continuous, Sample, Media, Working, Gene.
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: Observations – REST
+    description: Standard REST read endpoints.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    observationIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    extendParam:
+      name: extend[]
+      in: query
+      description: "Supported: `character_state`, `descriptor`, `depictions`, `notes`."
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  schemas:
+    Observation:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        descriptor_id:
+          type: integer
+        observation_object_id:
+          type: integer
+        observation_object_type:
+          type: string
+        character_state_id:
+          type: integer
+          nullable: true
+        frequency:
+          type: number
+          nullable: true
+        continuous_value:
+          type: number
+          nullable: true
+        continuous_unit:
+          type: string
+          nullable: true
+        sample_n:
+          type: integer
+          nullable: true
+        sample_min:
+          type: number
+          nullable: true
+        sample_max:
+          type: number
+          nullable: true
+        sample_median:
+          type: number
+          nullable: true
+        sample_mean:
+          type: number
+          nullable: true
+        sample_units:
+          type: string
+          nullable: true
+        sample_standard_error:
+          type: number
+          nullable: true
+        sample_standard_deviation:
+          type: number
+          nullable: true
+        presence:
+          type: boolean
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        cached:
+          type: string
+          nullable: true
+        cached_column_label:
+          type: string
+          nullable: true
+        cached_row_label:
+          type: string
+          nullable: true
+        type:
+          type: string
+          description: "STI type: Observation::Qualitative, ::Continuous, etc."
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        project_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        object_tag:
+          type: string
+        global_id:
+          type: string
+        label:
+          type: string
+        character_state:
+          type: object
+          description: Present when `extend[]=character_state` (Qualitative only).
+          properties:
+            label:
+              type: string
+            name:
+              type: string
+        descriptor:
+          type: object
+          description: Present when `extend[]=descriptor`.
+          properties:
+            name:
+              type: string
+            description:
+              type: string
+              nullable: true
+        depictions:
+          type: array
+          description: Present when `extend[]=depictions`.
+          items:
+            type: object
+        notes:
+          type: array
+          description: Present when `extend[]=notes`.
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /observations:
+    get:
+      operationId: getObservations
+      summary: List / filter Observations
+      description: |
+        Returns a paginated, filterable list.
+
+        **Route:** `GET /api/v1/observations`
+        **Controller:** `ObservationsController#api_index`
+        **View:** `observations/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - Observations – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        - name: observation_id[]
+          in: query
+          description: Return specific Observation(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: descriptor_id
+          in: query
+          description: Filter by Descriptor id.
+          schema:
+            type: integer
+
+        - name: observation_object_type[]
+          in: query
+          description: Filter by observation object class.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: observation_object_id[]
+          in: query
+          description: Filter by observation object id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: observation_type[]
+          in: query
+          description: Filter by observation STI type.
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: otu_id[]
+          in: query
+          description: Filter by OTU ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: taxon_name_id[]
+          in: query
+          description: Filter by TaxonName ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: observation_matrix_id[]
+          in: query
+          description: Filter by ObservationMatrix ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: character_state_id[]
+          in: query
+          description: Filter by CharacterState ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: collection_object_id[]
+          in: query
+          description: Filter by CollectionObject ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: descendants
+          in: query
+          description: Include descendants of taxon_name_id.
+          schema:
+            type: boolean
+
+        - name: wkt
+          in: query
+          description: Spatial filter in WKT format.
+          schema:
+            type: string
+
+        - name: geo_json
+          in: query
+          description: GeoJSON geometry for spatial filtering.
+          schema:
+            type: object
+
+      responses:
+        '200':
+          description: Paginated array of Observation objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Observation'
+
+  /observations/{id}:
+    get:
+      operationId: getObservation
+      summary: Get a single Observation
+      description: |
+        **Route:** `GET /api/v1/observations/:id`
+        **Controller:** `ObservationsController#api_show`
+        **View:** `observations/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - Observations – REST
+      parameters:
+        - $ref: '#/components/parameters/observationIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single Observation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Observation'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All Observation routes documented:
+#   GET /observations     | api_index | done
+#   GET /observations/:id | api_show  | done

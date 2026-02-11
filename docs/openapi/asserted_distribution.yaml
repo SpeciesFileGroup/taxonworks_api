@@ -1,0 +1,337 @@
+openapi: 3.0.3
+info:
+  title: TaxonWorks API – AssertedDistribution Resource
+  description: |
+    OpenAPI 3.0 specification for the **AssertedDistribution** resource.
+
+    An AssertedDistribution records that a taxonomic concept (OTU or
+    BiologicalAssociation) occurs in a geographic shape (GeographicArea
+    or Gazetteer), backed by citations. `is_absent` indicates a negative
+    assertion (taxon is NOT present).
+
+  version: 1.0.0-draft
+  contact:
+    name: Species File Group
+    url: https://speciesfilegroup.org
+  license:
+    name: NCSA
+    url: https://opensource.org/licenses/NCSA
+
+servers:
+  - url: https://sfg.taxonworks.org/api/v1
+    description: SFG Production
+  - url: https://sandbox.taxonworks.org/api/v1
+    description: Sandbox
+
+tags:
+  - name: AssertedDistributions – REST
+    description: Standard REST read endpoints.
+
+security:
+  - tokenAuth: []
+  - projectTokenAuth: []
+
+components:
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: query
+      name: token
+    projectTokenAuth:
+      type: apiKey
+      in: query
+      name: project_token
+
+  parameters:
+    projectId:
+      name: project_id
+      in: query
+      schema:
+        type: integer
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    perParam:
+      name: per
+      in: query
+      schema:
+        type: integer
+        default: 500
+    adIdPath:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    extendParam:
+      name: extend[]
+      in: query
+      description: "Supported: `notes`."
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: true
+
+  schemas:
+    AssertedDistribution:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+        asserted_distribution_object_id:
+          type: integer
+        asserted_distribution_object_type:
+          type: string
+          description: Otu or BiologicalAssociation.
+        asserted_distribution_shape_id:
+          type: integer
+        asserted_distribution_shape_type:
+          type: string
+          description: GeographicArea or Gazetteer.
+        is_absent:
+          type: boolean
+          description: True if this is a negative assertion (taxon NOT present).
+        project_id:
+          type: integer
+        created_by_id:
+          type: integer
+        updated_by_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        origin_citation_source_id:
+          type: integer
+          nullable: true
+        global_id:
+          type: string
+        citations:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              global_id:
+                type: string
+              pages:
+                type: string
+                nullable: true
+              source:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  global_id:
+                    type: string
+        asserted_distribution_object:
+          type: object
+          description: Nested object with type and attributes.
+        asserted_distribution_shape:
+          type: object
+          description: Nested shape with type and attributes.
+        notes:
+          type: array
+          description: Present when `extend[]=notes`.
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /asserted_distributions:
+    get:
+      operationId: getAssertedDistributions
+      summary: List / filter AssertedDistributions
+      description: |
+        Returns a paginated, filterable list.
+
+        **Route:** `GET /api/v1/asserted_distributions`
+        **Controller:** `AssertedDistributionsController#api_index`
+        **View:** `asserted_distributions/api/v1/index.json.jbuilder`
+        **Type:** REST (index)
+      tags:
+        - AssertedDistributions – REST
+      parameters:
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/perParam'
+        - $ref: '#/components/parameters/extendParam'
+
+        - name: asserted_distribution_id[]
+          in: query
+          description: Return specific AssertedDistribution(s) by id.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: otu_id[]
+          in: query
+          description: Filter by OTU ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: taxon_name_id[]
+          in: query
+          description: Filter by TaxonName ids (includes descendants).
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: geographic_area_id[]
+          in: query
+          description: Filter by GeographicArea ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: source_id[]
+          in: query
+          description: Filter by Source ids.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: presence
+          in: query
+          description: Filter by presence (true) or absence (false).
+          schema:
+            type: boolean
+
+        - name: descendants
+          in: query
+          description: Include descendants of taxon_name_id.
+          schema:
+            type: boolean
+
+        - name: wkt
+          in: query
+          description: Spatial filter in WKT format.
+          schema:
+            type: string
+
+        - name: geo_json
+          in: query
+          description: GeoJSON geometry for spatial filtering.
+          schema:
+            type: object
+
+        - name: radius
+          in: query
+          description: Buffer radius in meters for geo_json.
+          schema:
+            type: number
+
+        - name: geo_shape_id[]
+          in: query
+          description: Shape ids for geographic filtering.
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+
+        - name: geo_shape_type[]
+          in: query
+          description: Shape types (GeographicArea or Gazetteer).
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+
+        - name: geo_mode
+          in: query
+          description: Geographic matching mode.
+          schema:
+            type: boolean
+
+      responses:
+        '200':
+          description: Paginated array of AssertedDistribution objects.
+          headers:
+            X-Total:
+              schema:
+                type: integer
+            X-Total-Pages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AssertedDistribution'
+
+  /asserted_distributions/{id}:
+    get:
+      operationId: getAssertedDistribution
+      summary: Get a single AssertedDistribution
+      description: |
+        **Route:** `GET /api/v1/asserted_distributions/:id`
+        **Controller:** `AssertedDistributionsController#api_show`
+        **View:** `asserted_distributions/api/v1/show.json.jbuilder`
+        **Type:** REST (show)
+      tags:
+        - AssertedDistributions – REST
+      parameters:
+        - $ref: '#/components/parameters/adIdPath'
+        - $ref: '#/components/parameters/projectId'
+        - $ref: '#/components/parameters/extendParam'
+      responses:
+        '200':
+          description: A single AssertedDistribution.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssertedDistribution'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+# CONSISTENCY REPORT
+# All AssertedDistribution routes documented:
+#   GET /asserted_distributions     | api_index | done
+#   GET /asserted_distributions/:id | api_show  | done
