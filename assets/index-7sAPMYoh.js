@@ -9080,7 +9080,7 @@ components:
           type: string
           nullable: true
           description: An arbitrary label for the OTU. At least one of \`name\` or \`taxon_name_id\` must be present.
-          example: "Aus bus"
+          example: 'Aus bus'
         taxon_name_id:
           type: integer
           nullable: true
@@ -9106,11 +9106,11 @@ components:
         global_id:
           type: string
           description: A Rails GlobalID URI for the record.
-          example: "gid://taxon-works/Otu/12345"
+          example: 'gid://taxon-works/Otu/12345'
         object_tag:
           type: string
           description: An HTML-formatted display tag for the OTU.
-          example: "<i>Aus bus</i> Author, 2000"
+          example: '<i>Aus bus</i> Author, 2000'
 
     OtuWithExtensions:
       description: Otu with optional \`extend[]\` fields.
@@ -9289,7 +9289,7 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           example:
-            error: "no map available"
+            error: 'no map available'
     UnprocessableEntity:
       description: Unprocessable entity (e.g. OTU has no taxon name for nomenclature citations).
       content:
@@ -9301,7 +9301,6 @@ components:
 # Paths
 # ─────────────────────────────────────────────
 paths:
-
   # ═══════════════════════════════════════════
   #  REST endpoints
   # ═══════════════════════════════════════════
@@ -9744,10 +9743,10 @@ paths:
                   created_by_id: 1
                   updated_by_id: 1
                   project_id: 42
-                  created_at: "2024-01-15T10:30:00.000Z"
-                  updated_at: "2024-06-20T14:00:00.000Z"
-                  global_id: "gid://taxon-works/Otu/12345"
-                  object_tag: "<i>Aus bus</i> Author, 2000"
+                  created_at: '2024-01-15T10:30:00.000Z'
+                  updated_at: '2024-06-20T14:00:00.000Z'
+                  global_id: 'gid://taxon-works/Otu/12345'
+                  object_tag: '<i>Aus bus</i> Author, 2000'
         '401':
           description: Unauthorized – invalid or missing token.
 
@@ -9785,10 +9784,10 @@ paths:
                 created_by_id: 1
                 updated_by_id: 1
                 project_id: 42
-                created_at: "2024-01-15T10:30:00.000Z"
-                updated_at: "2024-06-20T14:00:00.000Z"
-                global_id: "gid://taxon-works/Otu/12345"
-                object_tag: "<i>Aus bus</i> Author, 2000"
+                created_at: '2024-01-15T10:30:00.000Z'
+                updated_at: '2024-06-20T14:00:00.000Z'
+                global_id: 'gid://taxon-works/Otu/12345'
+                object_tag: '<i>Aus bus</i> Author, 2000'
         '404':
           $ref: '#/components/responses/NotFound'
 
@@ -9855,7 +9854,7 @@ paths:
           schema:
             type: string
             minLength: 1
-          example: "Aus bus"
+          example: 'Aus bus'
 
         - name: having_taxon_name_only
           in: query
@@ -9890,10 +9889,10 @@ paths:
                   $ref: '#/components/schemas/OtuAutocompleteItem'
               example:
                 - id: 12345
-                  gid: "gid://taxon-works/Otu/12345"
+                  gid: 'gid://taxon-works/Otu/12345'
                   otu_valid_id: 12345
-                  label: "Aus bus Author, 2000"
-                  label_html: "<i>Aus bus</i> Author, 2000"
+                  label: 'Aus bus Author, 2000'
+                  label_html: '<i>Aus bus</i> Author, 2000'
 
   # ═══════════════════════════════════════════
   #  Inventory endpoints
@@ -9944,8 +9943,8 @@ paths:
               example:
                 - content_id: 100
                   public_content_id: 200
-                  name: "Biology"
-                  text: "<p>This species is found in…</p>"
+                  name: 'Biology'
+                  text: '<p>This species is found in…</p>'
 
   /otus/{id}/inventory/distribution:
     get:
@@ -9971,7 +9970,7 @@ paths:
           description: The CachedMapItem type to use. Defaults to \`CachedMapItem::WebLevel1\`.
           schema:
             type: string
-            default: "CachedMapItem::WebLevel1"
+            default: 'CachedMapItem::WebLevel1'
       responses:
         '200':
           description: Distribution data.
@@ -9995,7 +9994,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
               example:
-                error: "no map available"
+                error: 'no map available'
 
   /otus/{id}/inventory/taxonomy:
     get:
@@ -10025,7 +10024,7 @@ paths:
           description: ISO 639-1 alpha-2 language code to filter common names (only applies when \`extend[]=common_names\`).
           schema:
             type: string
-            example: "en"
+            example: 'en'
       responses:
         '200':
           description: Taxonomy inventory.
@@ -10084,8 +10083,8 @@ paths:
                 $ref: '#/components/schemas/TypeMaterialInventoryResponse'
               example:
                 type_materials_catalog_labels:
-                  - type_type: "holotype"
-                    label: "Holotype ♂, USNM 12345, USA, California…"
+                  - type_type: 'holotype'
+                    label: 'Holotype ♂, USNM 12345, USA, California…'
 
   /otus/{id}/inventory/nomenclature_citations:
     get:
@@ -10184,7 +10183,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/DwcGalleryItem'
 
-  /otus/{otu_id}/inventory/images:
+  /otus/{id}/inventory/images:
     get:
       operationId: getOtuImageInventory
       summary: Image inventory for an OTU
@@ -10214,7 +10213,7 @@ paths:
           description: Scope for OTU depiction query. Defaults to \`all\`.
           schema:
             type: string
-            default: "all"
+            default: 'all'
         - name: sort_order[]
           in: query
           description: Custom sort order for depiction object types.
