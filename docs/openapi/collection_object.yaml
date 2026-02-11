@@ -25,8 +25,8 @@ info:
     name: Species File Group
     url: https://speciesfilegroup.org
   license:
-    name: NCSA
-    url: https://opensource.org/licenses/NCSA
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 
 servers:
   - url: https://sfg.taxonworks.org/api/v1
@@ -137,7 +137,7 @@ components:
         type:
           type: string
           description: Subclass (`Specimen`, `Lot`, `RangedLot`).
-          example: "Specimen"
+          example: 'Specimen'
         buffered_collecting_event:
           type: string
           nullable: true
@@ -180,7 +180,7 @@ components:
         global_id:
           type: string
           description: Rails GlobalID URI.
-          example: "gid://taxon-works/Specimen/99001"
+          example: 'gid://taxon-works/Specimen/99001'
 
         # extend[]=container
         contained_in:
@@ -275,7 +275,6 @@ components:
             $ref: '#/components/schemas/ErrorResponse'
 
 paths:
-
   /collection_objects:
     get:
       operationId: getCollectionObjects
@@ -532,19 +531,19 @@ paths:
 
         - name: loaned
           in: query
-          description: "`true` – has been loaned at least once."
+          description: '`true` – has been loaned at least once.'
           schema:
             type: boolean
 
         - name: never_loaned
           in: query
-          description: "`true` – has never been loaned."
+          description: '`true` – has never been loaned.'
           schema:
             type: boolean
 
         - name: on_loan
           in: query
-          description: "`true` – currently on loan."
+          description: '`true` – currently on loan.'
           schema:
             type: boolean
 
@@ -765,10 +764,10 @@ paths:
               example:
                 - id: 99001
                   total: 1
-                  type: "Specimen"
+                  type: 'Specimen'
                   collecting_event_id: 5000
                   repository_id: 10
-                  global_id: "gid://taxon-works/Specimen/99001"
+                  global_id: 'gid://taxon-works/Specimen/99001'
 
   /collection_objects/{id}:
     get:
@@ -863,13 +862,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/DwcOccurrenceAttributes'
               example:
-                occurrenceID: "urn:uuid:abc123"
-                basisOfRecord: "PreservedSpecimen"
-                scientificName: "Aus bus Author, 2000"
-                country: "United States"
-                stateProvince: "Illinois"
-                decimalLatitude: "40.1164"
-                decimalLongitude: "-88.2434"
+                occurrenceID: 'urn:uuid:abc123'
+                basisOfRecord: 'PreservedSpecimen'
+                scientificName: 'Aus bus Author, 2000'
+                country: 'United States'
+                stateProvince: 'Illinois'
+                decimalLatitude: '40.1164'
+                decimalLongitude: '-88.2434'
 
 # ─────────────────────────────────────────────
 # CONSISTENCY REPORT

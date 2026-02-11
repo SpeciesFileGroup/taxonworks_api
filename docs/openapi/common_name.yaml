@@ -13,8 +13,8 @@ info:
     name: Species File Group
     url: https://speciesfilegroup.org
   license:
-    name: NCSA
-    url: https://opensource.org/licenses/NCSA
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 
 servers:
   - url: https://sfg.taxonworks.org/api/v1
@@ -68,7 +68,7 @@ components:
     extendParam:
       name: extend[]
       in: query
-      description: "Supported: `otu`, `notes`."
+      description: 'Supported: `otu`, `notes`.'
       schema:
         type: array
         items:
@@ -90,7 +90,7 @@ components:
         name:
           type: string
           description: The vernacular name.
-          example: "house fly"
+          example: 'house fly'
         geographic_area_id:
           type: integer
           nullable: true
@@ -120,7 +120,7 @@ components:
           type: string
           nullable: true
           description: Language label string.
-          example: "English"
+          example: 'English'
         geographic_area:
           type: object
           nullable: true
@@ -237,10 +237,10 @@ paths:
                   $ref: '#/components/schemas/CommonName'
               example:
                 - id: 300
-                  name: "house fly"
+                  name: 'house fly'
                   otu_id: 12345
                   language_id: 1
-                  language: "English"
+                  language: 'English'
 
   /common_names/{id}:
     get:

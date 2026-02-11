@@ -29,8 +29,8 @@ info:
     name: Species File Group
     url: https://speciesfilegroup.org
   license:
-    name: NCSA
-    url: https://opensource.org/licenses/NCSA
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 
 servers:
   - url: https://sfg.taxonworks.org/api/v1
@@ -128,7 +128,7 @@ components:
         name:
           type: string
           description: The fully latinized monominal string of the name.
-          example: "bus"
+          example: 'bus'
         parent_id:
           type: integer
           nullable: true
@@ -137,12 +137,12 @@ components:
           type: string
           nullable: true
           description: The full cached name string (e.g. "Aus bus").
-          example: "Aus bus"
+          example: 'Aus bus'
         cached_html:
           type: string
           nullable: true
           description: HTML-formatted cached name.
-          example: "<i>Aus bus</i>"
+          example: '<i>Aus bus</i>'
         feminine_name:
           type: string
           nullable: true
@@ -159,7 +159,7 @@ components:
           type: string
           nullable: true
           description: The governing nomenclatural code (e.g. "iczn", "icn", "icnp").
-          example: "iczn"
+          example: 'iczn'
         etymology:
           type: string
           nullable: true
@@ -177,16 +177,16 @@ components:
           type: string
           nullable: true
           description: Short rank label (e.g. "species", "genus").
-          example: "species"
+          example: 'species'
         rank_string:
           type: string
           nullable: true
           description: Full NOMEN rank class string.
-          example: "NomenclaturalRank::Iczn::SpeciesGroup::Species"
+          example: 'NomenclaturalRank::Iczn::SpeciesGroup::Species'
         type:
           type: string
           description: Subclass type (`Protonym`, `Combination`, `Hybrid`).
-          example: "Protonym"
+          example: 'Protonym'
         created_by_id:
           type: integer
         updated_by_id:
@@ -209,7 +209,7 @@ components:
           type: string
           nullable: true
           description: Cached "Author, Year" string.
-          example: "Author, 2000"
+          example: 'Author, 2000'
         cached_secondary_homonym:
           type: string
           nullable: true
@@ -625,7 +625,6 @@ components:
 # Paths
 # ─────────────────────────────────────────────
 paths:
-
   # ═══════════════════════════════════════════
   #  REST endpoints
   # ═══════════════════════════════════════════
@@ -1137,21 +1136,21 @@ paths:
                   $ref: '#/components/schemas/TaxonNameBase'
               example:
                 - id: 6789
-                  name: "bus"
+                  name: 'bus'
                   parent_id: 6000
-                  cached: "Aus bus"
-                  cached_html: "<i>Aus bus</i>"
-                  nomenclatural_code: "iczn"
+                  cached: 'Aus bus'
+                  cached_html: '<i>Aus bus</i>'
+                  nomenclatural_code: 'iczn'
                   year_of_publication: 2000
-                  rank: "species"
-                  rank_string: "NomenclaturalRank::Iczn::SpeciesGroup::Species"
-                  type: "Protonym"
+                  rank: 'species'
+                  rank_string: 'NomenclaturalRank::Iczn::SpeciesGroup::Species'
+                  type: 'Protonym'
                   cached_valid_taxon_name_id: 6789
-                  cached_author_year: "Author, 2000"
+                  cached_author_year: 'Author, 2000'
                   cached_is_valid: true
                   year: 2000
-                  name_string: "Aus bus Author, 2000"
-                  original_combination: "Aus bus Author, 2000"
+                  name_string: 'Aus bus Author, 2000'
+                  original_combination: 'Aus bus Author, 2000'
 
   /taxon_names/{id}:
     get:
@@ -1301,7 +1300,7 @@ paths:
           description: The taxon name string to parse.
           schema:
             type: string
-          example: "Aus bus Author, 2000"
+          example: 'Aus bus Author, 2000'
 
         - name: combination_id
           in: query
@@ -1348,9 +1347,9 @@ paths:
                 items:
                   $ref: '#/components/schemas/OriginCitationItem'
               example:
-                - name: "Aus bus Author, 2000"
-                  original_name: "Aus bus Author, 2000"
-                  source: "Author, A. (2000) A monograph of Aus. Journal, 1: 1-100."
+                - name: 'Aus bus Author, 2000'
+                  original_name: 'Aus bus Author, 2000'
+                  source: 'Author, A. (2000) A monograph of Aus. Journal, 1: 1-100.'
 
   /taxon_names/{id}/inventory/summary:
     get:

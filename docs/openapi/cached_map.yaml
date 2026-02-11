@@ -12,8 +12,8 @@ info:
     name: Species File Group
     url: https://speciesfilegroup.org
   license:
-    name: NCSA
-    url: https://opensource.org/licenses/NCSA
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 
 servers:
   - url: https://sfg.taxonworks.org/api/v1

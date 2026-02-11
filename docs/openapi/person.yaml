@@ -22,8 +22,8 @@ info:
     name: Species File Group
     url: https://speciesfilegroup.org
   license:
-    name: NCSA
-    url: https://opensource.org/licenses/NCSA
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 
 servers:
   - url: https://sfg.taxonworks.org/api/v1
@@ -111,17 +111,17 @@ components:
         type:
           type: string
           description: Person subclass (`Person::Vetted` or `Person::Unvetted`).
-          example: "Person::Vetted"
+          example: 'Person::Vetted'
         last_name:
           type: string
           nullable: true
           description: Last / family name.
-          example: "Smith"
+          example: 'Smith'
         first_name:
           type: string
           nullable: true
           description: First name (may include initials).
-          example: "John A."
+          example: 'John A.'
         suffix:
           type: string
           nullable: true
@@ -134,7 +134,7 @@ components:
           type: string
           nullable: true
           description: Full cached name.
-          example: "Smith, John A."
+          example: 'Smith, John A.'
         year_born:
           type: integer
           nullable: true
@@ -162,7 +162,7 @@ components:
         global_id:
           type: string
           description: Rails GlobalID URI.
-          example: "gid://taxon-works/Person/500"
+          example: 'gid://taxon-works/Person/500'
 
     Person:
       description: Full Person with optional extensions.
@@ -228,7 +228,6 @@ components:
             $ref: '#/components/schemas/ErrorResponse'
 
 paths:
-
   /people:
     get:
       operationId: getPeople
@@ -499,13 +498,13 @@ paths:
                   $ref: '#/components/schemas/Person'
               example:
                 - id: 500
-                  type: "Person::Vetted"
-                  last_name: "Smith"
-                  first_name: "John A."
-                  cached: "Smith, John A."
+                  type: 'Person::Vetted'
+                  last_name: 'Smith'
+                  first_name: 'John A.'
+                  cached: 'Smith, John A.'
                   year_born: 1950
                   year_active_start: 1975
-                  global_id: "gid://taxon-works/Person/500"
+                  global_id: 'gid://taxon-works/Person/500'
 
   /people/{id}:
     get:

@@ -13,8 +13,8 @@ info:
     name: Species File Group
     url: https://speciesfilegroup.org
   license:
-    name: NCSA
-    url: https://opensource.org/licenses/NCSA
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 
 servers:
   - url: https://sfg.taxonworks.org/api/v1
@@ -78,7 +78,7 @@ components:
           type: integer
         type:
           type: string
-          description: "STI type: Keyword, Topic, Predicate, BiologicalProperty, etc."
+          description: 'STI type: Keyword, Topic, Predicate, BiologicalProperty, etc.'
         name:
           type: string
         definition:

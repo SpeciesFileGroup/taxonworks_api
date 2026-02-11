@@ -13,8 +13,8 @@ info:
     name: Species File Group
     url: https://speciesfilegroup.org
   license:
-    name: NCSA
-    url: https://opensource.org/licenses/NCSA
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 
 servers:
   - url: https://sfg.taxonworks.org/api/v1
@@ -68,7 +68,7 @@ components:
     extendParam:
       name: extend[]
       in: query
-      description: "Supported: `character_state`, `descriptor`, `depictions`, `notes`."
+      description: 'Supported: `character_state`, `descriptor`, `depictions`, `notes`.'
       schema:
         type: array
         items:
@@ -143,7 +143,7 @@ components:
           nullable: true
         type:
           type: string
-          description: "STI type: Observation::Qualitative, ::Continuous, etc."
+          description: 'STI type: Observation::Qualitative, ::Continuous, etc.'
         created_by_id:
           type: integer
         updated_by_id:

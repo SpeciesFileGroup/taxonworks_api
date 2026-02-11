@@ -13,8 +13,8 @@ info:
     name: Species File Group
     url: https://speciesfilegroup.org
   license:
-    name: NCSA
-    url: https://opensource.org/licenses/NCSA
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 
 servers:
   - url: https://sfg.taxonworks.org/api/v1
@@ -70,7 +70,7 @@ components:
     extendParam:
       name: extend[]
       in: query
-      description: "Supported: `annotated_object`, `predicate`."
+      description: 'Supported: `annotated_object`, `predicate`.'
       schema:
         type: array
         items:
@@ -89,7 +89,7 @@ components:
           type: integer
         type:
           type: string
-          description: "InternalAttribute or ImportAttribute."
+          description: 'InternalAttribute or ImportAttribute.'
         attribute_subject_id:
           type: integer
         attribute_subject_type:

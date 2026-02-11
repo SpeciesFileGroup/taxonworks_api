@@ -13,8 +13,8 @@ info:
     name: Species File Group
     url: https://speciesfilegroup.org
   license:
-    name: NCSA
-    url: https://opensource.org/licenses/NCSA
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 
 servers:
   - url: https://sfg.taxonworks.org/api/v1
@@ -68,7 +68,7 @@ components:
     extendParam:
       name: extend[]
       in: query
-      description: "Supported: `biological_associations_biological_associations_graphs`, `notes`."
+      description: 'Supported: `biological_associations_biological_associations_graphs`, `notes`.'
       schema:
         type: array
         items:

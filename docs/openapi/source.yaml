@@ -28,8 +28,8 @@ info:
     name: Species File Group
     url: https://speciesfilegroup.org
   license:
-    name: NCSA
-    url: https://opensource.org/licenses/NCSA
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 
 servers:
   - url: https://sfg.taxonworks.org/api/v1
@@ -139,7 +139,7 @@ components:
           type: string
           nullable: true
           description: BibTeX author string.
-          example: "Smith, J. and Jones, K."
+          example: 'Smith, J. and Jones, K.'
         booktitle:
           type: string
           nullable: true
@@ -187,7 +187,7 @@ components:
           type: string
           nullable: true
           description: Page range.
-          example: "1-100"
+          example: '1-100'
         publisher:
           type: string
           nullable: true
@@ -201,11 +201,11 @@ components:
           type: string
           nullable: true
           description: Title of the work.
-          example: "A revision of the genus Aus"
+          example: 'A revision of the genus Aus'
         type:
           type: string
           description: Source subclass (`Source::Bibtex`, `Source::Human`, `Source::Verbatim`).
-          example: "Source::Bibtex"
+          example: 'Source::Bibtex'
         volume:
           type: string
           nullable: true
@@ -213,7 +213,7 @@ components:
           type: string
           nullable: true
           description: Digital Object Identifier.
-          example: "10.1234/example.2000"
+          example: '10.1234/example.2000'
         abstract:
           type: string
           nullable: true
@@ -236,7 +236,7 @@ components:
           type: string
           nullable: true
           description: Auto-generated full citation string.
-          example: "Smith, J. & Jones, K. (2000) A revision of the genus Aus. Journal, 1: 1-100."
+          example: 'Smith, J. & Jones, K. (2000) A revision of the genus Aus. Journal, 1: 1-100.'
         cached_author_string:
           type: string
           nullable: true
@@ -245,7 +245,7 @@ components:
           type: string
           nullable: true
           description: BibTeX entry type (e.g. "article", "book", "inproceedings").
-          example: "article"
+          example: 'article'
         created_by_id:
           type: integer
         updated_by_id:
@@ -312,11 +312,11 @@ components:
             global_id:
               type: string
               description: Rails GlobalID URI.
-              example: "gid://taxon-works/Source/1001"
+              example: 'gid://taxon-works/Source/1001'
             base_class:
               type: string
               description: Base class name.
-              example: "Source"
+              example: 'Source'
             url_for:
               type: string
               description: JSON resource URL.
@@ -444,7 +444,6 @@ components:
 # Paths
 # ─────────────────────────────────────────────
 paths:
-
   # ═══════════════════════════════════════════
   #  REST endpoints (unauthenticated)
   # ═══════════════════════════════════════════
@@ -811,14 +810,14 @@ paths:
                   $ref: '#/components/schemas/Source'
               example:
                 - id: 1001
-                  title: "A revision of the genus Aus"
-                  author: "Smith, J. and Jones, K."
+                  title: 'A revision of the genus Aus'
+                  author: 'Smith, J. and Jones, K.'
                   year: 2000
-                  type: "Source::Bibtex"
-                  bibtex_type: "article"
-                  cached: "Smith, J. & Jones, K. (2000) A revision of the genus Aus. Journal, 1: 1-100."
-                  object_tag: "Smith & Jones (2000)"
-                  global_id: "gid://taxon-works/Source/1001"
+                  type: 'Source::Bibtex'
+                  bibtex_type: 'article'
+                  cached: 'Smith, J. & Jones, K. (2000) A revision of the genus Aus. Journal, 1: 1-100.'
+                  object_tag: 'Smith & Jones (2000)'
+                  global_id: 'gid://taxon-works/Source/1001'
                   source_in_project: true
                   project_source_id: 500
 
@@ -910,8 +909,8 @@ paths:
                   $ref: '#/components/schemas/SourceAutocompleteItem'
               example:
                 - id: 1001
-                  label: "Smith & Jones (2000) A revision of the genus Aus"
-                  label_html: "Smith & Jones (2000) A revision of the genus Aus"
+                  label: 'Smith & Jones (2000) A revision of the genus Aus'
+                  label_html: 'Smith & Jones (2000) A revision of the genus Aus'
                   is_in_project: true
                   response_values:
                     source_id: 1001
@@ -959,9 +958,9 @@ paths:
                   $ref: '#/components/schemas/BibliographyItem'
               example:
                 - id: 1001
-                  cached: "Smith, J. & Jones, K. (2000) A revision of the genus Aus. Journal, 1: 1-100."
+                  cached: 'Smith, J. & Jones, K. (2000) A revision of the genus Aus. Journal, 1: 1-100.'
                 - id: 1002
-                  cached: "Brown, A. (2005) Notes on Aus. Proceedings, 5: 50-55."
+                  cached: 'Brown, A. (2005) Notes on Aus. Proceedings, 5: 50-55.'
 
 # ─────────────────────────────────────────────
 # Notes

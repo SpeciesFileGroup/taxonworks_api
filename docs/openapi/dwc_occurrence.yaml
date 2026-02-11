@@ -14,8 +14,8 @@ info:
     name: Species File Group
     url: https://speciesfilegroup.org
   license:
-    name: NCSA
-    url: https://opensource.org/licenses/NCSA
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 
 servers:
   - url: https://sfg.taxonworks.org/api/v1
@@ -78,7 +78,7 @@ components:
           type: string
         basisOfRecord:
           type: string
-          example: "PreservedSpecimen"
+          example: 'PreservedSpecimen'
         scientificName:
           type: string
         scientificNameAuthorship:
@@ -288,11 +288,11 @@ paths:
                   $ref: '#/components/schemas/DwcOccurrence'
               example:
                 - id: 50000
-                  occurrenceID: "urn:uuid:abc123"
-                  basisOfRecord: "PreservedSpecimen"
-                  scientificName: "Aus bus Author, 2000"
-                  country: "United States"
-                  stateProvince: "Illinois"
+                  occurrenceID: 'urn:uuid:abc123'
+                  basisOfRecord: 'PreservedSpecimen'
+                  scientificName: 'Aus bus Author, 2000'
+                  country: 'United States'
+                  stateProvince: 'Illinois'
             text/csv:
               schema:
                 type: string
@@ -342,8 +342,8 @@ paths:
                 items:
                   type: string
               example:
-                - "Illinois"
-                - "Illinois Territory"
+                - 'Illinois'
+                - 'Illinois Territory'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
 
