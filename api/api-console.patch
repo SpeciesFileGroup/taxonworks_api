@@ -1,8 +1,0 @@
-54c54
-< baseUri: https://{host}/api/{version}
----
-> baseUri: http://localhost:3000/api/{version}
-59c59
-< protocols: [ HTTPS ]
----
-> protocols: [ HTTP ]
