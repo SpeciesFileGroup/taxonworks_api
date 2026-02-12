@@ -2,7 +2,7 @@
 
 A RESTful JSON-backed API for accessing and managing biodiversity data in [TaxonWorks](https://taxonworks.org).
 
-*Select a resource from the sidebar to explore its endpoints.*
+_Select a resource from the sidebar to explore its endpoints._
 
 ---
 
@@ -10,21 +10,21 @@ A RESTful JSON-backed API for accessing and managing biodiversity data in [Taxon
 
 All API requests require authentication. Include **one** of the following combinations as query parameters or HTTP headers:
 
-| Method | Parameters | Use case |
-| --- | --- | --- |
-| Project token | `project_token` | Public/read-only access scoped to a project |
-| User token | `token` + `project_id` | Full read/write access on behalf of a user |
+| Method        | Parameters             | Use case                                    |
+| ------------- | ---------------------- | ------------------------------------------- |
+| Project token | `project_token`        | Public/read-only access scoped to a project |
+| User token    | `token` + `project_id` | Full read access on behalf of a user        |
 
-Tokens are generated inside the TaxonWorks application under *Account > API access*.
+Tokens are generated inside the TaxonWorks application under _Account > API access_.
 
 ## Pagination
 
 List endpoints are paginated. Control pagination with these query parameters:
 
-| Parameter | Default | Description |
-| --- | --- | --- |
-| `page` | 1 | Page number |
-| `per` | 50 | Items per page (max 250) |
+| Parameter | Default | Description              |
+| --------- | ------- | ------------------------ |
+| `page`    | 1       | Page number              |
+| `per`     | 50      | Items per page (max 250) |
 
 Pagination metadata is returned in the response headers: `Pagination-Total`, `Pagination-Total-Pages`, `Pagination-Page`, and `Pagination-Per-Page`.
 
