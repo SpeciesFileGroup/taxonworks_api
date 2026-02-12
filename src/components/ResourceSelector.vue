@@ -1,5 +1,16 @@
 <template>
   <aside class="resource-selector">
+    <div class="resource-selector__overview">
+      <button
+        class="resource-selector__item resource-selector__overview-btn"
+        :class="{
+          'resource-selector__item--active': currentResource === 'overview'
+        }"
+        @click="() => (currentResource = 'overview')"
+      >
+        Overview
+      </button>
+    </div>
     <div class="resource-selector__search">
       <input
         v-model="search"
@@ -52,6 +63,15 @@ const filtered = computed(() => {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+}
+
+.resource-selector__overview {
+  padding: 0.75rem 0rem 0;
+}
+
+.resource-selector__overview-btn {
+  font-weight: 600;
+  color: #1a5276;
 }
 
 .resource-selector__search {

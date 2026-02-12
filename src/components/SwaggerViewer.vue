@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onBeforeUnmount } from 'vue'
+import { ref, watch, onBeforeUnmount, onMounted } from 'vue'
 import { SwaggerUIBundle } from 'swagger-ui-dist'
 import 'swagger-ui-dist/swagger-ui.css'
 
@@ -39,20 +39,29 @@ watch(
   () => props.spec,
   (newSpec) => {
     if (!newSpec || !swaggerEl.value) return
-    destroyUi()
 
-    ui = SwaggerUIBundle({
-      domNode: swaggerEl.value,
-      spec: newSpec,
-      layout: 'BaseLayout',
-      deepLinking: true,
-      presets: [SwaggerUIBundle.presets.apis],
-      plugins: [SwaggerUIBundle.plugins.DownloadUrl]
-    })
-  },
-  { immediate: true }
+    loadSpec(newSpec)
+  }
 )
 
+function loadSpec(spec) {
+  destroyUi()
+
+  ui = SwaggerUIBundle({
+    domNode: swaggerEl.value,
+    spec,
+    layout: 'BaseLayout',
+    deepLinking: true,
+    presets: [SwaggerUIBundle.presets.apis],
+    plugins: [SwaggerUIBundle.plugins.DownloadUrl]
+  })
+}
+
+onMounted(() => {
+  if (props.spec) {
+    loadSpec(props.spec)
+  }
+})
 onBeforeUnmount(destroyUi)
 </script>
 

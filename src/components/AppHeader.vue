@@ -5,7 +5,7 @@
         alt="TaxonWorks"
         class="app-header__logo"
       />
-      <h1 class="app-header__title">API Documentation</h1>
+      <div class="app-header__title">API Documentation</div>
     </div>
     <a
       class="app-header__github-link"
