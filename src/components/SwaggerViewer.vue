@@ -81,4 +81,24 @@ onBeforeUnmount(destroyUi)
 .swagger-viewer__container {
   padding: 0 1rem 2rem;
 }
+
+:deep(.swagger-ui .info .title) {
+  margin: 0 0 0.5rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+:deep(.swagger-ui .info h2) {
+  margin: 2rem 0 0.75rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+:deep(.swagger-ui .opblock-tag) {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
 </style>

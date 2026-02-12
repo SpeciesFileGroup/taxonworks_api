@@ -1,12 +1,16 @@
 /* Markdown page styles */
-.markdown-page {
+.markdown-body {
   width: 1420px;
   max-width: 1420px;
   margin: 0 auto;
-  padding: 1rem 2rem;
   flex: 1;
   overflow-y: auto;
   min-width: 0;
+}
+
+.markdown-page {
+  width: 100%;
+  padding: 1rem 2rem;
 }
 
 .markdown-page h1 {
