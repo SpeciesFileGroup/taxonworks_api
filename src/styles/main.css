@@ -46,16 +46,3 @@ body {
   display: flex;
   flex-direction: column;
 }
-
-/* Swagger UI overrides */
-.swagger-ui .topbar {
-  display: none;
-}
-
-.swagger-ui .info {
-  margin: 20px 0 10px;
-}
-
-.swagger-ui .scheme-container {
-  padding: 10px 0;
-}

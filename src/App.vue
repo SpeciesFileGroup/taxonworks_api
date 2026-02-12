@@ -5,7 +5,12 @@
       v-model="selectedResource"
       :resources="resources"
     />
-    <OverviewPage v-if="selectedResource === 'overview'" />
+    <div
+      v-if="selectedResource === 'overview'"
+      class="markdown-page"
+    >
+      <OverviewPage />
+    </div>
     <SwaggerViewer
       v-else
       :spec="spec"
@@ -19,7 +24,7 @@ import { ref, watch, onMounted } from 'vue'
 import AppHeader from './components/AppHeader.vue'
 import ResourceSelector from './components/ResourceSelector.vue'
 import SwaggerViewer from './components/SwaggerViewer.vue'
-import OverviewPage from './components/OverviewPage.vue'
+import OverviewPage from './pages/overview.md'
 import { useOpenApiSpec } from './composables/useOpenApiSpec.js'
 
 const { spec, error, resources, loadSpec } = useOpenApiSpec()
