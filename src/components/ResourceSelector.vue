@@ -58,8 +58,8 @@ const filtered = computed(() => {
 .resource-selector {
   width: 260px;
   min-width: 260px;
-  background: #f5f7fa;
-  border-right: 1px solid #dfe3e8;
+  background: var(--color-bg-surface);
+  border-right: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -71,18 +71,18 @@ const filtered = computed(() => {
 
 .resource-selector__overview-btn {
   font-weight: 600;
-  color: #1a5276;
+  color: var(--color-primary);
 }
 
 .resource-selector__search {
   padding: 0.75rem;
-  border-bottom: 1px solid #dfe3e8;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .resource-selector__input {
   width: 100%;
   padding: 0.5rem 0.625rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border-input);
   border-radius: 4px;
   font-size: 0.875rem;
   box-sizing: border-box;
@@ -90,8 +90,8 @@ const filtered = computed(() => {
 
 .resource-selector__input:focus {
   outline: none;
-  border-color: #5b9bd5;
-  box-shadow: 0 0 0 2px rgba(91, 155, 213, 0.25);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-accent-alpha);
 }
 
 .resource-selector__list {
@@ -108,18 +108,18 @@ const filtered = computed(() => {
   background: none;
   text-align: left;
   font-size: 0.875rem;
-  color: #333;
+  color: var(--color-text);
   cursor: pointer;
   transition: background-color 0.15s;
 }
 
 .resource-selector__item:hover {
-  background: #e8ecf1;
+  background: var(--color-bg-hover);
 }
 
 .resource-selector__item--active {
-  background: #d6e4f0;
+  background: var(--color-bg-active);
   font-weight: 600;
-  color: #1a5276;
+  color: var(--color-primary);
 }
 </style>

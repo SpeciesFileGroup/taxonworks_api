@@ -74,7 +74,7 @@ onBeforeUnmount(destroyUi)
 
 .swagger-viewer__error {
   padding: 1rem;
-  color: #d32f2f;
+  color: var(--color-error);
   font-weight: 600;
 }
 

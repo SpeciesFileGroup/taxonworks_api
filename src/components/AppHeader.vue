@@ -29,9 +29,9 @@ import LogoTaxonWorks from './Logo/TaxonWorks.vue'
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.625rem 1rem;
-  background: #1a5276;
-  color: #fff;
-  border-bottom: 2px solid #154360;
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
+  border-bottom: 2px solid var(--color-primary-dark);
 }
 
 .app-header__left {
@@ -54,7 +54,7 @@ import LogoTaxonWorks from './Logo/TaxonWorks.vue'
 .app-header__github-logo {
   height: 28px;
   width: 28px;
-  color: white;
+  color: var(--color-text-on-primary);
   cursor: pointer;
 }
 

@@ -1,3 +1,30 @@
+:root {
+  /* Primary */
+  --color-primary: #1a5276;
+  --color-primary-dark: #154360;
+  --color-accent: #5b9bd5;
+  --color-accent-alpha: rgba(91, 155, 213, 0.25);
+
+  /* Text */
+  --color-text: #333;
+  --color-text-secondary: #444;
+  --color-text-muted: #666;
+  --color-text-on-primary: #fff;
+
+  /* Backgrounds */
+  --color-bg-surface: #f5f7fa;
+  --color-bg-code: #f0f3f7;
+  --color-bg-hover: #e8ecf1;
+  --color-bg-active: #d6e4f0;
+
+  /* Borders */
+  --color-border: #dfe3e8;
+  --color-border-input: #ccc;
+
+  /* Status */
+  --color-error: #d32f2f;
+}
+
 *,
 *::before,
 *::after {

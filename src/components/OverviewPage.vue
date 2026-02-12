@@ -175,27 +175,27 @@
 .overview__hero {
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #dfe3e8;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .overview__title {
   margin: 0 0 0.5rem;
   font-size: 1.75rem;
   font-weight: 700;
-  color: #1a5276;
+  color: var(--color-primary);
 }
 
 .overview__subtitle {
   margin: 0 0 1rem;
   font-size: 1.05rem;
   line-height: 1.6;
-  color: #444;
+  color: var(--color-text-secondary);
 }
 
 .overview__cta {
   margin: 0;
   font-size: 0.95rem;
-  color: #666;
+  color: var(--color-text-muted);
   font-style: italic;
 }
 
@@ -207,22 +207,22 @@
   margin: 0 0 0.75rem;
   font-size: 1.2rem;
   font-weight: 600;
-  color: #1a5276;
+  color: var(--color-primary);
 }
 
 .overview__section p {
   margin: 0 0 0.75rem;
   line-height: 1.6;
-  color: #333;
+  color: var(--color-text);
   font-size: 0.925rem;
 }
 
 .overview__section code {
-  background: #f0f3f7;
+  background: var(--color-bg-code);
   padding: 0.15rem 0.4rem;
   border-radius: 3px;
   font-size: 0.85rem;
-  color: #1a5276;
+  color: var(--color-primary);
 }
 
 .overview__table {
@@ -236,17 +236,17 @@
 .overview__table td {
   text-align: left;
   padding: 0.5rem 0.75rem;
-  border: 1px solid #dfe3e8;
+  border: 1px solid var(--color-border);
 }
 
 .overview__table th {
-  background: #f5f7fa;
+  background: var(--color-bg-surface);
   font-weight: 600;
-  color: #1a5276;
+  color: var(--color-primary);
 }
 
 .overview__table td {
-  color: #333;
+  color: var(--color-text);
 }
 
 .overview__server-list,
@@ -255,16 +255,16 @@
   padding-left: 1.25rem;
   line-height: 1.8;
   font-size: 0.925rem;
-  color: #333;
+  color: var(--color-text);
 }
 
 .overview a {
-  color: #5b9bd5;
+  color: var(--color-accent);
   text-decoration: none;
 }
 
 .overview a:hover {
   text-decoration: underline;
-  color: #1a5276;
+  color: var(--color-primary);
 }
 </style>
