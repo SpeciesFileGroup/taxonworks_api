@@ -15,7 +15,7 @@ All API requests require authentication. Include **one** of the following combin
 | Project token | `project_token`        | Public/read-only access scoped to a project |
 | User token    | `token` + `project_id` | Full read access on behalf of a user        |
 
-Tokens are generated inside the TaxonWorks application under _Account > API access_.
+Tokens are generated inside the TaxonWorks application under _Account > API access_ and _Project > API access_.
 
 ## Pagination
 
