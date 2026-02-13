@@ -28,11 +28,11 @@ const GITHUB_REPOSITORIES = [
   },
   {
     label: 'Docs',
-    href: 'https://docs.taxonworks.org/'
+    href: 'https://github.com/SpeciesFileGroup/taxonworks_docs'
   },
   {
     label: 'API',
-    href: 'https://api.taxonworks.org/'
+    href: 'https://github.com/SpeciesFileGroup/taxonworks_api'
   }
 ]
 </script>
