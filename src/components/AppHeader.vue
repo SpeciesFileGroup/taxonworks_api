@@ -7,13 +7,16 @@
       />
       <div class="app-header__title">API Documentation</div>
     </div>
-    <a
-      class="app-header__github-link"
-      href="https://github.com/SpeciesFileGroup/taxonworks_api"
-      title="GitHub Repository"
-    >
-      <LogoGitHub class="app-header__github-logo" />
-    </a>
+    <div class="app-header__links">
+      <a href="https://www.speciesfilegroup.org/">Species File Group</a>
+      <a
+        class="app-header__github-link"
+        href="https://github.com/SpeciesFileGroup/taxonworks_api"
+        title="GitHub Repository"
+      >
+        <LogoGitHub class="app-header__github-logo" />
+      </a>
+    </div>
   </header>
 </template>
 
@@ -52,8 +55,8 @@ import LogoTaxonWorks from './Logo/TaxonWorks.vue'
 }
 
 .app-header__github-logo {
-  height: 28px;
-  width: 28px;
+  height: 20px;
+  width: 20px;
   color: var(--color-text-on-primary);
   cursor: pointer;
 }
@@ -62,5 +65,23 @@ import LogoTaxonWorks from './Logo/TaxonWorks.vue'
   margin: 0;
   font-size: 1.125rem;
   font-weight: 600;
+}
+
+.app-header__links {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  gap: 1rem;
+
+  a {
+    color: var(--color-text-on-primary);
+    text-decoration: none;
+
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--color-text-on-primary-hover);
+    }
+  }
 }
 </style>

@@ -101,4 +101,8 @@ onBeforeUnmount(destroyUi)
   font-weight: 700;
   color: var(--color-primary);
 }
+
+:deep(.swagger-ui .info__contact) {
+  display: none;
+}
 </style>

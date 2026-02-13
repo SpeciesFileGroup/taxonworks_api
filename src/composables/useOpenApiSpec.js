@@ -54,6 +54,15 @@ export function useOpenApiSpec() {
     try {
       const parsed = yaml.load(raw)
 
+      if (!parsed.externalDocs) {
+        const resource = filename.replace('.yaml', '').replaceAll('_', '-')
+
+        parsed.externalDocs = {
+          description: 'Data Model Documentation',
+          url: `https://docs.taxonworks.org/develop/Data/models.html#${resource}`
+        }
+      }
+
       specCache.set(key, parsed)
       spec.value = parsed
     } catch (e) {
