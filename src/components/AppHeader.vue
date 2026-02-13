@@ -8,21 +8,33 @@
       <div class="app-header__title">API Documentation</div>
     </div>
     <div class="app-header__links">
-      <a href="https://www.speciesfilegroup.org/">Species File Group</a>
-      <a
-        class="app-header__github-link"
-        href="https://github.com/SpeciesFileGroup/taxonworks_api"
-        title="GitHub Repository"
-      >
-        <LogoGitHub class="app-header__github-logo" />
-      </a>
+      <a href="http://www.speciesfilegroup.org/">Species File Group</a>
+      <AppHeaderSubmenu
+        label="GitHub"
+        :submenu="GITHUB_REPOSITORIES"
+      />
     </div>
   </header>
 </template>
 
 <script setup>
-import LogoGitHub from './Logo/GitHub.vue'
 import LogoTaxonWorks from './Logo/TaxonWorks.vue'
+import AppHeaderSubmenu from './AppHeaderSubmenu.vue'
+
+const GITHUB_REPOSITORIES = [
+  {
+    label: 'Code',
+    href: 'https://github.com/SpeciesFileGroup/taxonworks'
+  },
+  {
+    label: 'Docs',
+    href: 'https://docs.taxonworks.org/'
+  },
+  {
+    label: 'API',
+    href: 'https://api.taxonworks.org/'
+  }
+]
 </script>
 
 <style scoped>
@@ -48,19 +60,6 @@ import LogoTaxonWorks from './Logo/TaxonWorks.vue'
   width: auto;
 }
 
-.app-header__github-link {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.app-header__github-logo {
-  height: 20px;
-  width: 20px;
-  color: var(--color-text-on-primary);
-  cursor: pointer;
-}
-
 .app-header__title {
   margin: 0;
   font-size: 1.125rem;
@@ -71,7 +70,8 @@ import LogoTaxonWorks from './Logo/TaxonWorks.vue'
   display: flex;
   align-items: center;
   font-size: 0.875rem;
-  gap: 1rem;
+  font-weight: 500;
+  gap: 1.5rem;
 
   a {
     color: var(--color-text-on-primary);
@@ -80,7 +80,7 @@ import LogoTaxonWorks from './Logo/TaxonWorks.vue'
     transition: color 0.2s;
 
     &:hover {
-      color: var(--color-text-on-primary-hover);
+      color: var(--color-accent);
     }
   }
 }
