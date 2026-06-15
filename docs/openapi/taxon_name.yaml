@@ -943,20 +943,23 @@ paths:
           style: form
           explode: true
 
-        - name: taxon_name_relationship
+        - name: taxon_name_relationship[][subject_taxon_name_id]
           in: query
-          description: |
-            Filter by TaxonNameRelationship. Object with keys
-            `subject_taxon_name_id`, `object_taxon_name_id`, `type`.
+          description: Filter by TaxonNameRelationship subject TaxonName id.
           schema:
-            type: object
-            properties:
-              subject_taxon_name_id:
-                type: integer
-              object_taxon_name_id:
-                type: integer
-              type:
-                type: string
+            type: integer
+
+        - name: taxon_name_relationship[][object_taxon_name_id]
+          in: query
+          description: Filter by TaxonNameRelationship object TaxonName id.
+          schema:
+            type: integer
+
+        - name: taxon_name_relationship[][type]
+          in: query
+          description: Filter by TaxonNameRelationship type.
+          schema:
+            type: string
 
         - name: taxon_name_relationship_type_subject[]
           in: query
