@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import yaml from 'js-yaml'
+import { load as loadYaml } from 'js-yaml'
 
 const yamlModules = import.meta.glob('/docs/openapi/*.yaml', {
   eager: true,
@@ -52,7 +52,7 @@ export function useOpenApiSpec() {
     }
 
     try {
-      const parsed = yaml.load(raw)
+      const parsed = loadYaml(raw)
 
       if (!parsed.externalDocs) {
         const resource = filename.replace('.yaml', '').replaceAll('_', '-')
