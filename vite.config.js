@@ -16,8 +16,8 @@ export default defineConfig({
         assetFileNames: 'assets/[name]-[hash][extname]',
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
-        manualChunks: {
-          'swagger-ui-dist': ['swagger-ui-dist']
+        manualChunks(id) {
+          if (id.includes('swagger-ui-dist')) return 'swagger-ui-dist'
         }
       }
     }
