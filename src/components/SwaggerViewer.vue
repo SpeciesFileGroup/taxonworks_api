@@ -21,7 +21,7 @@
 
 <script setup>
 import { ref, watch, onBeforeUnmount, onMounted } from 'vue'
-import { SwaggerUIBundle } from 'swagger-ui-dist'
+import SwaggerUIBundle from 'swagger-ui-dist/swagger-ui-bundle.js'
 import 'swagger-ui-dist/swagger-ui.css'
 import { useProjects } from '../composables/useProjects.js'
 import ProjectSelector from './ProjectSelector.vue'
